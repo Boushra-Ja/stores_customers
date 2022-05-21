@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('discount_codes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('usage_times');
+            $table->string('its_for');
+            $table->string('discount_code');
+            $table->integer('discounts_id')->unsigned();
+            $table->foreign('discounts_id')->references('id')->on('discounts')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
+
+
+    public function down()
+    {
+        Schema::dropIfExists('discount_codes');
+    }
+};

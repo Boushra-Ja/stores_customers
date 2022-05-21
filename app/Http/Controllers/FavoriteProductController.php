@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\FavoriteProduct;
+use App\Http\Requests\StoreFavoriteProductRequest;
+use App\Http\Requests\UpdateFavoriteProductRequest;
+
+class FavoriteProductController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StoreFavoriteProductRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreFavoriteProductRequest $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\FavoriteProduct  $favoriteProduct
+     * @return \Illuminate\Http\Response
+     */
+    public function show(FavoriteProduct $favoriteProduct)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\FavoriteProduct  $favoriteProduct
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(FavoriteProduct $favoriteProduct)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateFavoriteProductRequest  $request
+     * @param  \App\Models\FavoriteProduct  $favoriteProduct
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateFavoriteProductRequest $request, FavoriteProduct $favoriteProduct)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\FavoriteProduct  $favoriteProduct
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(FavoriteProduct $favoriteProduct)
+    {
+        //
+    }
+}
