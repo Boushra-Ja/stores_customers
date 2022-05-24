@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\BoshraRe;
 
 use App\Models\RatingStore;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -21,10 +21,10 @@ class StoreResource extends JsonResource
             'facebook' => $this->facebook ,
             'mobile' => $this->mobile ,
             'status' => $this->status ,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'created_at' => $this->created_at->format('Y-m-d '),
+            'updated_at' => $this->updated_at->format('Y-m-d '),
             'review' => RatingResource::collection(RatingStore::where('store_id' , $this->id)->get()) ,
-            //'my_products' => ProductResource()
+           // 'my_products' => ProductResource()
 
         ];
     }

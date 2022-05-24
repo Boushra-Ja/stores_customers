@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Resources\StoreResource;
+use App\Http\Resources\BoshraRe\StoreResource;
+use App\Http\Resources\BoshraRe\StoresResource;
 use App\Models\Collection;
 
 class StoreController extends BaseController
@@ -35,7 +36,7 @@ class StoreController extends BaseController
 
         if($all_data)
         {
-            return $this->sendResponse(StoreResource::collection($all_data), "تم إرجاع المتاجر من الأعلى تقييما الى الأقل تقييما") ;
+            return $this->sendResponse(StoresResource::collection($all_data), "تم إرجاع المتاجر من الأعلى تقييما الى الأقل تقييما") ;
         }
         return $this->sendErrors("مشكلة في ترتيب المتاجر") ;
     }
@@ -43,9 +44,8 @@ class StoreController extends BaseController
     ////عرض المنتجات الأكثر مبيعاً
     public function order_by_sales()
     {
-        //[DB::raw('id' ),DB::raw('name' ),DB::raw('image' ),DB::raw('num_of_salling' )]
         $data = Store::select("*")->orderBy('num_of_salling' , 'DESC')->get();
-        return $this->sendResponse(StoreResource::collection($data),"تم ارجاع المتاجر حسب الاكثر مبيعاً") ;
+        return $this->sendResponse(StoresResource::collection($data),"تم ارجاع المتاجر حسب الاكثر مبيعاً") ;
     }
 
     public function create()
@@ -61,6 +61,7 @@ class StoreController extends BaseController
      */
     public function store(StoreStoreRequest $request)
     {
+        ///////بيان هاد كود للتجريب فيكي تحذفيه وتكتبي يلي بدك
         $input = $request->all() ;
         $shop = Store::create($input) ;
 
@@ -72,19 +73,17 @@ class StoreController extends BaseController
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
 
     ////عرض متجر محدد
-    public function show(Store $store)
+    public function show( $id)
     {
-        $store = Store::find($store);
-        return $this->sendResponse($store, 'تم ارجاع ملف المتجر بنجاح');
+        $data = Store::where('id' , $id)->get();
+        if ($data) {
+            return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع ملف المتجر بنجاح');
+        } else {
+            return $this->sendErrors('خطأ في عرض بروفايل المتجر', ['error' => 'error in show store profile']);
 
+        }
     }
 
     /**
