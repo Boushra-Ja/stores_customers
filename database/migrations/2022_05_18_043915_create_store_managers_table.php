@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('store_managers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('privilladge');
+
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
 

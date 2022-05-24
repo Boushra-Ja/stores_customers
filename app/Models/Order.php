@@ -32,7 +32,7 @@ class Order extends Model
 
     public function order_products()
     {
-        return $this->belongsToMany(Product::class) ;
+        return $this->belongsToMany(Product::class,'order_products') ;
     }
 }
 

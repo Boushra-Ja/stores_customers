@@ -2,41 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Collection;
 use App\Http\Requests\StoreCollectionRequest;
 use App\Http\Requests\UpdateCollectionRequest;
 
-class CollectionController extends Controller
+class CollectionController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCollectionRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreCollectionRequest $request)
     {
-        //
+        echo "111111111111111111111111";
+
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'discription' => ['required', 'string'],
+            'image' => ['required'],
+        ]);
+        echo "222222222222222222";
+        $input = $request->all();
+        echo "333333333333333333";
+
+        $collection  = Collection::create($input);
+        echo "4444444444444444444";
+
+
+        if ($collection) {
+            return $this->sendResponse($collection, 'Store Shop successfully');
+        } else {
+            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
+
+        }
     }
 
     /**

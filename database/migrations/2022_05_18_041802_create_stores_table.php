@@ -14,13 +14,11 @@ return new class extends Migration
             $table->String('name');
             $table->String('image')->nullable();
             $table->String('discription');
-            $table->String('email');
             $table->String('facebook')->nullable();
-            $table->String('num_of_salling');
-            $table->String('status');
-            //$table->String('address');
+            $table->String('num_of_salling')->nullable();
+            $table->String('status')->nullable();
             $table->bigInteger('mobile')->nullable();
-            $table->string('password');
+            $table->string('delivery_area');
             $table->timestamps();
 
 
