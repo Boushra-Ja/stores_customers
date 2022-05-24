@@ -20,7 +20,6 @@ class StoreController extends BaseController
         return $this->sendResponse( StoreResource::collection($stores), "تمت عملية عرض المتاجر بنجاح") ;
     }
 
-
     ////عرض المنتجات الأكثر تقييماً
     public function order_by_review()
     {
@@ -48,17 +47,12 @@ class StoreController extends BaseController
         return $this->sendResponse(StoreResource::collection($data),"تم ارجاع المتاجر حسب الاكثر مبيعاً") ;
     }
 
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     /////انشاء متجر
     public function store(StoreStoreRequest $request)
     {
@@ -82,13 +76,6 @@ class StoreController extends BaseController
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-
     ////عرض متجر محدد
     public function show(Store $store)
     {
@@ -106,12 +93,7 @@ class StoreController extends BaseController
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Store $store)
     {
         //

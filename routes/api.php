@@ -65,9 +65,9 @@ Route::get('store/reset_password/{id}/{new_password}', [App\Http\Controllers\Sto
 //PrivilladgeController
 Route::post('Privilladge/create' , [App\Http\Controllers\PrivilladgeController::class , 'store']) ;
 
-Route::post('/storee' , [App\Http\Controllers\CollectionController::class , 'store']) ;
-Route::post('/register' , [App\Http\Controllers\CustomerController::class , 'register']) ;
+//Route::post('collection/create' , [App\Http\Controllers\CollectionController::class , 'store']) ;
+Route::post('collection/register' , [App\Http\Controllers\CustomerController::class , 'register']) ;
 
-//Route::group(["middleware" => ["auth:sanctum"]], function(){
-//    Route::post('collection/create' , [App\Http\Controllers\CollectionController::class , 'store']) ;
-//});
+Route::group(["middleware" => ["auth:sanctum"]], function(){
+    Route::post('collection/create' , [App\Http\Controllers\CollectionController::class , 'store']) ;
+});
