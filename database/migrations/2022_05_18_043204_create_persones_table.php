@@ -12,7 +12,7 @@ return new class extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->string('image')->nullable();
             $table->string('email')->unique();
             $table->string('password');
