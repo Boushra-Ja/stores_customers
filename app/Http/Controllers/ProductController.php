@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\BoshraRe\ProductAllResource;
+use App\Http\Resources\BoshraRe\ProductResource;
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -40,15 +43,17 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
+
+     ////عرض متجر محدد
+    public function show( $id)
     {
-        //
+        $data = Product::where('id' , $id)->get();
+        if ($data) {
+            return $this->sendResponse(ProductAllResource::collection($data), 'تم ارجاع معلومات المنتج بنجاح');
+        } else {
+            return $this->sendErrors('خطأ في عرض معلومات المنتج', ['error' => 'error in show product info']);
+
+        }
     }
 
     /**

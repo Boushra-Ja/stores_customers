@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,3 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('stores' , StoreController :: class) ;
 Route::get('stores/order/reviews' , [StoreController::class , 'order_by_review']) ;
 Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
+
+
+/////Route of Prodcut
+Route::resource('products' , ProductController :: class) ;
