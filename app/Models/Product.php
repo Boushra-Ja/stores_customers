@@ -64,4 +64,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Customer::class , 'customer_id') ;
     }
+
+    public function rating()
+    {
+        return $this->belongsToMany(Customer::class , 'rating_products') ;
+    }
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Persone;
 use App\Http\Requests\StorePersoneRequest;
 use App\Http\Requests\UpdatePersoneRequest;
+use App\Models\Store;
 
 class PersoneController extends Controller
 {
@@ -32,11 +33,10 @@ class PersoneController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorePersoneRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StorePersoneRequest $request)
     {
-        //
     }
 
     /**

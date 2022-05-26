@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class StoreManager extends Model
 {
+
+
+
     use HasFactory;
 
     protected $fillable = [
-        'privilladge',
-        'store_id',
+       'privilladge',
+       'store_id',
         'person_id',
     ];
 
