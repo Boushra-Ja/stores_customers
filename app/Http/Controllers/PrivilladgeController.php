@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Privilladge;
 use Illuminate\Http\Request;
-use App\Http\Requests\StorePrivilladgeRequest;
 use App\Http\Requests\UpdatePrivilladgeRequest;
 
-class PrivilladgeController extends Controller
+class PrivilladgeController extends BaseController
 {
 
-    public function store(StorePrivilladgeRequest $request)
+    public function store(Request $request)
     {
 
         $valid = $request->validate([

@@ -32,8 +32,6 @@ class StoreManagerController extends BaseController
             'name' => 'required ',
             'email' => 'required | unique:users',
             'password' => 'required',
-            'image'
-
         ]);
 
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -59,10 +57,6 @@ class StoreManagerController extends BaseController
             $token = $persone->createToken('StoreManagerToken')->plainTextToken;
             $persone->save();
 
-//            $persone->update(['remember_token',$token]);
-//            $persone->save();
-
-
             $user1 = StoreManager::create([
                 'person_id' => $persone->id,
                 'store_id' => $request->store_id,
@@ -76,7 +70,6 @@ class StoreManagerController extends BaseController
                 'persone_id' => $persone,
                 'token'=>$token,
             ]);
-//6|EWMBFY1aCJwpIpNaUQ8WsxtWPH8jLajnSSxOPSqb
             // return $this->sendResponse($persone, 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);

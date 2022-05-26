@@ -26,6 +26,8 @@ Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
 
 
 
+
+
 ////////////////////////bayan //////////////////////////////////
 
 //    "name":"bayan",
@@ -65,9 +67,41 @@ Route::get('store/reset_password/{id}/{new_password}', [App\Http\Controllers\Sto
 //PrivilladgeController
 Route::post('Privilladge/create' , [App\Http\Controllers\PrivilladgeController::class , 'store']) ;
 
-//Route::post('collection/create' , [App\Http\Controllers\CollectionController::class , 'store']) ;
-Route::post('collection/register' , [App\Http\Controllers\CustomerController::class , 'register']) ;
+Route::post('PrivilladgeStoreManager/create' , [App\Http\Controllers\PrivilladgeStoreManagerController::class , 'store']) ;
+
 
 Route::group(["middleware" => ["auth:sanctum"]], function(){
+
+    //////collection
     Route::post('collection/create' , [App\Http\Controllers\CollectionController::class , 'store']) ;
+    Route::get('collection/index' , [App\Http\Controllers\CollectionController::class , 'index']);
+    Route::put('collection/update' , [App\Http\Controllers\CollectionController::class , 'update']) ;
+    Route::put('collection/delete' , [App\Http\Controllers\CollectionController::class , 'delete']) ;
+
+
 });
+
+
+//"name":"حقيبة",
+//"prepration_time":"2022-05-26 06:07:20",
+//"party":"herhfj0",
+//"discription":"rehuifhreuhfuihru",
+//"image":"hguihhrghrghr",
+//"age":"234",
+//"selling_price":"2544",
+//"cost_price":"789",
+//"number_of_sales":"54",
+//"return_or_replace":"0",
+//"collection_id":"2",
+//"discount_products_id":"1"
+
+Route::post('product/create' , [App\Http\Controllers\ProductController::class , 'store']) ;
+Route::get('product/index' , [App\Http\Controllers\ProductController::class , 'index']);
+Route::put('product/update' , [App\Http\Controllers\ProductController::class , 'update']) ;
+Route::put('product/delete' , [App\Http\Controllers\ProductController::class , 'delete']) ;
+
+
+
+
+/////////////////////batool
+Route::post('collection/register' , [App\Http\Controllers\CustomerController::class , 'register']) ;

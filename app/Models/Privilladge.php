@@ -15,6 +15,7 @@ class Privilladge extends Model
 
     public function storeManager()
     {
-        return $this->belongsToMany(StoreManager::class,'privilladge_store_managers','privilladge_id','store_manager_id','id','id') ;
+        return $this->belongsToMany(StoreManager::class,'privilladge_store_managers','privilladge_id','store_manager_id') ;
     }
+
 }

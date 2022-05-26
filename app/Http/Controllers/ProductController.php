@@ -2,86 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $ProductModel=Product::query()->get();
         return response()->json($ProductModel,200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'name' => 'required',
+            'prepration_time' => 'required',
+            'party'=>'nullable',
+            'discription'=>'nullable',
+            'image' => 'required',
+            'age'=>'nullable',
+            'selling_price' => 'required',
+            'cost_price' => 'required',
+            'number_of_sales'=>'nullable',
+            'return_or_replace' => 'required',
+            'discount_products_id'=>'nullable',
+            'collection_id' => 'required',
+        ]);
+        $input = $request->all();
+        $product = Product::create($input);
+
+        if ($product) {
+            return $this->sendResponse($product, 'Store Shop successfully');
+
+        } else {
+            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
+
+        }
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProductRequest $request)
-    {
-        //
+    public function update(Request $request){
+        $product = Product::find($request->product)->update($request->all());
+        return $this->sendResponse($product, 'تم تعديل المجموعة بنجاح');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
+    public function delete(Request $request){
+        $product = Product::find($request->product)->delete();
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProductRequest $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-        //
-    }
 }

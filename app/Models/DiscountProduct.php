@@ -15,7 +15,7 @@ class DiscountProduct extends Model
         'discounts_id',
 
     ];
-    public function products()
+    public function product()
     {
         return $this->hasMany(Product::class , 'discount_products_id');
     }

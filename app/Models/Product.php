@@ -40,6 +40,11 @@ class Product extends Model
         return $this->hasOne(Raise::class) ;
     }
 
+    public function discountProduct()
+    {
+        return $this->hasOne(DiscountProduct::class) ;
+    }
+
     public function classificatios()
     {
         return $this->belongsToMany(Classification::class , 'classification_products') ;
