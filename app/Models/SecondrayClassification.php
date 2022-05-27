@@ -20,14 +20,14 @@ class SecondrayClassification extends Model
         return $this->belongsTo(Classification::class, 'classification_id');
     }
 
-    public function classification_products()
-    {
-        return $this->hasMany(SecondrayClassification::class , 'classification_id');
-    }
+//    public function classification_products()
+//    {
+//        return $this->hasMany(SecondrayClassification::class , 'classification_id');
+//    }
 
-    public function products()
+    public function product()
     {
-        return $this->belongsToMany(Product::class) ;
+        return $this->belongsToMany(Product::class,'secondray_classification_products','secondary_id','product_id','id','id') ;
     }
 
 }

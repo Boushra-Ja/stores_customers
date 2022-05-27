@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persone;
+use App\Models\Privilladge;
 use App\Models\StoreManager;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
@@ -32,8 +33,6 @@ class StoreManagerController extends BaseController
             'name' => 'required ',
             'email' => 'required | unique:users',
             'password' => 'required',
-            'image'
-
         ]);
 
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -59,10 +58,6 @@ class StoreManagerController extends BaseController
             $token = $persone->createToken('StoreManagerToken')->plainTextToken;
             $persone->save();
 
-//            $persone->update(['remember_token',$token]);
-//            $persone->save();
-
-
             $user1 = StoreManager::create([
                 'person_id' => $persone->id,
                 'store_id' => $request->store_id,
@@ -70,13 +65,18 @@ class StoreManagerController extends BaseController
 
             $user1->save();
 
+            $privilladge=Privilladge::all();
+
+            foreach($privilladge as $option){
+                PrivilladgeStoreManagerController::store($option->id,$user1->id);
+            }
+
             mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
             return response ()->json([
                 'persone_id' => $persone,
                 'token'=>$token,
             ]);
-//6|EWMBFY1aCJwpIpNaUQ8WsxtWPH8jLajnSSxOPSqb
             // return $this->sendResponse($persone, 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
@@ -146,5 +146,9 @@ class StoreManagerController extends BaseController
 
     }
 
+
+    public function helper(){
+
+    }
 
 }

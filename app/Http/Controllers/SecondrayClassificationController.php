@@ -2,85 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\SecondrayClassification;
 use App\Http\Requests\StoreSecondrayClassificationRequest;
 use App\Http\Requests\UpdateSecondrayClassificationRequest;
+use Illuminate\Http\Request;
 
-class SecondrayClassificationController extends Controller
+class SecondrayClassificationController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public static function store(string $title, int $id)
     {
-        //
+
+         SecondrayClassification::create([
+            'title' => $title,
+            'classification_id' => $id
+        ]);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreSecondrayClassificationRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreSecondrayClassificationRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\SecondrayClassification  $secondrayClassification
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SecondrayClassification $secondrayClassification)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SecondrayClassification  $secondrayClassification
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SecondrayClassification $secondrayClassification)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateSecondrayClassificationRequest  $request
-     * @param  \App\Models\SecondrayClassification  $secondrayClassification
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateSecondrayClassificationRequest $request, SecondrayClassification $secondrayClassification)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SecondrayClassification  $secondrayClassification
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SecondrayClassification $secondrayClassification)
-    {
-        //
-    }
 }

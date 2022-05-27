@@ -14,8 +14,9 @@ return new class extends Migration
             $table->timestamps();
             $table->String('image');
             $table->String('discription');
+            $table->String('gift');
             $table->String('name');
-            $table->date('prepration_time');
+            $table->integer('prepration_time');
             $table->String('party')->nullable();
             $table->integer('age');
             $table->bigInteger('selling_price');

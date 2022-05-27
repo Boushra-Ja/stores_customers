@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class StoreManager extends Model
 {
 
-
-
     use HasFactory;
 
     protected $fillable = [
@@ -29,6 +27,20 @@ class StoreManager extends Model
         return $this->belongsTo(Store::class, 'store_id');
     }
 
+    public function privilladge()
+    {
+        return $this->belongsToMany(Privilladge::class,'privilladge_store_managers','store_manager_id','privilladge_id') ;
+    }
+
+    public function helper()
+    {
+        return $this->hasMany(Helper::class , 'store_manager_id');
+    }
+
+    public function waitingStore()
+    {
+        return $this->hasMany(WaitingStore::class , 'store_manager_id');
+    }
 
 
 }
