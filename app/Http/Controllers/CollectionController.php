@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Models\Collection;
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateCollectionRequest;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CollectionController extends BaseController
 {
@@ -24,7 +25,7 @@ class CollectionController extends BaseController
 
     public function store(Request $request)
     {
-
+         // dd(auth::id());
         $request->validate([
             'title' => 'required',
             'discription' => 'nullable',

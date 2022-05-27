@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    public $table = "products";
     use HasFactory;
 
     protected $fillable = [
@@ -65,9 +66,10 @@ class Product extends Model
         return $this->belongsToMany(Order::class , 'order_products') ;
     }
 
-    public function favourits()
+    public function favorite_products()
     {
-        return $this->belongsToMany(Customer::class , 'customer_id') ;
+       // return $this->belongsToMany(Customer::class , 'customer_product','product_id','customer_id',) ;
+        return $this->belongsToMany(Customer::class , 'favorite_products','product_id','customer_id',) ;
     }
 
     public function secondrayClassification()

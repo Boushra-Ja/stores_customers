@@ -14,36 +14,44 @@ use Dotenv\Validator;
 class CustomerController extends Controller
 {
 
+
+    public static function html_email(String $name,String $code,String $email,String $title)
+    {
+        $data = array('name' => $name,'code' =>$code);
+        Mail::send('mail', $data, function ($message) use ($title, $email) {
+            $message->to($email, 'متجر جديد')->subject
+            ($title);
+            $message->from('faizzoubi10@gmail.com', 'مشروعي');
+        });
+        echo "HTML Email Sent. Check your inbox.";
+    }
+
     public function basic_email() {
         $data = array('name'=>"Virat Gandhi");
 
-        Mail::send(['text'=>'mail'], $data, function($message) {
-            $message->to('faizzoubi10@gmail.com', 'Tutorials Point');
-          // ->subject('Laravel Basic Testing Mail');
-            $message->from('faizzoubi11@gmail.com','Virat Gandhi');
+       Mail::send(['text'=>'mail'], $data, function($message) {
+             $message->to('faizzoubi30@gmail.com', 'Tutorials Point')->subject
+             ('Laravel Basic Testing Mail');
+            $message->from('faizzoubi10@gmail.com','Virat Gandhi');
         });
         echo "Basic Email Sent. Check your inbox.";
     }
-//    public function html_email() {
-//        $data = array('name'=>"Virat Gandhi");
-//        Mail::send('mail', $data, function($message) {
-//            $message->to('abc@gmail.com', 'Tutorials Point')->subject
-//            ('Laravel HTML Testing Mail');
-//            $message->from('xyz@gmail.com','Virat Gandhi');
-//        });
-//        echo "HTML Email Sent. Check your inbox.";
-//    }
-//    public function attachment_email() {
-//        $data = array('name'=>"Virat Gandhi");
-//        Mail::send('mail', $data, function($message) {
-//            $message->to('abc@gmail.com', 'Tutorials Point')->subject
-//            ('Laravel Testing Mail with Attachment');
-//            $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
-//            $message->attach('C:\laravel-master\laravel\public\uploads\test.txt');
-//            $message->from('xyz@gmail.com','Virat Gandhi');
-//        });
-//        echo "Email Sent with attachment. Check your inbox.";
-//    }
+
+
+    public function verify_email(Request $request)
+    {
+        $persone = Persone::where('email', '=', $request->persone)->first();
+        if ($persone) {
+
+            if (strcmp($persone->code, $request->code) == 0)
+                echo "ssssssssss";
+            else
+                echo "fffffffffff";
+        } else
+            echo "dose not exists";
+
+
+    }
 
 
     function register (Request $request) {
@@ -69,6 +77,7 @@ class CustomerController extends Controller
         if($request->image!=null)
             $persone->image=$request->image;
         $persone->save();
+
         $user1 = Customer::create([
             'persone_id'=>$persone->id,
 
@@ -124,9 +133,8 @@ class CustomerController extends Controller
     }
 
 
-    public function change_password(Request$request)
+    function change_password(Request$request)
     {
-
 
         $validator = Validator:: make($request->all(), [
             'old_password' => 'required',
@@ -155,30 +163,7 @@ class CustomerController extends Controller
         }
 
 
-        //$user=new User();
-        // $ProductModel=User::query()->get(['password']->pluck());
-        // dd($request->password);
-        //if($request->old_password=='123321')
-        //  {// echo  'yes';
-//
-//            $user_model=new User;
-//           if ($user_model::find(auth::id()))
-//            {
-//                $user_model->password=$request->password;
-//                $user_model->save();
-//                return response ()->json([$user_model
-//                ]);
-//            }
-//            $user->update(['password'=>Hash :: make($request->password)]);
-//                return response()->json(['message'=>'Password successfully updated',],200);
-//         }
-//        else
-//            return response()->json([
-//                'message'=>'Old password does not matched',
-//            ],400);
-//
-//
-        // }
+
 
     }
 }

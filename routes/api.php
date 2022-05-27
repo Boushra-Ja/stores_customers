@@ -1,12 +1,7 @@
 <?php
 
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\OrderStatuseController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RatingOrderController;
-use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\StoreController;
-use App\Models\OrderStatus;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,120 +28,46 @@ Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
 
 
 
-/////Routes for rating products
-Route::resource('rating_product' , RatingOrderController::class);
-
-
-/////Routes for Orders
-Route::resource('orders' , OrderController::class);
-
-
-////Routes for order
-Route::resource('order_status', OrderStatuseController::class);
-//Route::resource('accept_orders' , [OrderController::class , 'acceptence_orders']);
-
-////////////////////////bayan //////////////////////////////////
-
-//    "name":"bayan",
-//    "image":"jjjjjjjjjjjjjjjj",
-//    "discription":"jjjjjjj",
-//    "facebook":"iuhbbj",
-//       "delivery_area":"dfdsfds",
-//    "mobile":"8687676767"
-Route::post('store/create' , [App\Http\Controllers\StoreController::class , 'store']) ;
-//"store":"2",
+//Route::post('store/create' , [App\Http\Controllers\StoreController::class , 'store']) ;
 Route::post('store/update' , [App\Http\Controllers\StoreController::class , 'update']) ;
-//
-//"name" :"بيان",
-//    "password" :"75f65hffghf",
-//    "email":"ite2bayan@gmail.com",
-//    "store_id":"2"
 Route::post(  'store/register', [App\Http\Controllers\StoreManagerController::class, 'register']);
-
-//    "password" :"75f65hffghf",
-//    "email":"ite2bayan@gmail.com",
 Route::post(  'store/login', [App\Http\Controllers\StoreManagerController::class, 'login']);
-//    "id":"3"
 Route::get(  'store/index', [App\Http\Controllers\StoreManagerController::class, 'index']);
-
-
-
-
-//    "persone":"ite2bayan@gmail.com"
-//     "code":"hhh"
+//Route::post('/registerStoreManager' , [App\Http\Controllers\StoreManagerController::class , 'register']) ;
 Route::get(  'store/verify_email', [App\Http\Controllers\StoreManagerController::class, 'verify_email']);
 Route::get(  'store/forget_password', [App\Http\Controllers\StoreManagerController::class, 'forget_password']);
 Route::get('store/reset_password/{id}/{new_password}', [App\Http\Controllers\StoreManagerController::class, 'reset_password']);
-
-
-
-
-//PrivilladgeController
 Route::post('Privilladge/create' , [App\Http\Controllers\PrivilladgeController::class , 'store']) ;
 
-Route::post('PrivilladgeStoreManager/create' , [App\Http\Controllers\PrivilladgeStoreManagerController::class , 'store']) ;
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+///batool
+///
+//Route::post(  '/Customer/html_email/{name}/{code}/{email}/{title}', [App\Http\Controllers\CustomerController::class, 'html_email']);
+Route::post('/Customer/register' , [App\Http\Controllers\CustomerController::class , 'register']) ;
+Route::post('/Customer/changepassword' , [App\Http\Controllers\CustomerController::class , 'changepassword']) ;
+Route::post('/Customer/login' , [App\Http\Controllers\CustomerController::class , 'login']) ;
+Route::post('/Customer/logout' , [App\Http\Controllers\CustomerController::class , 'logout']) ;
+Route::group(['middleware' => ['auth:sanctum']],
+    function () {
 
 
-Route::post('classification_products/create' , [App\Http\Controllers\SecondrayClassificationProductController::class , 'store']) ;
+        Route::get('/Product/Show_Detalis/{id}' , [App\Http\Controllers\ProductController::class , 'Show_Detalis']);
+        Route::get('/Product/Product_Order_sales' , [App\Http\Controllers\ProductController::class , 'Product_Order_sales']);
+        Route::get('/Product/Product_Order_discount' , [App\Http\Controllers\ProductController::class , 'Product_Order_discount']);
+        Route::get('/Product/Product_Order_favorite' , [App\Http\Controllers\ProductController::class , 'Product_Order_favorite']);
+        Route::get('/Product/Product_Order_Salary' , [App\Http\Controllers\ProductController::class , 'Product_Order_Salary']);
+
+        Route::get('/Product/Product_All' , [App\Http\Controllers\ProductController::class , 'Product_All']);
+        Route::get('/Product/Show_Classification' , [App\Http\Controllers\ClassificationController::class , 'Show_Classification']);
+        Route::get('/Product/Show_Secondray' , [App\Http\Controllers\SecondrayClassificationController::class , 'Show_Secondray']);
+        Route::post('/SecondrayClassification/ShowClassification/{id}/{title}' , [App\Http\Controllers\SecondrayClassificationController::class , 'shwoo']);
+        Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Add_Favorite']);
+        Route::get('/FavoriteProduct/Show_Favorite' , [App\Http\Controllers\FavoriteProductController::class , 'Show_Favorite']);
+        Route::delete('/FavoriteProduct/Delete_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Delete_Favorite']);
+        Route::post('/FavoriteStore/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Add_Favorite']);
+        Route::get('/FavoriteStore/Show_Favorite' , [App\Http\Controllers\FavoriteStoreController::class , 'Show_Favorite']);
+        Route::delete('/FavoriteStore/Delete_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Delete_Favorite']);
 
 
-Route::group(["middleware" => ["auth:sanctum"]], function(){
-
-    //////collection
-    Route::post('collection/create' , [App\Http\Controllers\CollectionController::class , 'store']) ;
-    Route::get('collection/index' , [App\Http\Controllers\CollectionController::class , 'index']);
-    Route::put('collection/update' , [App\Http\Controllers\CollectionController::class , 'update']) ;
-    Route::put('collection/delete' , [App\Http\Controllers\CollectionController::class , 'delete']) ;
-
-
-});
-
-//
-//"name":"mobil",
-//"prepration_time":"2022-05-26 06:07:20",
-//"party":"herhfj0",
-//"discription":"rehuifhreuhfuihru",
-//"image":"hguihhrghrghr",
-//"age":"234",
-//"selling_price":"2544",
-//"cost_price":"789",
-//"number_of_sales":"54",
-//"return_or_replace":"0",
-//"collection_id":"2",
-//"discount_products_id":"1",
-//"classification":[
-//    1,2
-//],
-//"type":[
-//
-//{
-//    "kk":"color",
-//"value":[
-//    "red","blue"
-//]},
-//
-//
-//{"kk":"size",
-//"value":[
-//    2,3
-//]}
-//
-//]
-
-Route::post('product/create' , [App\Http\Controllers\ProductController::class , 'store']) ;
-Route::get('product/index' , [App\Http\Controllers\ProductController::class , 'index']);
-Route::get('product/show' , [App\Http\Controllers\ProductController::class , 'show']);
-Route::put('product/update' , [App\Http\Controllers\ProductController::class , 'update']) ;
-Route::put('product/delete' , [App\Http\Controllers\ProductController::class , 'delete']) ;
-
-//
-//"title":"ffffffff",
-//    "id":[
-//    "fwefwfw",
-//    "sggsgsg",
-//    "srgrgreg"
-//]
-Route::post('classification/create' , [App\Http\Controllers\ClassificationController::class , 'store']) ;
-
-
-Route::post('helper/create' , [App\Http\Controllers\HelperController::class , 'store']) ;
+        ;});

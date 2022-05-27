@@ -27,7 +27,9 @@ class Store extends Model
 
     public function favourits()
     {
-        return $this->belongsToMany(Customer::class , 'favorite_stores') ;
+       // return $this->belongsToMany(Customer::class , 'favorite_stores') ;
+        return $this->belongsToMany(Customer::class , 'favorite_stores','store_id','customer_id',) ;
+
     }
 
 
