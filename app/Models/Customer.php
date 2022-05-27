@@ -48,4 +48,9 @@ class Customer extends Model
         return $this->belongsToMany(DiscountCode::class , 'discount_customers') ;
     }
 
+    public function rating_products()
+    {
+        return $this->belongsToMany(Product::class) ;
+    }
+
 }

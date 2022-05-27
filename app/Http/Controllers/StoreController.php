@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreStoreRequest;
-use App\Http\Requests\UpdateStoreRequest;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Resources\StoreResource;
-use App\Models\Collection;
+use App\Http\Resources\BoshraRe\StoreResource ;
 
 class StoreController extends BaseController
 {
@@ -24,7 +23,7 @@ class StoreController extends BaseController
     public function order_by_review()
     {
         $stores = DB::table('rating_stores')
-        ->select([DB::raw("SUM(value) as value") , DB::raw("store_id") ,DB::raw("count(value) as num_customer")])
+        ->select([DB::raw("SUM(value) as value") , DB::raw("store_id") ,DB::raw("count(value) as num_customer") ])
         ->groupBy('store_id');
 
         $all_data = DB::table('stores')

@@ -2,85 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\RatingOrder;
 use App\Http\Requests\StoreRatingOrderRequest;
 use App\Http\Requests\UpdateRatingOrderRequest;
+use App\Http\Resources\BoshraRe\RatingResource;
 
-class RatingOrderController extends Controller
+class RatingOrderController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    //عرض جميع تقييمات المنتجات
     public function index()
     {
-        //
+        $rating = RatingOrder::all() ;
+        if($rating)
+        {
+            $this->sendResponse(RatingResource::collection($rating) , 'تم ارجاع جميع التقييمات بنجاح') ;
+        }
+        else{
+            $this->sendErrors("خطأ في عرض التقييمات" ,  ['error' => 'error in display ratings']) ;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreRatingOrderRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+   /////تقييم منتج من قبل الزبون
     public function store(StoreRatingOrderRequest $request)
     {
-        //
+        $input = $request->all() ;
+        $rating = RatingOrder::create($input) ;
+
+        if ($rating) {
+            return $this->sendResponse(new RatingResource($rating), 'نجحت عملية تقييم المنتج');
+        } else {
+            return $this->sendErrors('فشل في عملية التقييم', ['error' => 'not rating store']);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\RatingOrder  $ratingOrder
-     * @return \Illuminate\Http\Response
-     */
-    public function show(RatingOrder $ratingOrder)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\RatingOrder  $ratingOrder
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(RatingOrder $ratingOrder)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateRatingOrderRequest  $request
-     * @param  \App\Models\RatingOrder  $ratingOrder
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateRatingOrderRequest $request, RatingOrder $ratingOrder)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\RatingOrder  $ratingOrder
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RatingOrder $ratingOrder)
-    {
-        //
-    }
+
 }

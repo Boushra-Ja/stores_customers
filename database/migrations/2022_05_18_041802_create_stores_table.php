@@ -15,7 +15,7 @@ return new class extends Migration
             $table->String('image')->nullable();
             $table->String('discription');
             $table->String('facebook')->nullable();
-            $table->String('num_of_salling')->nullable();
+            $table->integer('num_of_salling')->nullable();
             $table->String('status')->nullable();
             $table->bigInteger('mobile')->nullable();
             $table->string('delivery_area');

@@ -25,10 +25,6 @@ class Order extends Model
         return $this->belongsTo(OrderStatus::class, 'status_id');
     }
 
-    public function rating()
-    {
-        return $this->hasOne(RatingOrder::class) ;
-    }
 
     public function order_products()
     {

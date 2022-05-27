@@ -6,25 +6,20 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRatingStoreRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+
     public function authorize()
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
+
     public function rules()
     {
         return [
-            //
+            'notes' => 'required' ,
+            'value' => 'required | max:5'  ,
+            'customer_id' => 'required | exists:customers,persone_id' ,
+            'store_id' => 'required | exists:stores,id'
         ];
     }
 }

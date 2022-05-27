@@ -2,85 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\RatingStore;
 use App\Http\Requests\StoreRatingStoreRequest;
 use App\Http\Requests\UpdateRatingStoreRequest;
+use App\Http\Resources\BoshraRe\RatingResource;
+use App\Models\Customer;
+use App\Models\Store;
 
-class RatingStoreController extends Controller
+class RatingStoreController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+    ///عرض جميع تقييمات المتاجر
     public function index()
     {
-        //
+        $rating = RatingStore::all() ;
+        if($rating)
+        {
+            $this->sendResponse(RatingResource::collection($rating) , 'تم ارجاع جميع التقييمات بنجاح') ;
+        }
+        else{
+            $this->sendErrors("خطأ في عرض التقييمات" ,  ['error' => 'error in display ratings']) ;
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+
+   ////////تقيييم متجر من قبل الزبون
+    public function store(StoreRatingStoreRequest $request )
     {
-        //
+        $input = $request->all() ;
+        $rating = RatingStore::create($input) ;
+
+        if ($rating) {
+            return $this->sendResponse(new RatingResource($rating), 'نجحت عملية التقييم');
+        } else {
+            return $this->sendErrors('فشل في عملية التقييم', ['error' => 'not rating store']);
+        }
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreRatingStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreRatingStoreRequest $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\RatingStore  $ratingStore
-     * @return \Illuminate\Http\Response
-     */
-    public function show(RatingStore $ratingStore)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\RatingStore  $ratingStore
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(RatingStore $ratingStore)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateRatingStoreRequest  $request
-     * @param  \App\Models\RatingStore  $ratingStore
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateRatingStoreRequest $request, RatingStore $ratingStore)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\RatingStore  $ratingStore
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RatingStore $ratingStore)
-    {
-        //
-    }
 }
