@@ -39,7 +39,7 @@ Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
 Route::post('store/create' , [App\Http\Controllers\StoreController::class , 'store']) ;
 //"store":"2",
 Route::post('store/update' , [App\Http\Controllers\StoreController::class , 'update']) ;
-
+//
 //"name" :"بيان",
 //    "password" :"75f65hffghf",
 //    "email":"ite2bayan@gmail.com",
@@ -70,6 +70,9 @@ Route::post('Privilladge/create' , [App\Http\Controllers\PrivilladgeController::
 Route::post('PrivilladgeStoreManager/create' , [App\Http\Controllers\PrivilladgeStoreManagerController::class , 'store']) ;
 
 
+Route::post('classification_products/create' , [App\Http\Controllers\SecondrayClassificationProductController::class , 'store']) ;
+
+
 Route::group(["middleware" => ["auth:sanctum"]], function(){
 
     //////collection
@@ -81,8 +84,8 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
 
 });
 
-
-//"name":"حقيبة",
+//
+//"name":"mobil",
 //"prepration_time":"2022-05-26 06:07:20",
 //"party":"herhfj0",
 //"discription":"rehuifhreuhfuihru",
@@ -93,15 +96,40 @@ Route::group(["middleware" => ["auth:sanctum"]], function(){
 //"number_of_sales":"54",
 //"return_or_replace":"0",
 //"collection_id":"2",
-//"discount_products_id":"1"
+//"discount_products_id":"1",
+//"classification":[
+//    1,2
+//],
+//"type":[
+//
+//{
+//    "kk":"color",
+//"value":[
+//    "red","blue"
+//]},
+//
+//
+//{"kk":"size",
+//"value":[
+//    2,3
+//]}
+//
+//]
 
 Route::post('product/create' , [App\Http\Controllers\ProductController::class , 'store']) ;
 Route::get('product/index' , [App\Http\Controllers\ProductController::class , 'index']);
+Route::get('product/show' , [App\Http\Controllers\ProductController::class , 'show']);
 Route::put('product/update' , [App\Http\Controllers\ProductController::class , 'update']) ;
 Route::put('product/delete' , [App\Http\Controllers\ProductController::class , 'delete']) ;
 
+//
+//"title":"ffffffff",
+//    "id":[
+//    "fwefwfw",
+//    "sggsgsg",
+//    "srgrgreg"
+//]
+Route::post('classification/create' , [App\Http\Controllers\ClassificationController::class , 'store']) ;
 
 
-
-/////////////////////batool
-Route::post('collection/register' , [App\Http\Controllers\CustomerController::class , 'register']) ;
+Route::post('helper/create' , [App\Http\Controllers\HelperController::class , 'store']) ;

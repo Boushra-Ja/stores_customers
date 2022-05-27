@@ -32,5 +32,15 @@ class StoreManager extends Model
         return $this->belongsToMany(Privilladge::class,'privilladge_store_managers','store_manager_id','privilladge_id') ;
     }
 
+    public function helper()
+    {
+        return $this->hasMany(Helper::class , 'store_manager_id');
+    }
+
+    public function waitingStore()
+    {
+        return $this->hasMany(WaitingStore::class , 'store_manager_id');
+    }
+
 
 }

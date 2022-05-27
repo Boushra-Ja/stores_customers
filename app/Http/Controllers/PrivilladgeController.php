@@ -32,15 +32,4 @@ class PrivilladgeController extends BaseController
 
     }
 
-
-    public function update(UpdatePrivilladgeRequest $request, Privilladge $privilladge)
-    {
-        //
-    }
-
-
-    public function destroy(Privilladge $privilladge)
-    {
-        //
-    }
 }

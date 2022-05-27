@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persone;
+use App\Models\Privilladge;
 use App\Models\StoreManager;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
@@ -63,6 +64,12 @@ class StoreManagerController extends BaseController
             ]);
 
             $user1->save();
+
+            $privilladge=Privilladge::all();
+
+            foreach($privilladge as $option){
+                PrivilladgeStoreManagerController::store($option->id,$user1->id);
+            }
 
             mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
@@ -139,5 +146,9 @@ class StoreManagerController extends BaseController
 
     }
 
+
+    public function helper(){
+
+    }
 
 }

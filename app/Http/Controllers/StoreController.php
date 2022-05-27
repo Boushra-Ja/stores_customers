@@ -47,12 +47,6 @@ class StoreController extends BaseController
         return $this->sendResponse(StoreResource::collection($data),"تم ارجاع المتاجر حسب الاكثر مبيعاً") ;
     }
 
-
-    public function create()
-    {
-        //
-    }
-
     /////انشاء متجر
     public function store(StoreStoreRequest $request)
     {
@@ -93,9 +87,4 @@ class StoreController extends BaseController
 
     }
 
-
-    public function destroy(Store $store)
-    {
-        //
-    }
 }

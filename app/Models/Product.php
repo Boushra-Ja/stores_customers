@@ -45,10 +45,10 @@ class Product extends Model
         return $this->hasOne(DiscountProduct::class) ;
     }
 
-    public function classificatios()
-    {
-        return $this->belongsToMany(Classification::class , 'classification_products') ;
-    }
+//    public function classificatios()
+//    {
+//        return $this->belongsToMany(Classification::class , 'classification_products') ;
+//    }
 
     public function options()
     {
@@ -68,5 +68,10 @@ class Product extends Model
     public function favourits()
     {
         return $this->belongsToMany(Customer::class , 'customer_id') ;
+    }
+
+    public function secondrayClassification()
+    {
+        return $this->belongsToMany(SecondrayClassification::class,'secondray_classification_products','product_id','secondary_id','id','id') ;
     }
 }

@@ -5,82 +5,42 @@ namespace App\Http\Controllers;
 use App\Models\OptionType;
 use App\Http\Requests\StoreOptionTypeRequest;
 use App\Http\Requests\UpdateOptionTypeRequest;
+use Illuminate\Http\Request;
 
 class OptionTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public static function store($type, int $product_id, int $i)
     {
-        //
+        foreach ($type as $option) {
+            if ($i == 0) {
+                $optionType = OptionType::create([
+                    'name' => $option,
+                    'product_id' => $product_id
+                ]);
+                $i = $i + 1;
+            } else if ($i == 1) {
+                foreach ($option as $value) {
+                    OptioinValueController::store($value, $optionType->id);
+                }
+            }
+
+
+        }
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public static function update($type, int $product_id)
     {
-        //
+
+        $optionType = OptionType::where('product_id', '=', $product_id)->get();
+
+        foreach ($optionType as $option) {
+            $option->delete();
+        }
+        OptionTypeController::store($type, $product_id,0);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreOptionTypeRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreOptionTypeRequest $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\OptionType  $optionType
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OptionType $optionType)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\OptionType  $optionType
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OptionType $optionType)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateOptionTypeRequest  $request
-     * @param  \App\Models\OptionType  $optionType
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateOptionTypeRequest $request, OptionType $optionType)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\OptionType  $optionType
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(OptionType $optionType)
-    {
-        //
-    }
 }
