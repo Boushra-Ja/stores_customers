@@ -3,6 +3,7 @@
 namespace App\Http\Resources\BoshraRe;
 
 use App\Models\Collection;
+use App\Models\RatingOrder;
 use App\Models\Store;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +20,8 @@ class ProductResource extends JsonResource
             'store_id' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('id'))->value('id'),
             'store_name' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('id'))->value('name'),
             'num_salling_store' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('id'))->value('num_of_salling'),
+            'review' => RatingResource::collection(RatingOrder::where('product_id' , $this->id)->get()) ,
+
 
         ];
     }

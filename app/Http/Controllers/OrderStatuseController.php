@@ -2,85 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OrderStatuse;
+use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\StoreOrderStatuseRequest;
-use App\Http\Requests\UpdateOrderStatuseRequest;
+use App\Models\OrderStatus;
 
-class OrderStatuseController extends Controller
+class OrderStatuseController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function index()
     {
-        //
+        $status = OrderStatus::all() ;
+        return $this->sendResponse($status , "success");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreOrderStatuseRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreOrderStatuseRequest $request)
     {
-        //
+        $order_status = OrderStatus::create($request->all()) ;
+
+        if($order_status)
+        {
+            return $this->sendResponse($order_status, "تم اضافة حالة طلب جديدة") ;
+        }
+        return $this->sendErrors("مشكلة في اضافة حالة جديدة للطلب ") ;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\OrderStatuse  $orderStatuse
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OrderStatuse $orderStatuse)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\OrderStatuse  $orderStatuse
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OrderStatuse $orderStatuse)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateOrderStatuseRequest  $request
-     * @param  \App\Models\OrderStatuse  $orderStatuse
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateOrderStatuseRequest $request, OrderStatuse $orderStatuse)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\OrderStatuse  $orderStatuse
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(OrderStatuse $orderStatuse)
-    {
-        //
-    }
 }

@@ -49,7 +49,7 @@ class ProductController extends BaseController
     {
         $data = Product::where('id' , $id)->get();
         if ($data) {
-            return $this->sendResponse(ProductAllResource::collection($data), 'تم ارجاع معلومات المنتج بنجاح');
+            return $this->sendResponse(ProductResource::collection($data), 'تم ارجاع معلومات المنتج بنجاح');
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المنتج', ['error' => 'error in show product info']);
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class RatingOrder extends Model
 {
     use HasFactory;
+    protected $table = 'rating_products';
 
     protected $fillable = [
         'order_id',

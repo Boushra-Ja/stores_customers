@@ -2,21 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\OrderStatus;
 
-class OrderController extends Controller
+class OrderController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    /////جميع الطلبات
     public function index()
     {
-        //
+        $orders = Order::all() ;
+        if($orders)
+        {
+            return $this->sendResponse($orders , "sucess") ;
+        }
+
+        return  $this->sendErrors([] , 'failed')     ;
+
     }
+
+
+    //////////جميع الطلبات المقبولة
+    public function acceptence_orders()
+    {
+        $status_id = OrderStatus::where('id' ,1)->value('id') ;
+
+        $orders = Order::where('status_id' , $status_id)->get() ;
+
+        return $this->sendResponse($orders , 'success');
+
+
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.

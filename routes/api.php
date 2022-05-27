@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatuseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingOrderController;
 use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\StoreController;
-use Illuminate\Http\Request;
+use App\Models\OrderStatus;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +39,15 @@ Route::resource('rating_store' , RatingStoreController::class);
 
 /////Routes for rating products
 Route::resource('rating_product' , RatingOrderController::class);
+
+
+/////Routes for Orders
+Route::resource('orders' , OrderController::class);
+
+
+////Routes for order
+Route::resource('order_status', OrderStatuseController::class);
+//Route::resource('accept_orders' , [OrderController::class , 'acceptence_orders']);
 
 ////////////////////////bayan //////////////////////////////////
 
