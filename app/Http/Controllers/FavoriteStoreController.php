@@ -29,15 +29,6 @@ class FavoriteStoreController extends Controller
 
 
 
-//        $FavoriteProductModel=FavoriteProduct::query()->where('customer_id', auth::id())->get();
-//        return response()->json(  $FavoriteProductModel,200);
-
-        //    $ProductModel=Product::query()->where('id', $FavoriteProductModel->product_id)->get();
-        // return response()->json(  $FavoriteProductModel,200);
-
-        //   return response()->json(  Product::with('favourits')->where('id', '2')->get());
-
-
     }
 
     //اضافه لمفضله المتاجر//

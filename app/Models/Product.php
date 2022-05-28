@@ -68,7 +68,6 @@ class Product extends Model
 
     public function favorite_products()
     {
-       // return $this->belongsToMany(Customer::class , 'customer_product','product_id','customer_id',) ;
         return $this->belongsToMany(Customer::class , 'favorite_products','product_id','customer_id',) ;
     }
 

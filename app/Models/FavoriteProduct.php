@@ -9,7 +9,6 @@ class FavoriteProduct extends Model
 {
     use HasFactory;
 
-   // public $table = "customer_product";
 
     protected $fillable = [
         'id',
