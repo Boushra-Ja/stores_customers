@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    //customer_product
     public function up()
     {
         Schema::create('favorite_products', function (Blueprint $table) {

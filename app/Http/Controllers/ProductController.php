@@ -14,6 +14,81 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends BaseController
 {
 
+    //الاقل سعرا//
+    public function Product_Order_Salary()
+    {
+        $ProductModel = Product::orderBy('cost_price', 'asc')->paginate(2);
+        return response()->json($ProductModel, 200);
+
+        //http://127.0.0.1:8000/api/product/Display?page=2
+    }
+
+    //الاكثر شيوعا//
+    public function Product_Order_sales()
+    {
+        $ProductModel = Product::orderBy('number_of_sales', 'desc')->paginate(2);
+        return response()->json($ProductModel, 200);
+    }
+
+//العروض والحسومات//
+    public function Product_Order_discount()
+    {
+        $favorite = DB::table('products')
+            ->join('discount_products', function ($join) {
+                $join->on('discount_products.id', '=', 'products.discount_products_id')
+                    ->where('discount_products.title', '=', 'null');
+            })
+            ->get();
+        //->paginate(2);
+        return response([
+            $favorite
+        ]);
+    }
+
+    //اقتراحات قد تعجبك//
+    public function Product_Order_favorite()
+    {
+
+        $pro = DB::table('secondray_classification_products')->select('*')
+            ->join('favorite_products', 'favorite_products.product_id', '=', 'classification_products.product_id')
+            ->get();
+
+
+        $re = array();
+        $i = 0;
+        foreach ($pro as $val) {
+
+            $prooo = DB::table('secondray_classification_products')
+                ->join('products', 'products.id', '=', 'classification_products.product_id')
+                ->where('secondray_classification_products.secondary_id', '=', $val->secondary_id)->get();
+
+
+            $re[$i] = $prooo;
+            $i++;
+        }
+
+        return response($re, 200);
+
+
+    }
+
+//كل النتجات//
+    public function Product_All()
+    {
+        $ProductModel = Product::query()->get();
+        return response()->json($ProductModel, 200);
+    }
+
+    //تفاصيل منتج واحد//
+    public function Show_Detalis($id)
+    {
+        $ProductModel = Product::query()->where('id', $id)->get();
+        return response()->json($ProductModel, 200);
+    }
+
+
+
+
     public function index()
     {
         $ProductModel = Product::all();

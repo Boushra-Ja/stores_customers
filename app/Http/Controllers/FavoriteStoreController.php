@@ -5,82 +5,93 @@ namespace App\Http\Controllers;
 use App\Models\FavoriteStore;
 use App\Http\Requests\StoreFavoriteStoreRequest;
 use App\Http\Requests\UpdateFavoriteStoreRequest;
+use App\Models\Store;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FavoriteStoreController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    //عرض مفضله المتاجر للزبون//
+    public function Show_Favorite()
     {
-        //
+
+
+        $favorite=DB::table('stores')
+            ->join('favorite_stores', function ($join) {
+                $join->on('stores.id', '=', 'favorite_stores.store_id')
+                    ->where('favorite_stores.customer_id', '=', Auth::id());
+            })
+            ->get();
+        return response([
+            "Data"=>$favorite
+        ]);
+
+
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    //اضافه لمفضله المتاجر//
+    public function Add_Favorite($id)
     {
-        //
+        $store=Store::find($id);
+        $customer=auth :: id();
+        $response = $store-> favourits() ->attach($customer);
+        return response()->json($response,200);
+
+
+
+//        $favorite=FavoriteStore::where([
+//            'store_id'=> $id,
+//            'customer_id'=>Auth::id()
+//        ])->first();
+//        if(!is_null($favorite)){
+//            $favorite->delete();
+//            return response()->json([
+//                "message"=>"delete  favorite"
+//            ]);
+//        }
+//        else
+//        {
+//            FavoriteStore::create([
+//                'store_id'=>Auth::id(),
+//                'product_id'=>$id
+//            ]);
+//
+//            return response()->json([
+//                "message"=>"add to favorite"
+//            ]);
+//
+//        }
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFavoriteStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreFavoriteStoreRequest $request)
+
+    //حدف مننج من مفضله المتاجر//
+    public function Delete_Favorite($id)
     {
-        //
+        $FavoriteStoreModel = FavoriteStore::findOrFail($id);
+        $FavoriteStoreModel -> delete();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\FavoriteStore  $favoriteStore
-     * @return \Illuminate\Http\Response
-     */
-    public function show(FavoriteStore $favoriteStore)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\FavoriteStore  $favoriteStore
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(FavoriteStore $favoriteStore)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateFavoriteStoreRequest  $request
-     * @param  \App\Models\FavoriteStore  $favoriteStore
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateFavoriteStoreRequest $request, FavoriteStore $favoriteStore)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\FavoriteStore  $favoriteStore
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(FavoriteStore $favoriteStore)
-    {
-        //
-    }
+//    public function Show_Favorite()
+//    {
+//
+//        $FavoriteStoreModel=FavoriteStore::query()->where('customer_id', auth::id())->get();
+//        return response()->json(  $FavoriteStoreModel,200);
+//
+//
+//    }
+
+
+
+
+
+
+
+
+
 }

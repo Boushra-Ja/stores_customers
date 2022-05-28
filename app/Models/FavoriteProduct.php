@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class FavoriteProduct extends Model
 {
     use HasFactory;
+
+
+    protected $fillable = [
+        'id',
+        'customer_id',
+        'product_id'
+
+    ];
+
+
+
+
+
+
 }
