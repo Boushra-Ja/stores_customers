@@ -3,10 +3,9 @@
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatuseController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RatingOrderController;
+use App\Http\Controllers\ProductRatingController;
 use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\StoreController;
-use App\Models\OrderStatus;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,21 +19,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
+//////////////////Boushra//////////////////////////////
 ////Route Of Stores
 Route::resource('stores' , StoreController :: class) ;
 Route::get('stores/order/reviews' , [StoreController::class , 'order_by_review']) ;
 Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
 
 
-
+////Routes for products
+Route::resource('products' , ProductController::class);
+Route::get('similar_products/{id}' , [ProductController::class , 'similar_products']);
 
 
 /////Routes for rating products
-Route::resource('rating_product' , RatingOrderController::class);
+Route::resource('rating_product' , ProductRatingController::class)->except('show' , 'edit' , 'destroy' ,'update');
+
+/////Routes for rating products
+Route::resource('rating_store' , RatingStoreController::class)->except('show' , 'edit' , 'destroy' ,'update');
+
 
 
 /////Routes for Orders
@@ -44,6 +46,7 @@ Route::resource('orders' , OrderController::class);
 ////Routes for order
 Route::resource('order_status', OrderStatuseController::class);
 //Route::resource('accept_orders' , [OrderController::class , 'acceptence_orders']);
+
 
 ////////////////////////bayan //////////////////////////////////
 

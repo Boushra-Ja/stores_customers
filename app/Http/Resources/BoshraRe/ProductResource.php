@@ -3,7 +3,9 @@
 namespace App\Http\Resources\BoshraRe;
 
 use App\Models\Collection;
+use App\Models\Product;
 use App\Models\RatingOrder;
+use App\Models\SecondrayClassificationProduct;
 use App\Models\Store;
 use Illuminate\Http\Resources\Json\JsonResource;
 

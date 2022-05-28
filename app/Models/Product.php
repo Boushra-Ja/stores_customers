@@ -74,4 +74,10 @@ class Product extends Model
     {
         return $this->belongsToMany(SecondrayClassification::class,'secondray_classification_products','product_id','secondary_id','id','id') ;
     }
+
+    public function rating()
+    {
+        return $this->belongsToMany(Customer::class , 'product_ratings') ;
+    }
+
 }

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\RatingOrder;
+use App\Models\ProductRating;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RatingOrderPolicy
+class ProductRatingPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class RatingOrderPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\RatingOrder  $ratingOrder
+     * @param  \App\Models\ProductRating  $productRating
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, RatingOrder $ratingOrder)
+    public function view(User $user, ProductRating $productRating)
     {
         //
     }
@@ -48,10 +48,10 @@ class RatingOrderPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\RatingOrder  $ratingOrder
+     * @param  \App\Models\ProductRating  $productRating
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, RatingOrder $ratingOrder)
+    public function update(User $user, ProductRating $productRating)
     {
         //
     }
@@ -60,10 +60,10 @@ class RatingOrderPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\RatingOrder  $ratingOrder
+     * @param  \App\Models\ProductRating  $productRating
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, RatingOrder $ratingOrder)
+    public function delete(User $user, ProductRating $productRating)
     {
         //
     }
@@ -72,10 +72,10 @@ class RatingOrderPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\RatingOrder  $ratingOrder
+     * @param  \App\Models\ProductRating  $productRating
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, RatingOrder $ratingOrder)
+    public function restore(User $user, ProductRating $productRating)
     {
         //
     }
@@ -84,10 +84,10 @@ class RatingOrderPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\RatingOrder  $ratingOrder
+     * @param  \App\Models\ProductRating  $productRating
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, RatingOrder $ratingOrder)
+    public function forceDelete(User $user, ProductRating $productRating)
     {
         //
     }
