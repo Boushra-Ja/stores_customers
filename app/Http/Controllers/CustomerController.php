@@ -21,7 +21,7 @@ class CustomerController extends Controller
         Mail::send('mail', $data, function ($message) use ($title, $email) {
             $message->to($email, 'متجر جديد')->subject
             ($title);
-            $message->from('faizzoubi10@gmail.com', 'مشروعي');
+            $message->from('aseel.2016.batoul@gmail.com', 'مشروعي');
         });
         echo "HTML Email Sent. Check your inbox.";
     }
@@ -89,7 +89,7 @@ class CustomerController extends Controller
 
         $token = $persone->createToken ('ProductsTolken')->plainTextToken;
         return response ()->json([
-            'persone_id' => $persone,
+            'user' => $persone,
             'token'=>$token,
         ]);
 
@@ -114,7 +114,7 @@ class CustomerController extends Controller
         else {
             $token = $person->createToken ('ProductsTolken')->plainTextToken ;
             return  response ()->json([
-                'persone_id' => $person,
+                'user' => $person,
                 'token'=>$token,
             ]);
         }

@@ -8,24 +8,27 @@ use Illuminate\Support\Facades\DB;
 
 class FavoriteProductController extends Controller
 {
-     //عرض مفضله المنتجات للزبون//
+    //عرض مفضله المنتجات للزبون//
     public function Show_Favorite()
     {
-
-
-        $favorite=DB::table('products')
-            ->join('favorite_products', function ($join) {
-                $join->on('products.id', '=', 'favorite_products.product_id')
-                    ->where('favorite_products.customer_id', '=', Auth::id());
-            })
+//dd("kkk");
+//product_ratings
+        $favorite=   DB::table('products')->select('*')
+            ->join('favorite_products', 'favorite_products.product_id', '=', 'products.id')
+            ->join('rating_products', 'rating_products.product_id', '=', 'products.id')
             ->get();
-        return response([
-            "Data"=>$favorite
-        ]);
+        /* DB::table('products')
+         ->join('favorite_products', function ($join) {
+             $join->on('products.id', '=', 'favorite_products.product_id')
+                 ->where('favorite_products.customer_id', '=', 1);
+         })
+         ->get();*/
+        return response(
+            $favorite
+        );
 
     }
-
-   //اضافه لمفضله المنتجات//
+    //اضافه لمفضله المنتجات//
     public function Add_Favorite($id)
     {
 //        $product=Product::find($id);
@@ -33,27 +36,28 @@ class FavoriteProductController extends Controller
 //        $response = $product-> favorite_products() ->attach($customer);
 //        return response()->json($response,200);
 
-
+ $v="delete_favorite";
+ $c="add_to_favorite";
         $favorite=FavoriteProduct::where([
             'product_id'=> $id,
-            'customer_id'=>Auth::id()
+            'customer_id'=>1
         ])->first();
         if(!is_null($favorite)){
             $favorite->delete();
-            return response()->json([
-                "message"=>"delete  favorite"
-            ]);
+            return $v
+
+            ;
         }
         else
         {
             FavoriteProduct::create([
-                'customer_id'=>Auth::id(),
+                'customer_id'=>1,
                 'product_id'=>$id
             ]);
 
-            return response()->json([
-                "message"=>"add to favorite"
-            ]);
+            return
+                $c
+            ;
 
         }
 
@@ -66,6 +70,7 @@ class FavoriteProductController extends Controller
         $FavoriteProductModel = FavoriteProduct::findOrFail($id);
         $FavoriteProductModel -> delete();
     }
+
 
 
 }
