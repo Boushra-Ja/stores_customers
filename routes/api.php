@@ -1,7 +1,14 @@
 <?php
 
+use App\Http\Controllers\OptioinValueController;
+use App\Http\Controllers\OptionTypeController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatuseController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductRatingController;
+use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\StoreController;
-
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,19 +22,48 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
+//////////////////Boushra//////////////////////////////
 ////Route Of Stores
 Route::resource('stores' , StoreController :: class) ;
 Route::get('stores/order/reviews' , [StoreController::class , 'order_by_review']) ;
 Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
 
 
+////Routes for products
+Route::resource('products' , ProductController::class);
+Route::get('similar_products/{id}' , [ProductController::class , 'similar_products']);
+
+
+/////Routes for rating products
+Route::resource('rating_product' , ProductRatingController::class)->except('show' , 'edit' , 'destroy' ,'update');
+
+/////Routes for rating stors
+Route::resource('rating_store' , RatingStoreController::class)->except('show' , 'edit' , 'destroy' ,'update');
 
 
 
+/////Routes for Orders
+Route::resource('orders' , OrderController::class);
+
+
+////Routes for order
+Route::resource('order_status', OrderStatuseController::class);
+//Route::resource('accept_orders' , [OrderController::class , 'acceptence_orders']);
+
+/////////Option_product
+Route::get('option_for_product/{id}' , [OptionTypeController::class , 'option_product']);
+Route::get('values_for_option/{id}' , [OptioinValueController::class , 'options_type_with_value']);
+Route::post('temp' , [ProductController::class , 'temp']) ;
+////////////////////////bayan //////////////////////////////////
+
+//    "name":"bayan",
+//    "image":"jjjjjjjjjjjjjjjj",
+//    "discription":"jjjjjjj",
+//    "facebook":"iuhbbj",
+//       "delivery_area":"dfdsfds",
+//    "mobile":"8687676767"
+Route::post('store/create' , [App\Http\Controllers\StoreController::class , 'store']) ;
+//"store":"2",
 //Route::post('store/create' , [App\Http\Controllers\StoreController::class , 'store']) ;
 Route::post('store/update' , [App\Http\Controllers\StoreController::class , 'update']) ;
 Route::post(  'store/register', [App\Http\Controllers\StoreManagerController::class, 'register']);
@@ -62,7 +98,6 @@ Route::group(['middleware' => ['auth:sanctum']],
         Route::get('/Product/Show_Classification' , [App\Http\Controllers\ClassificationController::class , 'Show_Classification']);
         Route::get('/Product/Show_Secondray' , [App\Http\Controllers\SecondrayClassificationController::class , 'Show_Secondray']);
         Route::post('/SecondrayClassification/ShowClassification/{id}/{title}' , [App\Http\Controllers\SecondrayClassificationController::class , 'shwoo']);
-        Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Add_Favorite']);
         Route::get('/FavoriteProduct/Show_Favorite' , [App\Http\Controllers\FavoriteProductController::class , 'Show_Favorite']);
         Route::delete('/FavoriteProduct/Delete_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Delete_Favorite']);
         Route::post('/FavoriteStore/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Add_Favorite']);
@@ -71,3 +106,5 @@ Route::group(['middleware' => ['auth:sanctum']],
 
 
         ;});
+        Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Add_Favorite']);
+
