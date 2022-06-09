@@ -3,64 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
-use App\Models\FavoriteProduct;
 use App\Models\Product;
-use GuzzleHttp;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\BoshraRe\ProductResource;
-use App\Models\SecondrayClassificationProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use function MongoDB\BSON\fromJSON;
-use function MongoDB\BSON\toJSON;
 
 class ProductController extends BaseController
 {
 
     //الاقل سعرا//
-    public function Product_Order_Salary()/////
+    public function Product_Order_Salary()
     {
-        $ProductModel = Product::query()->
-        //where('cost_price', '<', 50)->get();
-         orderBy('cost_price', 'asc')->get();
-       // paginate(3);
+        $ProductModel = Product::orderBy('cost_price', 'asc')->paginate(2);
         return response()->json($ProductModel, 200);
 
         //http://127.0.0.1:8000/api/product/Display?page=2
     }
 
     //الاكثر شيوعا//
-    public function Product_Order_sales()////////
+    public function Product_Order_sales()
     {
-        $ProductModel = Product:: query() ->
-        //where('number_of_sales', '>', 40)->get();
-           orderBy('number_of_sales', 'desc')->get();
-        //  paginate(3);
+        $ProductModel = Product::orderBy('number_of_sales', 'desc')->paginate(2);
         return response()->json($ProductModel, 200);
     }
 
 //العروض والحسومات//
     public function Product_Order_discount()
     {
-        $discount = DB::table('discount_products')
-            ->join('products', function ($join) {
+        $favorite = DB::table('products')
+            ->join('discount_products', function ($join) {
                 $join->on('discount_products.id', '=', 'products.discount_products_id')
                     ->where('discount_products.title', '=', 'null');
             })
             ->get();
         //->paginate(2);
-        return response()->json($discount,200);
+        return response([
+            $favorite
+        ]);
     }
 
     //اقتراحات قد تعجبك//
     public function Product_Order_favorite()
     {
 
-
         $pro = DB::table('secondray_classification_products')->select('*')
-            ->join('favorite_products', 'favorite_products.product_id',
-                '=', 'secondray_classification_products.product_id')
+            ->join('favorite_products', 'favorite_products.product_id', '=', 'classification_products.product_id')
             ->get();
 
 
@@ -69,23 +58,16 @@ class ProductController extends BaseController
         foreach ($pro as $val) {
 
             $prooo = DB::table('secondray_classification_products')
-                ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
+                ->join('products', 'products.id', '=', 'classification_products.product_id')
                 ->where('secondray_classification_products.secondary_id', '=', $val->secondary_id)->get();
-         //   $re[$i] =   $prooo;
 
 
-        }
-        foreach ($prooo as $value)
-        {
-
-            $re[$i] = $value;
+            $re[$i] = $prooo;
             $i++;
-           // echo "________________________________________________________";
-
         }
 
+        return response($re, 200);
 
-        return response()->json($re,200);
 
     }
 
@@ -93,11 +75,6 @@ class ProductController extends BaseController
     public function Product_All()
     {
         $ProductModel = Product::query()->get();
-        return response()->json($ProductModel, 200);
-    }
-    public function Product_Allf()
-    {
-        $ProductModel = FavoriteProduct::query()->get();
         return response()->json($ProductModel, 200);
     }
 
@@ -113,7 +90,7 @@ class ProductController extends BaseController
 
     public function index()
     {
-        $ProductModel = Product::all();
+        $ProductModel = Product::query()->get();
         return response()->json($ProductModel, 200);
     }
 
@@ -128,72 +105,39 @@ class ProductController extends BaseController
         }
     }
 
-    //////عرض منتجات مشابهة
-    public function similar_products($id)
-    {
-        $my_classification = SecondrayClassificationProduct::where('product_id' , $id)->value('secondary_id') ;
-
-        $products_class_ids = DB::table('secondray_classification_products')->where('secondary_id' , $my_classification)->where('product_id' , '!='  , $id)
-            ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
-            ->get();
-
-        return $this->sendResponse($products_class_ids , "success");
-
-    }
-
     public function store(Request $request)
     {
 
         $request->validate([
             'name' => 'required',
-            'party' => 'nullable',
-            'discription'  => 'required',
+            'discription' => 'nullable',
             'image' => 'required',
             'selling_price' => 'required',
             'cost_price' => 'required',
             'collection_id' => 'required',
             'return_or_replace' => 'required',
-            'discount_products_id' => 'required',
+            'discount_products_id' => 'nullable',
             'prepration_time' => 'required',
-            'gift'=> 'required',
-            'number_of_sales' => 'required',
-            'age' => 'required',
+            'gift' => 'nullable',
+            'number_of_sales' => 'nullable',
+
+            'party' => 'nullable',
+            'age' => 'nullable',
         ]);
-        $product = new Product();
-        $product->name =$request->name;
-        $product->discription = $request->discription;
-        $product->age =$request->age;
-        $product->gift = $request->gift;
-        $product->prepration_time = $request->prepration_time;
-        $product->discount_products_id = $request->discount_products_id;
-        $product->return_or_replace = $request->return_or_replace;
-        $product->collection_id = $request->collection_id;
-        $product->number_of_sales = $request->number_of_sales;
-        $product->cost_price =$request->cost_price;
-        $product->selling_price =$request->selling_price;
-        if($request->hasfile('image'))
-        {
-            $file = $request->file('image');
-            $extention = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extention;
-            $file->move('uploads/product/', $filename);
-            $product->image =$filename;
 
-        }
-        else
-            $product->image ='';
-        $product->save();
 
+        $input = $request->all();
+        $product = Product::create($input);
 
         if ($product) {
-//            foreach ($request->classification as $value) {
-//                SecondrayClassificationProductController::store($product->id, $value);
-//            }
-//            foreach ($request->type as $vv) {
-//
-//                OptionTypeController::store($vv, $product->id, 0);
-//
-//            }
+            foreach ($request->classification as $value) {
+                SecondrayClassificationProductController::store($product->id, $value);
+            }
+            foreach ($request->type as $vv) {
+
+                OptionTypeController::store($vv, $product->id, 0);
+
+            }
             return $this->sendResponse($product, 'Store Shop successfully');
 
         } else {
