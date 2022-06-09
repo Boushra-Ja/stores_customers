@@ -70,12 +70,15 @@ class StoreController extends BaseController
     }
 
     ////عرض متجر محدد
-    public function show(Store $store)
-    {
-        $store = Store::find($store);
-        return $this->sendResponse($store, 'تم ارجاع ملف المتجر بنجاح');
+   public function show($id){
+    $data = Store::where('id' , $id)->get();
+    if ($data) {
+        return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
+    } else {
+        return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show product info']);
 
     }
+}
 
     ////////تعديل بيانات المتجر
     public function update(Request $request)

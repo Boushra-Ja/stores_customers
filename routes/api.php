@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\OptioinValueController;
+use App\Http\Controllers\OptionTypeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatuseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductRatingController;
 use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\StoreController;
-
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,7 +50,10 @@ Route::resource('orders' , OrderController::class);
 Route::resource('order_status', OrderStatuseController::class);
 //Route::resource('accept_orders' , [OrderController::class , 'acceptence_orders']);
 
-
+/////////Option_product
+Route::get('option_for_product/{id}' , [OptionTypeController::class , 'option_product']);
+Route::get('values_for_option/{id}' , [OptioinValueController::class , 'options_type_with_value']);
+Route::post('temp' , [ProductController::class , 'temp']) ;
 ////////////////////////bayan //////////////////////////////////
 
 //    "name":"bayan",
@@ -93,7 +98,6 @@ Route::group(['middleware' => ['auth:sanctum']],
         Route::get('/Product/Show_Classification' , [App\Http\Controllers\ClassificationController::class , 'Show_Classification']);
         Route::get('/Product/Show_Secondray' , [App\Http\Controllers\SecondrayClassificationController::class , 'Show_Secondray']);
         Route::post('/SecondrayClassification/ShowClassification/{id}/{title}' , [App\Http\Controllers\SecondrayClassificationController::class , 'shwoo']);
-        Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Add_Favorite']);
         Route::get('/FavoriteProduct/Show_Favorite' , [App\Http\Controllers\FavoriteProductController::class , 'Show_Favorite']);
         Route::delete('/FavoriteProduct/Delete_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Delete_Favorite']);
         Route::post('/FavoriteStore/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Add_Favorite']);
@@ -102,3 +106,5 @@ Route::group(['middleware' => ['auth:sanctum']],
 
 
         ;});
+        Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Add_Favorite']);
+

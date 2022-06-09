@@ -12,7 +12,7 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'prepration_time',
+       // 'prepration_time',
         'party',
         'discription',
         'image',
@@ -23,6 +23,7 @@ class Product extends Model
         'return_or_replace',
         'discount_products_id',
         'collection_id',
+        'gift'
 
     ];
 
