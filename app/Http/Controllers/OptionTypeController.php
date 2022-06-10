@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 
 class OptionTypeController extends Controller
 {
+    // اضافة خيار اضافي
+    public function stor1(Request $request){
+        foreach ($request->type as $vv) {
+
+            OptionTypeController::store($vv, 3, 0);
+
+        }
+
+    }
 
     public static function store($type, int $product_id, int $i)
     {
@@ -30,6 +39,7 @@ class OptionTypeController extends Controller
 
     }
 
+    //  تعديل الخيارات الاضافية
     public static function update($type, int $product_id)
     {
 

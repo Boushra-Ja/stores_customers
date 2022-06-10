@@ -12,7 +12,7 @@ class ClassificationController extends BaseController
 {
 
 
-
+    //عرض التصنيفات
     public function Show_Classification()
     {
         $ClassificationModel=Classification::query()->get();
@@ -20,6 +20,8 @@ class ClassificationController extends BaseController
 
 
     }
+
+    // اضافة تصنيف
     public Static function store(Request $request)
     {
 
@@ -36,6 +38,8 @@ class ClassificationController extends BaseController
             }
         }
     }
+
+
 
 
 

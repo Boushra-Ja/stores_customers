@@ -23,6 +23,7 @@ class Product extends Model
         'return_or_replace',
         'discount_products_id',
         'collection_id',
+        'gift'
 
     ];
 

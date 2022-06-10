@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('waiting_stores', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_manager_id')->unsigned();
-            $table->foreign('store_manager_id')->references('id')->on('store_managers')->onDelete('cascade');
+            $table->integer('store_id')->unsigned();
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->timestamps();
         });
     }

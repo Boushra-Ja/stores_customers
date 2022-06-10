@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Models\Collection;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -29,7 +30,7 @@ class ProductController extends BaseController
         return response()->json($ProductModel, 200);
     }
 
-//العروض والحسومات//
+   //العروض والحسومات//
     public function Product_Order_discount()
     {
         $favorite = DB::table('products')
@@ -75,23 +76,19 @@ class ProductController extends BaseController
     public function Product_All()
     {
         $ProductModel = Product::query()->get();
+
+
+
         return response()->json($ProductModel, 200);
     }
 
     //تفاصيل منتج واحد//
-    public function Show_Detalis($id)
+    public Static function Show_Detalis($id)
     {
         $ProductModel = Product::query()->where('id', $id)->get();
-        return response()->json($ProductModel, 200);
-    }
+        return $ProductModel;
 
 
-
-
-    public function index()
-    {
-        $ProductModel = Product::query()->get();
-        return response()->json($ProductModel, 200);
     }
 
     ////عرض منتج محدد
@@ -105,6 +102,7 @@ class ProductController extends BaseController
         }
     }
 
+    // اضافة منتج
     public function store(Request $request)
     {
 
@@ -125,6 +123,19 @@ class ProductController extends BaseController
             'age' => 'nullable',
         ]);
 
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extention;
+            $file->move('uploads/books/', $filename);
+            $request->image = $filename;
+
+        } else
+            $request->image = '';
+
+
+//        $i=CollectionController::getCollectionId($request->collection_name);
+//        $request->collection_id=$i;
 
         $input = $request->all();
         $product = Product::create($input);
@@ -133,11 +144,11 @@ class ProductController extends BaseController
             foreach ($request->classification as $value) {
                 SecondrayClassificationProductController::store($product->id, $value);
             }
-            foreach ($request->type as $vv) {
-
-                OptionTypeController::store($vv, $product->id, 0);
-
-            }
+//            foreach ($request->type as $vv) {
+//
+//                OptionTypeController::store($vv, $product->id, 0);
+//
+//            }
             return $this->sendResponse($product, 'Store Shop successfully');
 
         } else {
@@ -147,6 +158,7 @@ class ProductController extends BaseController
 
     }
 
+    // تعديل منتج
     public function update(Request $request)
     {
         $product = Product::find($request->product);
@@ -171,10 +183,13 @@ class ProductController extends BaseController
         return $this->sendResponse($product, 'تم تعديل المجموعة بنجاح');
     }
 
+    //حذف منتج
     public function delete(Request $request){
         $product = Product::find($request->product)->delete();
 
     }
+
+
 
 
 

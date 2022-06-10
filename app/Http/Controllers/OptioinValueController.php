@@ -11,9 +11,10 @@ class OptioinValueController extends Controller
     public Static function store( $value,int $option_type_id)
     {
         OptioinValue::create([
-            'value' => $value,
+            'value' => $value->name,
             'option_type_id' => $option_type_id
         ]);
 
     }
+
 }
