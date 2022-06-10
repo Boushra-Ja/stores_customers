@@ -183,6 +183,9 @@ class ProductController extends BaseController
 
     }
 
+
+
+    // اضافة منتج
     public function store(Request $request)
     {
 
@@ -203,6 +206,19 @@ class ProductController extends BaseController
             'age' => 'nullable',
         ]);
 
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extention;
+            $file->move('uploads/books/', $filename);
+            $request->image = $filename;
+
+        } else
+            $request->image = '';
+
+
+//        $i=CollectionController::getCollectionId($request->collection_name);
+//        $request->collection_id=$i;
 
         $input = $request->all();
         $product = Product::create($input);
@@ -211,11 +227,11 @@ class ProductController extends BaseController
             foreach ($request->classification as $value) {
                 SecondrayClassificationProductController::store($product->id, $value);
             }
-            foreach ($request->type as $vv) {
-
-                OptionTypeController::store($vv, $product->id, 0);
-
-            }
+//            foreach ($request->type as $vv) {
+//
+//                OptionTypeController::store($vv, $product->id, 0);
+//
+//            }
             return $this->sendResponse($product, 'Store Shop successfully');
 
         } else {
@@ -225,6 +241,7 @@ class ProductController extends BaseController
 
     }
 
+    // تعديل منتج
     public function update(Request $request)
     {
         $product = Product::find($request->product);
@@ -249,11 +266,11 @@ class ProductController extends BaseController
         return $this->sendResponse($product, 'تم تعديل المجموعة بنجاح');
     }
 
+    //حذف منتج
     public function delete(Request $request){
         $product = Product::find($request->product)->delete();
 
     }
-
 
 
 }

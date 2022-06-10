@@ -52,15 +52,38 @@ class StoreController extends BaseController
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'discription' => ['required', 'string'],
-            'delivery_area'=>['required', 'string'],
+            'delivery_area' => ['required', 'string'],
             'image',
+            'Brand',
             'facebook',
             'mobile',
         ]);
+
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extention;
+            $file->move('uploads/books/', $filename);
+            $request->image = $filename;
+
+        } else
+            $request->image = '';
+
+        if ($request->hasfile('Brand')) {
+            $file1 = $request->file('Brand');
+            $extention1 = $file1->getClientOriginalExtension();
+            $filename1 = time() . '.' . $extention1;
+            $file1->move('uploads/books/', $filename1);
+            $request->Brand = $filename1;
+
+        } else
+            $request->Brand = '';
+
         $input = $request->all();
         $shop = Store::create($input);
 
         if ($shop) {
+            WaitingStoreController::store($shop->id);
             return $this->sendResponse($shop, 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
@@ -70,15 +93,12 @@ class StoreController extends BaseController
     }
 
     ////عرض متجر محدد
-   public function show($id){
-    $data = Store::where('id' , $id)->get();
-    if ($data) {
-        return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
-    } else {
-        return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show product info']);
+    public function show($id)
+    {
+        $store = Store::find($id);
+        return $this->sendResponse($store, 'تم ارجاع ملف المتجر بنجاح');
 
     }
-}
 
     ////////تعديل بيانات المتجر
     public function update(Request $request)
