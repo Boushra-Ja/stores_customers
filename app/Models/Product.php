@@ -11,12 +11,14 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
-        'prepration_time',
+       // 'prepration_time',
         'party',
         'discription',
         'image',
         'age',
+        'gift',
         'selling_price',
         'cost_price',
         'number_of_sales',
@@ -76,4 +78,10 @@ class Product extends Model
     {
         return $this->belongsToMany(SecondrayClassification::class,'secondray_classification_products','product_id','secondary_id','id','id') ;
     }
+
+    public function rating()
+    {
+        return $this->belongsToMany(Customer::class , 'product_ratings') ;
+    }
+
 }

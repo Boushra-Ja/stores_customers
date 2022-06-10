@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
     public function up()
     {
-        Schema::create('rating_products', function (Blueprint $table) {
+        Schema::create('product_ratings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
@@ -21,11 +22,8 @@ return new class extends Migration
     }
 
 
-
     public function down()
     {
-        Schema::dropIfExists('rating_products');
-
-
+        Schema::dropIfExists('product_ratings');
     }
 };

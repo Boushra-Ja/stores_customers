@@ -13,7 +13,16 @@ class SecondrayClassificationController extends Controller
     {
 
 
-       return response()->json(Classification::with('secondary_classifications')->get());
+        return response()->json(Classification::with('secondary_classifications')->get());
+
+    }
+
+    public function Show_p()
+    {
+
+        $classificationModel = Classification::query()->get();
+
+        return response()->json($classificationModel, 200);
 
     }
 
@@ -108,5 +117,25 @@ class SecondrayClassificationController extends Controller
 
 
 
+    public function ShowClassification2($id)
+    {
 
-}
+        // $SecondrayModel = SecondrayClassification::query()->get()->pluck('id');
+        $pro = DB::table('classifications')
+            ->join('secondray_classifications', function ($join) use ($id)   {
+
+                $join->on('classifications.id', '=', 'secondray_classifications.classification_id')
+
+                    ->where('secondray_classifications.classification_id', '=',  $id);
+            })
+            ->get();
+        return response($pro, 200);
+
+
+
+        // return SecondrayClassification::with('classification')->Select('secondray_classifications.title','classifications.title')->get();
+
+
+
+
+    }}

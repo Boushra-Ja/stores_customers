@@ -20,12 +20,12 @@ class FavoriteStoreController extends Controller
         $favorite=DB::table('stores')
             ->join('favorite_stores', function ($join) {
                 $join->on('stores.id', '=', 'favorite_stores.store_id')
-                    ->where('favorite_stores.customer_id', '=', Auth::id());
+                    ->where('favorite_stores.customer_id', '=', 1);
             })
             ->get();
-        return response([
-            "Data"=>$favorite
-        ]);
+        return response(
+            $favorite
+        );
 
 
 
@@ -34,6 +34,7 @@ class FavoriteStoreController extends Controller
     //اضافه لمفضله المتاجر//
     public function Add_Favorite($id)
     {
+
         $store=Store::find($id);
         $customer=auth :: id();
         $response = $store-> favourits() ->attach($customer);
