@@ -55,5 +55,8 @@ class Store extends Model
         return $this->hasMany(Discount::class , 'store_id');
     }
 
-
+    public function orders_customers()
+    {
+        return $this->belongsToMany(Customer::class) ;
+    }
 }

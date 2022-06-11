@@ -20,10 +20,6 @@ class Customer extends Model
         return $this->belongsTo(Persone::class  , 'persone_id') ;
     }
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class , 'customer_id');
-    }
 
     public function favourit_products()
     {
@@ -53,6 +49,12 @@ class Customer extends Model
     public function rating_products()
     {
         return $this->belongsToMany(Product::class) ;
+    }
+
+
+  public function orders()
+    {
+        return $this->belongsToMany(Store::class,'orders') ;
     }
 
 }

@@ -12,24 +12,15 @@ class Order extends Model
         'id',
         'delivery_time',
         'delivery_price',
-        'status_id',
+        'store_id',
         'customer_id'
     ];
-
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'customer_id');
-    }
-
-    public function status()
-    {
-        return $this->belongsTo(OrderStatus::class, 'status_id');
-    }
 
 
     public function order_products()
     {
         return $this->belongsToMany(Product::class,'order_products') ;
     }
+
 }
 

@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductOption extends Model
 {
+
+    protected $fillable = [
+        'order_product_id',
+        'option_values_id'];
+
     use HasFactory;
 }

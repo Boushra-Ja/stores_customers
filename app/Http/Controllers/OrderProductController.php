@@ -2,113 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Http\Requests\StoreOrderProductRequest;
 use App\Http\Requests\UpdateOrderProductRequest;
 use App\Models\OrderStatus;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class OrderProductController extends Controller
+class OrderProductController extends BaseController
 {
 
-    public function index()
+
+    ////////التأكد أن الطلب في السلة
+    public function check_of_order($product_id, $order_id)
     {
-
-    }
-
-
-    public function create()
-    {
-        //
-    }
-
-
-    public function store(Request $request)
-    {
-
-
-      $request->validate([
-            'product_id'=> ['required'],
-            'status_id'=> ['required'] ,
-            'delivery_time'=>['required'],
-            'delivery_price'=> ['required'],
-
-        ]);
-
-        $order = Order::create([
-            'status_id'=>$request->status_id,
-            'customer_id' => auth::id(),
-            'delivery_time'=> $request->delivery_time,
-            'delivery_price'=> $request->delivery_price,
-
-        ]);
-
-
-        $order->save();
-
-        $orderProduct =OrderProduct::create([
-        'order_id'=>$order->id,
-         'product_id'=>$request->product_id,
-
-
-
-        ]);
-        $orderProduct->save();
-
-        if ($orderProduct) {
-            return $this->sendResponse($orderProduct, 'Store order successfully');
-        } else {
-            return $this->sendErrors('failed in Store order', ['error' => 'not Store order']);
-
+        $data = OrderProduct::where('product_id', $product_id)->where('order_id', $order_id)->where('status_id', OrderStatus::where('status', 'في السلة')->value('id'))->first();
+        if ($data) {
+            return  1;
         }
-
-
+        return 0;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\OrderProduct  $orderProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OrderProduct $orderProduct)
+
+
+    //////اضافة المنتج الى السلة
+    public function store(StoreOrderProductRequest $request)
     {
-        //
+
+        $orderProduct = OrderProduct::Create([
+            'product_id' => $request->product_id,
+            'status_id' => OrderStatus::where('status', 'في السلة')->value('id'),
+            'order_id' => $request->order_id,
+        ]);
+
+        $arr = [$orderProduct];
+
+        if ($arr) {
+            return $this->sendResponse($arr, "success");
+        }
+        return $this->sendErrors([], "error");
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\OrderProduct  $orderProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OrderProduct $orderProduct)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateOrderProductRequest  $request
-     * @param  \App\Models\OrderProduct  $orderProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateOrderProductRequest $request, OrderProduct $orderProduct)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\OrderProduct  $orderProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(OrderProduct $orderProduct)
+    //////حذف المنتج من السلة
+    public function destroy($orderProduct)
     {
-        //
+        $res = OrderProduct::where('id', $orderProduct)->delete();
+        if ($res)
+            return $this->sendResponse($res, "success");
+        else
+            return $this->sendErrors([], "failed");
     }
 }

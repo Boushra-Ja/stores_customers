@@ -18,7 +18,10 @@ class ProductController extends BaseController
     //الاقل سعرا//
     public function Product_Order_Salary()
     {
-        $ProductModel = Product::orderBy('cost_price', 'asc')->paginate(2);
+        $ProductModel = Product::orderBy('cost_price', 'asc')->get() ;
+
+
+        //->paginate(2);
         return response()->json($ProductModel, 200);
 
         //http://127.0.0.1:8000/api/product/Display?page=2
@@ -27,7 +30,7 @@ class ProductController extends BaseController
     //الاكثر شيوعا//
     public function Product_Order_sales()
     {
-        $ProductModel = Product::orderBy('number_of_sales', 'desc')->paginate(2);
+        $ProductModel = Product::orderBy('number_of_sales', 'desc')->get() ;
         return response()->json($ProductModel, 200);
     }
 
@@ -135,7 +138,7 @@ class ProductController extends BaseController
             'return_or_replace' => 'required',
             'discount_products_id' => 'required',
             'prepration_time' => 'required',
-           // 'gift'=> 'required',
+            'gift'=> 'required',
             'number_of_sales' => 'required',
             'age' => 'required',
         ]);
@@ -143,7 +146,7 @@ class ProductController extends BaseController
         $product->name =$request->name;
         $product->discription = $request->discription;
         $product->age =$request->age;
-       // $product->gift = $request->gift;
+        $product->gift = $request->gift;
         $product->prepration_time = $request->prepration_time;
         $product->discount_products_id = $request->discount_products_id;
         $product->return_or_replace = $request->return_or_replace;

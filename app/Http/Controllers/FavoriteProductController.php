@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\BoshraRe\ProductAllResource;
 use App\Models\FavoriteProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class FavoriteProductController extends Controller
+class FavoriteProductController extends BaseController
 {
     //عرض مفضله المنتجات للزبون//
     public function Show_Favorite()
     {
-//dd("kkk");
 //product_ratings
         $favorite=   DB::table('products')->select('*')
             ->join('favorite_products', 'favorite_products.product_id', '=', 'products.id')
@@ -70,7 +71,6 @@ class FavoriteProductController extends Controller
         $FavoriteProductModel = FavoriteProduct::findOrFail($id);
         $FavoriteProductModel -> delete();
     }
-
 
 
 }
