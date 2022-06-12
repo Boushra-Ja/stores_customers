@@ -6,25 +6,18 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductOptionRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+
     public function authorize()
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
+
     public function rules()
     {
         return [
-            //
+            'order_product_id' => 'required |exists:order_products,id' ,
+            'option_values_id' => 'required|exists:optioin_values,id'
         ];
     }
 }

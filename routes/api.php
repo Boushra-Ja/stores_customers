@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\FavoriteStoreController;
 use App\Http\Controllers\OptioinValueController;
 use App\Http\Controllers\OptionTypeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderProductController;
 use App\Http\Controllers\OrderStatuseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductOptionController;
 use App\Http\Controllers\ProductRatingController;
 use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\StoreController;
@@ -40,20 +43,32 @@ Route::resource('rating_product' , ProductRatingController::class)->except('show
 /////Routes for rating stors
 Route::resource('rating_store' , RatingStoreController::class)->except('show' , 'edit' , 'destroy' ,'update');
 
-
-
 /////Routes for Orders
 Route::resource('orders' , OrderController::class);
-
+Route::resource('order_product' , OrderProductController::class)->except('edit' , 'index' , 'update' , 'create');
+Route::resource('option_product' , ProductOptionController::class);
+Route::get('orders/check/{id}/{id2}' , [OrderController::class , 'check_of_order']);
+Route::get('product_orders/check/{id}/{id2}' , [OrderProductController::class , 'check_of_order']);
 
 ////Routes for order
 Route::resource('order_status', OrderStatuseController::class);
 //Route::resource('accept_orders' , [OrderController::class , 'acceptence_orders']);
 
+
+
 /////////Option_product
 Route::get('option_for_product/{id}' , [OptionTypeController::class , 'option_product']);
 Route::get('values_for_option/{id}' , [OptioinValueController::class , 'options_type_with_value']);
+
+/////////add_product
 Route::post('temp' , [ProductController::class , 'temp']) ;
+
+/////////My_Favourite_store
+Route::get('myFavorite/{id}' , [FavoriteStoreController::class , 'myFavorite']);
+
+////////////////////////******////////////////////////////////////
+
+
 ////////////////////////bayan //////////////////////////////////
 
 //    "name":"bayan",
@@ -93,11 +108,11 @@ Route::get('/Product/Product_Order_sales' , [App\Http\Controllers\ProductControl
 Route::get('/Product/Product_Order_discount' , [App\Http\Controllers\ProductController::class , 'Product_Order_discount']);
 Route::get('/Product/Product_Order_favorite' , [App\Http\Controllers\ProductController::class , 'Product_Order_favorite']);
 Route::get('/Product/Product_Order_Salary' , [App\Http\Controllers\ProductController::class , 'Product_Order_Salary']);
-Route::post('/FavoriteStore/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Add_Favorite']);
 Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Add_Favorite']);
 Route::get('/Product/Show_Secondray' , [App\Http\Controllers\SecondrayClassificationController::class , 'Show_Secondray']);
 Route::get('/Product/ShowClassification2/{id}' , [App\Http\Controllers\SecondrayClassificationController::class , 'ShowClassification2']);
 Route::get('/FavoriteStore/Show_Favorite' , [App\Http\Controllers\FavoriteStoreController::class , 'Show_Favorite']);
+Route::get('index' , [App\Http\Controllers\FavoriteStoreController::class , 'index']);
 
 Route::get('/Show_p' , [App\Http\Controllers\SecondrayClassificationController::class , 'Show_p']);
 
@@ -109,8 +124,11 @@ Route::group(['middleware' => ['auth:sanctum']],
 
         Route::post('/SecondrayClassification/ShowClassification/{id}/{title}' , [App\Http\Controllers\SecondrayClassificationController::class , 'shwoo']);
         Route::delete('/FavoriteProduct/Delete_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Delete_Favorite']);
+        Route::post('/FavoriteStore/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Add_Favorite']);
         Route::delete('/FavoriteStore/Delete_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Delete_Favorite']);
 
 
         ;});
+
+
 Route::get('/FavoriteProduct/Show_Favorite' , [App\Http\Controllers\FavoriteProductController::class , 'Show_Favorite']);

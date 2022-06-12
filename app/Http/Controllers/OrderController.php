@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\BoshraRe\OrderResource;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,19 @@ class OrderController extends BaseController
     }
 
 
+    ////////التأكد أن الطلب موجود
+    public function check_of_order($customer_id , $store_id)
+    {
+        $data = Order::where('customer_id' , $customer_id)->where('store_id' , $store_id)->first();
+        if($data)
+        {
+            return  $data->id ;
+        }
+        return 0 ;
+
+    }
+
+
     //////////جميع الطلبات المقبولة
     public function acceptence_orders()
     {
@@ -39,63 +53,24 @@ class OrderController extends BaseController
 
     }
 
-    public function store(Request $request)
+
+    public function store(StoreOrderRequest $request)
     {
+        $order = Order::where('store_id', '=', $request->store_id)-> where('customer_id', '=', $request->customer_id)->first();
+        if ($order === null) {
 
-
-        $validall = $request->validate([
-            'product_id' => ['required'],
-            'status_id' => ['required'],
-            'delivery_time' => ['required'],
-            'delivery_price' => ['required'],
-
-        ]);
-
-        $orderProduct = Order::create([
-            'status_id' => $request->status_id,
-            'product_id' => $request->product_id,
-            'customer_id' => auth::id(),
-            'delivery_time' => $request->delivery_time,
-            'delivery_price' => $request->delivery_price,
-
-
-        ]);
-
-
-        $orderProduct->save();
-
-        if ($orderProduct) {
-            return $this->sendResponse($orderProduct, 'Store order successfully');
-        } else {
-            return $this->sendErrors('failed in Store order', ['error' => 'not Store order']);
+            $order = Order::firstOrCreate([
+                'store_id' => $request->store_id,
+                'customer_id' => $request->customer_id,
+                'delivery_time' => $request->delivery_time,
+                'delivery_price' => $request->delivery_price,
+              ]);
 
         }
 
-    }
+        $arr = [$order] ;
+        return $this->sendResponse( OrderResource::collection($arr) , 'success');
 
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-
-    public function show(Order $order)
-    {
-        //
-    }
-
-
-    public function edit(Order $order)
-    {
-        //
     }
 
 

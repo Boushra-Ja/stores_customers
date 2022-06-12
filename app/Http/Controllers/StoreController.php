@@ -82,6 +82,21 @@ class StoreController extends BaseController
         $input = $request->all();
         $shop = Store::create($input);
 
+        ///////////هاد كود تجربة
+        if($request->hasfile('image'))
+        {
+            $file = $request->file('image');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extention;
+            $file->move('uploads/stores/', $filename);
+            $shop->image =$filename;
+
+        }
+        else
+            $shop->image ='';
+        $shop->save();
+
+        ///////////
         if ($shop) {
             WaitingStoreController::store($shop->id);
             return $this->sendResponse($shop, 'Store Shop successfully');
