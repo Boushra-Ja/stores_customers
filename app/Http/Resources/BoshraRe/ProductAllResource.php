@@ -14,6 +14,7 @@ class ProductAllResource extends JsonResource
 
     public function toArray($request)
     {
+
         return  [
             'product_id' => $this->id,
             'product_name' => $this->name,
@@ -24,9 +25,9 @@ class ProductAllResource extends JsonResource
             'party' => $this->party,
             'discription' => $this->discription,
             'age' => $this->age,
-            'cost_price' => $this->cost_price,
-            'created_at' => $this->created_at->format('Y-m-d '),
-            'updated_at' => $this->updated_at->format('Y-m-d '),
+           'cost_price' => $this->cost_price,
+          //  'created_at' => $this->created_at->format('Y-m-d '),
+          //  'updated_at' => $this->updated_at->format('Y-m-d '),
             'return_or_replace' => $this->return_or_replace,
             'discount_products_id' => $this->discount_products_id,
             'store_id' => Store::where('id', Collection::where('id', $this->collection_id)->value('id'))->value('id'),

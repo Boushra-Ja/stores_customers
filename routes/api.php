@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoriteProductController;
 use App\Http\Controllers\OptioinValueController;
 use App\Http\Controllers\OptionTypeController;
 use App\Http\Controllers\OrderController;
@@ -30,6 +31,7 @@ Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
 
 
 ////Routes for products
+///
 Route::resource('products' , ProductController::class);
 Route::get('similar_products/{id}' , [ProductController::class , 'similar_products']);
 
@@ -83,7 +85,7 @@ Route::post('Privilladge/create' , [App\Http\Controllers\PrivilladgeController::
 Route::post('/Customer/register' , [App\Http\Controllers\CustomerController::class , 'register']) ;
 //Route::get('/Product/Product_All' , [App\Http\Controllers\ProductController::class , 'Product_All']);
 Route::get('/Product_All' , [App\Http\Controllers\ProductController::class , 'Product_All']);
-Route::get('/Product_Allf' , [App\Http\Controllers\ProductController::class , 'Product_Allf']);
+Route::get('/Product_Allf' , [App\Http\Controllers\FavoriteProductController::class , 'Product_Allf']);
 Route::post('/P2' , [App\Http\Controllers\ProductController::class , 'store']);
 
 Route::post('/Customer/changepassword' , [App\Http\Controllers\CustomerController::class , 'changepassword']) ;
@@ -94,7 +96,7 @@ Route::get('/Product/Product_Order_discount' , [App\Http\Controllers\ProductCont
 Route::get('/Product/Product_Order_favorite' , [App\Http\Controllers\ProductController::class , 'Product_Order_favorite']);
 Route::get('/Product/Product_Order_Salary' , [App\Http\Controllers\ProductController::class , 'Product_Order_Salary']);
 Route::post('/FavoriteStore/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteStoreController::class , 'Add_Favorite']);
-Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'Add_Favorite']);
+Route::post('/FavoriteProduct/Add_Favorite/{id}' , [App\Http\Controllers\FavoriteProductController::class , 'store']);
 Route::get('/Product/Show_Secondray' , [App\Http\Controllers\SecondrayClassificationController::class , 'Show_Secondray']);
 Route::get('/Product/ShowClassification2/{id}' , [App\Http\Controllers\SecondrayClassificationController::class , 'ShowClassification2']);
 Route::get('/FavoriteStore/Show_Favorite' , [App\Http\Controllers\FavoriteStoreController::class , 'Show_Favorite']);
@@ -113,4 +115,19 @@ Route::group(['middleware' => ['auth:sanctum']],
 
 
         ;});
-Route::get('/FavoriteProduct/Show_Favorite' , [App\Http\Controllers\FavoriteProductController::class , 'Show_Favorite']);
+
+
+
+
+
+
+
+Route::get('/FavoriteProduct/Show_Favorite' , [App\Http\Controllers\ProductController::class , 'Show_Favorite']);
+
+;
+ Route::resource('ff' , App\Http\Controllers\FavoriteProductController::class);
+ Route::resource('ff2' , App\Http\Controllers\FavoriteStoreController::class)
+     //->
+ // except('index','Product_Allf','Add_Favorite','Delete_Favorite' )
+;
+

@@ -15,10 +15,35 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends BaseController
 {
 
+
+
+//
+//    public function Show_Favorite()
+//    {
+//
+//
+//        $favorite=   DB::table('products')
+//            ->join('favorite_products', 'favorite_products.product_id', '=', 'products.id')
+//            ->get();
+//
+//        if ($favorite) {
+//            return  $this->sendResponse(ProductAllResource::collection($favorite), 'تم ارجاع جميع التقييمات بنجاح');
+//        } else {
+//            return $this->sendErrors("خطأ في عرض التقييمات",  ['error' => 'error in display ratings']);
+//        }
+//
+//
+//
+//
+//
+//    }
+
+
+
     //الاقل سعرا//
     public function Product_Order_Salary()
     {
-        $ProductModel = Product::orderBy('cost_price', 'asc')->paginate(2);
+        $ProductModel = Product::orderBy('cost_price', 'asc')->get();
         return response()->json($ProductModel, 200);
 
         //http://127.0.0.1:8000/api/product/Display?page=2
@@ -27,7 +52,8 @@ class ProductController extends BaseController
     //الاكثر شيوعا//
     public function Product_Order_sales()
     {
-        $ProductModel = Product::orderBy('number_of_sales', 'desc')->paginate(2);
+        $ProductModel = Product::orderBy('number_of_sales', 'desc')->get();
+           // ->paginate(2);
         return response()->json($ProductModel, 200);
     }
 
@@ -41,17 +67,17 @@ class ProductController extends BaseController
             })
             ->get();
         //->paginate(2);
-        return response([
-            $favorite
-        ]);
+        return response()->json($favorite
+
+        );
     }
 
     //اقتراحات قد تعجبك//
     public function Product_Order_favorite()
     {
 
-        $pro = DB::table('secondray_classification_products')->select('*')
-            ->join('favorite_products', 'favorite_products.product_id', '=', 'classification_products.product_id')
+        $pro = DB::table('secondray_classification_products')
+            ->join('favorite_products', 'favorite_products.product_id', '=', 'secondray_classification_products.product_id')
             ->get();
 
 
@@ -60,15 +86,21 @@ class ProductController extends BaseController
         foreach ($pro as $val) {
 
             $prooo = DB::table('secondray_classification_products')
-                ->join('products', 'products.id', '=', 'classification_products.product_id')
+                ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
                 ->where('secondray_classification_products.secondary_id', '=', $val->secondary_id)->get();
 
+        foreach ($prooo as $value)
+        {
 
-            $re[$i] = $prooo;
+            $re[$i] = $value;
             $i++;
         }
 
-        return response($re, 200);
+
+
+        }
+
+        return response()->json($re, 200);
 
 
     }
@@ -79,6 +111,7 @@ class ProductController extends BaseController
         $ProductModel = Product::query()->get();
         return response()->json($ProductModel, 200);
     }
+
 
     //تفاصيل منتج واحد//
     public function Show_Detalis($id)
@@ -96,7 +129,7 @@ class ProductController extends BaseController
         return response()->json($ProductModel, 200);
     }
 
-    ////عرض منتج محدد
+    //عرض منتج محدد
     public function show($id){
         $data = Product::where('id' , $id)->get();
         if ($data) {

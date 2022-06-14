@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BoshraRe\ProductAllResource;
+use App\Http\Resources\BoshraRe\StoreResource;
 use App\Models\FavoriteStore;
 use App\Http\Requests\StoreFavoriteStoreRequest;
 use App\Http\Requests\UpdateFavoriteStoreRequest;
@@ -30,6 +32,28 @@ class FavoriteStoreController extends Controller
 
 
     }
+
+    public function index()
+    {
+        $favorite=DB::table('stores')
+            ->join('favorite_stores', function ($join) {
+                $join->on('stores.id', '=', 'favorite_stores.store_id');
+                  //  ->where('favorite_stores.customer_id', '=', auth::id());
+            })
+            ->get();
+        if ($favorite) {
+            return
+                StoreResource::collection($favorite);
+        } else {
+            return "null";
+        }
+
+
+
+
+
+    }
+
 
     //اضافه لمفضله المتاجر//
     public function Add_Favorite($id)
