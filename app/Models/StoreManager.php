@@ -37,10 +37,7 @@ class StoreManager extends Model
         return $this->hasMany(Helper::class , 'store_manager_id');
     }
 
-    public function waitingStore()
-    {
-        return $this->hasMany(WaitingStore::class , 'store_manager_id');
-    }
+
 
 
 }

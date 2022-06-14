@@ -2,121 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BoshraRe\ProductAllResource;
-use App\Http\Resources\BoshraRe\StoreResource;
+use App\Http\Controllers\API\BaseController;
 use App\Models\FavoriteStore;
-use App\Http\Requests\StoreFavoriteStoreRequest;
-use App\Http\Requests\UpdateFavoriteStoreRequest;
+
 use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class FavoriteStoreController extends Controller
+class FavoriteStoreController extends BaseController
 {
 
     //عرض مفضله المتاجر للزبون//
     public function Show_Favorite()
     {
-
-
-        $favorite=DB::table('stores')
+        $favorite = DB::table('stores')
             ->join('favorite_stores', function ($join) {
                 $join->on('stores.id', '=', 'favorite_stores.store_id')
-                    ->where('favorite_stores.customer_id', '=', 1);
+                    ->where('favorite_stores.customer_id', '=', 4);
             })
             ->get();
         return response(
             $favorite
         );
-
-
-
     }
 
-    public function index()
+    ////////ارجاع مفضلتي
+    public function myFavorite($user_id)
     {
-        $favorite=DB::table('stores')
-            ->join('favorite_stores', function ($join) {
-                $join->on('stores.id', '=', 'favorite_stores.store_id');
-                  //  ->where('favorite_stores.customer_id', '=', auth::id());
-            })
-            ->get();
-        if ($favorite) {
-            return
-                StoreResource::collection($favorite);
-        } else {
-            return "null";
-        }
 
-
-
-
-
+        $favorite = FavoriteStore::select('store_id')->where('customer_id', $user_id)->get();
+        if ($favorite)
+            return $this->sendResponse($favorite, 'Success');
+        else
+            return $this->sendErrors([], 'Failed');
     }
-
-
     //اضافه لمفضله المتاجر//
     public function Add_Favorite($id)
     {
 
-        $store=Store::find($id);
-        $customer=auth :: id();
-        $response = $store-> favourits() ->attach($customer);
-        return response()->json($response,200);
-
-
-
-//        $favorite=FavoriteStore::where([
-//            'store_id'=> $id,
-//            'customer_id'=>Auth::id()
-//        ])->first();
-//        if(!is_null($favorite)){
-//            $favorite->delete();
-//            return response()->json([
-//                "message"=>"delete  favorite"
-//            ]);
-//        }
-//        else
-//        {
-//            FavoriteStore::create([
-//                'store_id'=>Auth::id(),
-//                'product_id'=>$id
-//            ]);
-//
-//            return response()->json([
-//                "message"=>"add to favorite"
-//            ]);
-//
-//        }
-
+        $store = Store::find($id);
+        $customer = auth::id();
+        $response = $store->favourits()->attach($customer);
+        return $this->sendResponse($response, "success");
     }
 
 
     //حدف مننج من مفضله المتاجر//
-    public function Delete_Favorite($id)
+    public function Delete_Favorite($store_id)
     {
-        $FavoriteStoreModel = FavoriteStore::findOrFail($id);
-        $FavoriteStoreModel -> delete();
+        $res = FavoriteStore::where('store_id', $store_id)->delete();
+        if ($res)
+            return $this->sendResponse($res, "success");
+        else
+            return $this->sendErrors([], "failed");
     }
-
-
-
-
-//    public function Show_Favorite()
-//    {
-//
-//        $FavoriteStoreModel=FavoriteStore::query()->where('customer_id', auth::id())->get();
-//        return response()->json(  $FavoriteStoreModel,200);
-//
-//
-//    }
-
-
-
-
-
-
-
-
-
 }

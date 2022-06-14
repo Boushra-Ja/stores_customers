@@ -13,6 +13,7 @@ return new class extends Migration
             $table->increments('id');
             $table->String('name');
             $table->String('image')->nullable();
+            $table->String('Brand')->nullable();
             $table->String('discription');
             $table->String('facebook')->nullable();
             $table->integer('num_of_salling')->nullable();

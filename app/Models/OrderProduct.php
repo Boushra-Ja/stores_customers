@@ -11,6 +11,7 @@ class OrderProduct extends Model
     protected $fillable = [
         'order_id',
         'product_id',
+        'status_id'
 
     ];
 
@@ -19,5 +20,12 @@ class OrderProduct extends Model
     {
         return $this->belongsToMany(OptioinValue::class , 'product_options') ;
     }
+
+
+  public function status()
+    {
+        return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+
 
 }

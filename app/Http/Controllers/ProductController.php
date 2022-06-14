@@ -15,35 +15,13 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends BaseController
 {
 
-
-
-//
-//    public function Show_Favorite()
-//    {
-//
-//
-//        $favorite=   DB::table('products')
-//            ->join('favorite_products', 'favorite_products.product_id', '=', 'products.id')
-//            ->get();
-//
-//        if ($favorite) {
-//            return  $this->sendResponse(ProductAllResource::collection($favorite), 'تم ارجاع جميع التقييمات بنجاح');
-//        } else {
-//            return $this->sendErrors("خطأ في عرض التقييمات",  ['error' => 'error in display ratings']);
-//        }
-//
-//
-//
-//
-//
-//    }
-
-
-
     //الاقل سعرا//
     public function Product_Order_Salary()
     {
-        $ProductModel = Product::orderBy('cost_price', 'asc')->get();
+        $ProductModel = Product::orderBy('cost_price', 'asc')->get() ;
+
+
+        //->paginate(2);
         return response()->json($ProductModel, 200);
 
         //http://127.0.0.1:8000/api/product/Display?page=2
@@ -52,8 +30,7 @@ class ProductController extends BaseController
     //الاكثر شيوعا//
     public function Product_Order_sales()
     {
-        $ProductModel = Product::orderBy('number_of_sales', 'desc')->get();
-           // ->paginate(2);
+        $ProductModel = Product::orderBy('number_of_sales', 'desc')->get() ;
         return response()->json($ProductModel, 200);
     }
 
@@ -67,17 +44,17 @@ class ProductController extends BaseController
             })
             ->get();
         //->paginate(2);
-        return response()->json($favorite
-
-        );
+        return response([
+            $favorite
+        ]);
     }
 
     //اقتراحات قد تعجبك//
     public function Product_Order_favorite()
     {
 
-        $pro = DB::table('secondray_classification_products')
-            ->join('favorite_products', 'favorite_products.product_id', '=', 'secondray_classification_products.product_id')
+        $pro = DB::table('secondray_classification_products')->select('*')
+            ->join('favorite_products', 'favorite_products.product_id', '=', 'classification_products.product_id')
             ->get();
 
 
@@ -86,21 +63,15 @@ class ProductController extends BaseController
         foreach ($pro as $val) {
 
             $prooo = DB::table('secondray_classification_products')
-                ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
+                ->join('products', 'products.id', '=', 'classification_products.product_id')
                 ->where('secondray_classification_products.secondary_id', '=', $val->secondary_id)->get();
 
-        foreach ($prooo as $value)
-        {
 
-            $re[$i] = $value;
+            $re[$i] = $prooo;
             $i++;
         }
 
-
-
-        }
-
-        return response()->json($re, 200);
+        return response($re, 200);
 
 
     }
@@ -111,7 +82,6 @@ class ProductController extends BaseController
         $ProductModel = Product::query()->get();
         return response()->json($ProductModel, 200);
     }
-
 
     //تفاصيل منتج واحد//
     public function Show_Detalis($id)
@@ -129,7 +99,7 @@ class ProductController extends BaseController
         return response()->json($ProductModel, 200);
     }
 
-    //عرض منتج محدد
+    ////عرض منتج محدد
     public function show($id){
         $data = Product::where('id' , $id)->get();
         if ($data) {
@@ -168,7 +138,7 @@ class ProductController extends BaseController
             'return_or_replace' => 'required',
             'discount_products_id' => 'required',
             'prepration_time' => 'required',
-           // 'gift'=> 'required',
+            'gift'=> 'required',
             'number_of_sales' => 'required',
             'age' => 'required',
         ]);
@@ -176,7 +146,7 @@ class ProductController extends BaseController
         $product->name =$request->name;
         $product->discription = $request->discription;
         $product->age =$request->age;
-       // $product->gift = $request->gift;
+        $product->gift = $request->gift;
         $product->prepration_time = $request->prepration_time;
         $product->discount_products_id = $request->discount_products_id;
         $product->return_or_replace = $request->return_or_replace;
@@ -216,6 +186,9 @@ class ProductController extends BaseController
 
     }
 
+
+
+    // اضافة منتج
     public function store(Request $request)
     {
 
@@ -236,6 +209,19 @@ class ProductController extends BaseController
             'age' => 'nullable',
         ]);
 
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extention;
+            $file->move('uploads/books/', $filename);
+            $request->image = $filename;
+
+        } else
+            $request->image = '';
+
+
+//        $i=CollectionController::getCollectionId($request->collection_name);
+//        $request->collection_id=$i;
 
         $input = $request->all();
         $product = Product::create($input);
@@ -244,11 +230,11 @@ class ProductController extends BaseController
             foreach ($request->classification as $value) {
                 SecondrayClassificationProductController::store($product->id, $value);
             }
-            foreach ($request->type as $vv) {
-
-                OptionTypeController::store($vv, $product->id, 0);
-
-            }
+//            foreach ($request->type as $vv) {
+//
+//                OptionTypeController::store($vv, $product->id, 0);
+//
+//            }
             return $this->sendResponse($product, 'Store Shop successfully');
 
         } else {
@@ -258,6 +244,7 @@ class ProductController extends BaseController
 
     }
 
+    // تعديل منتج
     public function update(Request $request)
     {
         $product = Product::find($request->product);
@@ -282,11 +269,11 @@ class ProductController extends BaseController
         return $this->sendResponse($product, 'تم تعديل المجموعة بنجاح');
     }
 
+    //حذف منتج
     public function delete(Request $request){
         $product = Product::find($request->product)->delete();
 
     }
-
 
 
 }

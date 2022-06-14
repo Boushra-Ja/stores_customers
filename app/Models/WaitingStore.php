@@ -9,8 +9,12 @@ class WaitingStore extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'store_id'
+    ];
+
     public function storeManager()
     {
-        return $this->belongsTo(StoreManager::class, 'store_manager_id');
+        return $this->belongsTo(Store::class, 'store_id');
     }
 }

@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\DB;
 
 class OptionTypeController extends BaseController
 {
+    // اضافة خيار اضافي
+    public function stor1(Request $request){
+        foreach ($request->type as $vv) {
+
+            OptionTypeController::store($vv, 3, 0);
+
+        }
+
+    }
 
     public function option_product($product_id)
     {
@@ -47,6 +56,7 @@ class OptionTypeController extends BaseController
 
     }
 
+    //  تعديل الخيارات الاضافية
     public static function update($type, int $product_id)
     {
 
