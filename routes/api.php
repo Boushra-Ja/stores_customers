@@ -41,3 +41,5 @@ Route::post('storeManager/update', [App\Http\Controllers\StoreManagerController:
 
 Route::post('discountproduct/create', [App\Http\Controllers\DiscountController::class, 'store']);
 Route::post('customer/register', [App\Http\Controllers\CustomerController::class, 'register']);
+Route::get('order/all_my_order/{id}', [App\Http\Controllers\OrderController::class, 'all_my_order']);
+Route::get('order/order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);

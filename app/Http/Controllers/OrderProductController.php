@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\ResourcesBayan\ordure_product_resource;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Http\Requests\StoreOrderProductRequest;
@@ -53,5 +54,13 @@ class OrderProductController extends BaseController
             return $this->sendResponse($res, "success");
         else
             return $this->sendErrors([], "failed");
+    }
+
+
+    public function order_product($id){
+        $product=OrderProduct::where('order_id','=',$id)->get();
+        $g = ordure_product_resource::collection($product);
+
+        return $this->sendResponse($g, 'Store Shop successfully');
     }
 }
