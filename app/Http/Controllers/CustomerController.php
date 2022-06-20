@@ -72,11 +72,11 @@ class CustomerController extends Controller
             'password' =>$valid['password'],
 
         ]);
-        if($request->code!=null)
-            $persone->code=$request->code;
-        if($request->image!=null)
-            $persone->image=$request->image;
-        $persone->save();
+//        if($request->code!=null)
+//            $persone->code=$request->code;
+//        if($request->image!=null)
+//            $persone->image=$request->image;
+//        $persone->save();
 
         $user1 = Customer::create([
             'persone_id'=>$persone->id,
@@ -119,6 +119,8 @@ class CustomerController extends Controller
             ]);
         }
     }
+
+
     function logout(Request $request) {
 
 

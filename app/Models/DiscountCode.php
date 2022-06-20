@@ -23,6 +23,6 @@ class DiscountCode extends Model
 
     public function Customers()
     {
-        return $this->belongsToMany(Customer::class ) ;
+        return $this->belongsToMany(Customer::class,'discount_customers','discount_codes_id','customers_id','id','id' ) ;
     }
 }

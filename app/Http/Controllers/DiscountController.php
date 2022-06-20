@@ -2,85 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
 use App\Models\Discount;
-use App\Http\Requests\StoreDiscountRequest;
-use App\Http\Requests\UpdateDiscountRequest;
+use Illuminate\Http\Request;
 
-class DiscountController extends Controller
+
+class DiscountController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'type' => 'required',
+            'status' => 'nullable',
+            'value' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'condition' => 'required',
+            'condition_value' => 'required',
+            'store_id' => 'required',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreDiscountRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreDiscountRequest $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Discount  $discount
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Discount $discount)
-    {
-        //
-    }
+        $input = $request->all();
+        $discount = Discount::create($input);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Discount  $discount
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Discount $discount)
-    {
-        //
-    }
+        if ($discount) {
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateDiscountRequest  $request
-     * @param  \App\Models\Discount  $discount
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateDiscountRequest $request, Discount $discount)
-    {
-        //
-    }
+            if ($request->type == 1){
+                DiscountProductController::store($request, $discount->id);}
+            else
+            {
+                DiscountCodeController::store($request, $discount->id);
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Discount  $discount
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Discount $discount)
-    {
-        //
+            return $this->sendResponse($discount, 'Store Shop successfully');
+
+        } else {
+            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
+
+        }
     }
 }
