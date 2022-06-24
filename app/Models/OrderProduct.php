@@ -13,7 +13,8 @@ class OrderProduct extends Model
         'order_id',
         'product_id',
         'status_id',
-        'discount_products_id'
+        'discount_products_id',
+        'discount_codes_id'
 
     ];
 
