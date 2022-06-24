@@ -17,8 +17,6 @@ Route::get('collection/getCollectionId', [App\Http\Controllers\CollectionControl
 Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
 
 
-
-
 Route::get('classification/show', [App\Http\Controllers\ClassificationController::class, 'Show_Classification']);
 
 Route::get('classification/show', [App\Http\Controllers\ClassificationController::class, 'Show_Classification']);
@@ -38,8 +36,12 @@ Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerControll
 Route::post('helper/create', [App\Http\Controllers\HelperController::class, 'store']);
 Route::post('storeManager/update', [App\Http\Controllers\StoreManagerController::class, 'update']);
 
-
 Route::post('discountproduct/create', [App\Http\Controllers\DiscountController::class, 'store']);
 Route::post('customer/register', [App\Http\Controllers\CustomerController::class, 'register']);
 Route::get('order/all_my_order/{id}', [App\Http\Controllers\OrderController::class, 'all_my_order']);
 Route::get('order/order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);
+
+Route::get('customer/myCustomer/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer']);
+Route::get('customer/myCustomer_most_buy/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_most_buy']);
+Route::get('customer/myCustomer_salles/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_salles']);
+

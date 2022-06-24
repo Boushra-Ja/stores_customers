@@ -24,4 +24,9 @@ class DiscountProduct extends Model
     {
         return $this->belongsTo(Discount::class  , 'discounts_id') ;
     }
+
+    public function orderProduct()
+    {
+        return $this->hasMany(Product::class , 'discount_products_id');
+    }
 }

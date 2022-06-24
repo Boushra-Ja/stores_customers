@@ -137,7 +137,6 @@ class ProductController extends BaseController
             'prepration_time' => 'required',
             'gift' => 'nullable',
             'number_of_sales' => 'nullable',
-
             'party' => 'nullable',
             'age' => 'nullable',
         ]);
