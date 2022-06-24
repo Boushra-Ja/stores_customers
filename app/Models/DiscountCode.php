@@ -10,7 +10,6 @@ class DiscountCode extends Model
     use HasFactory;
 
     protected $fillable = [
-        'usage_times',
         'its_for',
         'discount_code',
         'discounts_id',

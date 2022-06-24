@@ -11,6 +11,7 @@ class DiscountCustomer extends Model
 
     protected $fillable = [
         'discount_codes_id',
-        'customers_id'
+        'customers_id',
+        'usage_times'
     ];
 }
