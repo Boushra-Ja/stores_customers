@@ -52,9 +52,11 @@ Route::get('product_orders/check/{id}/{id2}' , [OrderProductController::class , 
 
 ////Routes for order
 Route::resource('order_status', OrderStatuseController::class);
-//Route::resource('accept_orders' , [OrderController::class , 'acceptence_orders']);
-
-
+Route::get('accept_orders/{id}' , [OrderController::class , 'acceptence_orders']);
+Route::get('waiting_orders/{id}' , [OrderController::class , 'waiting_orders']);
+Route::get('received_orders/{id}' , [OrderController::class , 'received_orders']);
+Route::get('order_product/options/{id}' ,[ProductOptionController::class , 'get_options']);
+Route::post('orderproduct/update/{id}' ,[ProductOptionController::class , 'update_choice'] );
 
 /////////Option_product
 Route::get('option_for_product/{id}' , [OptionTypeController::class , 'option_product']);
@@ -65,6 +67,10 @@ Route::post('temp' , [ProductController::class , 'temp']) ;
 
 /////////My_Favourite_store
 Route::get('myFavorite/{id}' , [FavoriteStoreController::class , 'myFavorite']);
+
+/////bill
+Route::get('bill/{id}' , [OrderProductController::class , 'bill']);
+Route::get('all_products_bill/{id}' , [OrderProductController::class , 'all_products_bill']);
 
 ////////////////////////******////////////////////////////////////
 

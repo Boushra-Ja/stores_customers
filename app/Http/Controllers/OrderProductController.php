@@ -7,7 +7,11 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Http\Requests\StoreOrderProductRequest;
 use App\Http\Requests\UpdateOrderProductRequest;
+use App\Http\Resources\BoshraRe\BillResource;
+use App\Http\Resources\BoshraRe\OrderProductResource;
+use App\Http\Resources\BoshraRe\ProductBillResource;
 use App\Models\OrderStatus;
+use Illuminate\Support\Facades\DB;
 
 class OrderProductController extends BaseController
 {
@@ -38,7 +42,7 @@ class OrderProductController extends BaseController
         $arr = [$orderProduct];
 
         if ($arr) {
-            return $this->sendResponse($arr, "success");
+            return $this->sendResponse(OrderProductResource::collection($arr), "success");
         }
         return $this->sendErrors([], "error");
     }
@@ -54,4 +58,25 @@ class OrderProductController extends BaseController
         else
             return $this->sendErrors([], "failed");
     }
+
+    public function bill($order_id)
+    {
+
+        $data =  DB::table('order_products')->where('order_products.order_id' ,$order_id )
+        ->join('orders', 'orders.id', '=', 'order_products.order_id')
+        ->get() ;
+
+        return $this->sendResponse(BillResource::collection($data ), 'success') ;
+    }
+
+/*
+public function all_products_bill($order_id)
+    {
+        $products  =OrderProduct::where('order_id' , $order_id)->get() ;
+        return $this->sendResponse(ProductBillResource::collection($products) , 'success') ;
+
+    }
+  */
+
+
 }
