@@ -14,6 +14,7 @@ class Store extends Model
         'delivery_area',
         'discription',
         'image',
+        'Brand',
         'num_of_salling',
         'facebook',
         'mobile',
@@ -55,8 +56,10 @@ class Store extends Model
         return $this->hasMany(Discount::class , 'store_id');
     }
 
-    public function orders_customers()
+    public function waitingStore()
     {
-        return $this->belongsToMany(Customer::class) ;
+        return $this->hasMany(WaitingStore::class , 'store_id');
     }
+
+
 }

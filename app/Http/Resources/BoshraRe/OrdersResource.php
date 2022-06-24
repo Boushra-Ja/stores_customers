@@ -5,7 +5,7 @@ namespace App\Http\Resources\BoshraRe;
 use App\Models\Store;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderResource extends JsonResource
+class OrdersResource extends JsonResource
 {
 
     public function toArray($request)

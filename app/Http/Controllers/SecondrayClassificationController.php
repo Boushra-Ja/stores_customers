@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Classification;
 use App\Models\SecondrayClassification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SecondrayClassificationController extends Controller
@@ -24,10 +25,6 @@ class SecondrayClassificationController extends Controller
         return response()->json($classificationModel, 200);
 
     }
-
-
-
-
 
     public function ShowClassification(int $id, String $title)
     {
@@ -104,6 +101,18 @@ class SecondrayClassificationController extends Controller
         }
 
 
+    }
+
+    public Static function show_product($secondrayClassification){
+        $a=array();
+        $i=0;
+        foreach ($secondrayClassification as $option){
+            $data=SecondrayClassification::find($option->secondary_id);
+            $a[$i]=$data;
+            $i=$i+1;
+        }
+
+        return $a;
     }
 
 

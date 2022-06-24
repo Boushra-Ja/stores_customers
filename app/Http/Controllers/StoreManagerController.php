@@ -14,11 +14,12 @@ class StoreManagerController extends BaseController
 {
 
     /////عرض معلومات صاحب متجر محدد
-    public function index(Request $request)
+    public function index($id)
     {
-        $storeManager = StoreManager::find($request->id);
+        $storeManager = StoreManager::find($id);
+        $persone = Persone::find($storeManager->person_id)->first();
         if ($storeManager) {
-            return $this->sendResponse($storeManager, 'Store Shop successfully');
+            return $this->sendResponse($persone, 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
 
@@ -43,8 +44,6 @@ class StoreManagerController extends BaseController
 
 
         $code = str_shuffle($pin);
-       // dd($code);
-
 
 
         $persone = Persone::create([
@@ -87,6 +86,12 @@ class StoreManagerController extends BaseController
 
     }
 
+    public function update(Request $request){
+        $store_manager = StoreManager::find($request->id)->first();
+        $persone = Persone::find($store_manager->person_id)->update($request->all());
+        return $this->sendResponse($persone, 'تم تعديل ملف المتجر بنجاح');
+    }
+
     ///// تسجيل الدخول كصاحب متجر
     public function login(Request $request)
     {
@@ -108,7 +113,6 @@ class StoreManagerController extends BaseController
             ]);
         }
     }
-
 
     ////////التحقق من البريد
     public function verify_email(Request $request)
@@ -143,11 +147,6 @@ class StoreManagerController extends BaseController
     public function reset_password(int $id, string $new_password)
     {
         $persone = Persone::find($id)->update(['password', $new_password]);
-
-    }
-
-
-    public function helper(){
 
     }
 

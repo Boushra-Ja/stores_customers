@@ -2,85 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use App\Models\DiscountCode;
 use App\Models\DiscountCustomer;
 use App\Http\Requests\StoreDiscountCustomerRequest;
 use App\Http\Requests\UpdateDiscountCustomerRequest;
+use App\Models\SecondrayClassification;
 
 class DiscountCustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public static function store(int $discount_codes_id, int $customers_id,$usage_times)
     {
-        //
+//        $discount_codes = DiscountCode::find($discount_codes_id);
+//        $customers = Customer::find($customers_id);
+
+        //$response = $discount_codes->Customers()->attach($customers);
+
+        $response = DiscountCustomer::Create([
+            'customers_id' => $customers_id,
+            'usage_times' =>$usage_times,
+            //'status_id' => OrderStatus::where('status', 'في السلة')->value('id'),
+            'discount_codes_id' => $discount_codes_id,
+        ]);
+
+        return response()->json($response, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreDiscountCustomerRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreDiscountCustomerRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\DiscountCustomer  $discountCustomer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DiscountCustomer $discountCustomer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DiscountCustomer  $discountCustomer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DiscountCustomer $discountCustomer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateDiscountCustomerRequest  $request
-     * @param  \App\Models\DiscountCustomer  $discountCustomer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateDiscountCustomerRequest $request, DiscountCustomer $discountCustomer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\DiscountCustomer  $discountCustomer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DiscountCustomer $discountCustomer)
-    {
-        //
-    }
 }

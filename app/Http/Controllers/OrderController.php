@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\ResourcesBayan\orderResource;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\BoshraRe\OrderProductResource;
-use App\Http\Resources\BoshraRe\OrderResource;
+use App\Http\Resources\BoshraRe\OrdersResource;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends BaseController
 {
@@ -130,15 +132,15 @@ class OrderController extends BaseController
 
         return $this->sendResponse(OrderProductResource::collection($res) , 'successs');
     }
+    //الطلبات المعلقة/المنفذة/المقبولة لمتجر
+    public function all_my_order($id,$i){
 
-    public function update(UpdateOrderRequest $request, Order $order)
-    {
-        //
-    }
+        $order= DB::table('orders')->join('order_products',function ($join) use ($i) {
+            $join->on('order_products.order_id','=','orders.id')->where('order_products.status_id','=',$i);
+        })->where('orders.store_id','=',$id )->get();
 
+        $g = OrdersResource::collection($order);
 
-    public function destroy(Order $order)
-    {
-        //
+        return $this->sendResponse($g, 'Store Shop successfully');
     }
 }

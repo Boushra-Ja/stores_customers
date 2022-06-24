@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\API\BaseController;
+use App\Http\ResourcesBayan\customerResource;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests;
@@ -11,13 +15,13 @@ use App\Models\Customer;
 use App\Models\Persone;
 use Dotenv\Validator;
 
-class CustomerController extends Controller
+class CustomerController extends BaseController
 {
 
 
-    public static function html_email(String $name,String $code,String $email,String $title)
+    public static function html_email(string $name, string $code, string $email, string $title)
     {
-        $data = array('name' => $name,'code' =>$code);
+        $data = array('name' => $name, 'code' => $code);
         Mail::send('mail', $data, function ($message) use ($title, $email) {
             $message->to($email, 'متجر جديد')->subject
             ($title);
@@ -26,13 +30,14 @@ class CustomerController extends Controller
         echo "HTML Email Sent. Check your inbox.";
     }
 
-    public function basic_email() {
-        $data = array('name'=>"Virat Gandhi");
+    public function basic_email()
+    {
+        $data = array('name' => "Virat Gandhi");
 
-       Mail::send(['text'=>'mail'], $data, function($message) {
-             $message->to('faizzoubi30@gmail.com', 'Tutorials Point')->subject
-             ('Laravel Basic Testing Mail');
-            $message->from('faizzoubi10@gmail.com','Virat Gandhi');
+        Mail::send(['text' => 'mail'], $data, function ($message) {
+            $message->to('faizzoubi30@gmail.com', 'Tutorials Point')->subject
+            ('Laravel Basic Testing Mail');
+            $message->from('faizzoubi10@gmail.com', 'Virat Gandhi');
         });
         echo "Basic Email Sent. Check your inbox.";
     }
@@ -54,7 +59,8 @@ class CustomerController extends Controller
     }
 
 
-    function register (Request $request) {
+    function register(Request $request)
+    {
 
         $valid = $request->validate([
             'name' => 'required ',
@@ -69,17 +75,17 @@ class CustomerController extends Controller
         $persone = Persone::create([
             'name' => $valid['name'],
             'email' => $valid['email'],
-            'password' =>$valid['password'],
+            'password' => $valid['password'],
 
         ]);
-        if($request->code!=null)
-            $persone->code=$request->code;
-        if($request->image!=null)
-            $persone->image=$request->image;
-        $persone->save();
+//        if($request->code!=null)
+//            $persone->code=$request->code;
+//        if($request->image!=null)
+//            $persone->image=$request->image;
+//        $persone->save();
 
         $user1 = Customer::create([
-            'persone_id'=>$persone->id,
+            'persone_id' => $persone->id,
 
         ]);
 
@@ -87,16 +93,18 @@ class CustomerController extends Controller
         $user1->save();
 
 
-        $token = $persone->createToken ('ProductsTolken')->plainTextToken;
-        return response ()->json([
+        $token = $persone->createToken('ProductsTolken')->plainTextToken;
+        return response()->json([
             'user' => $persone,
-            'token'=>$token,
+            'token' => $token,
         ]);
 
 
     }
 
-    function login(Request $request) {
+
+    function login(Request $request)
+    {
 
         $valid = $request->validate([
             'email' => 'required',
@@ -106,34 +114,36 @@ class CustomerController extends Controller
 
         $person = Persone::where('email', $valid['email'])->first();
         ///echo $personm;
-        if( $valid['password'] == $person->password)
-          $password=true;
-        if(!$person || !$password) {
-            return response ()->json(['message' => 'Login problem']);
-        }
-        else {
-            $token = $person->createToken ('ProductsTolken')->plainTextToken ;
-            return  response ()->json([
+        if ($valid['password'] == $person->password)
+            $password = true;
+        if (!$person || !$password) {
+            return response()->json(['message' => 'Login problem']);
+        } else {
+            $token = $person->createToken('ProductsTolken')->plainTextToken;
+            return response()->json([
                 'user' => $person,
-                'token'=>$token,
+                'token' => $token,
             ]);
         }
     }
-    function logout(Request $request) {
+
+
+    function logout(Request $request)
+    {
 
 
         $result = $request->user()->token()->revoke();
-        if($result){
-            $response = response()->json('User logout successfully',200);
-        }else{
-            $response = response()->json('Something is wrong',400);
+        if ($result) {
+            $response = response()->json('User logout successfully', 200);
+        } else {
+            $response = response()->json('Something is wrong', 400);
         }
         return $response;
 
     }
 
 
-    function change_password(Request$request)
+    function change_password(Request $request)
     {
 
         $validator = Validator:: make($request->all(), [
@@ -163,7 +173,35 @@ class CustomerController extends Controller
         }
 
 
+    }
 
 
+    public static function myCustomer($id)
+    {
+
+        $order = Order::where('store_id', '=', $id)->get();
+
+        $d = $order->groupBy('customer_id');
+
+        $array = customerResource::collection($d);
+        return $array;
+
+
+    }
+
+    public function myCustomer_most_buy($id)
+    {
+        $data = CustomerController::myCustomer($id);
+        $array = collect($data)->sortBy('orders')->reverse()->toArray();
+
+        return response()->json($array);
+    }
+
+    public function myCustomer_salles($id)
+    {
+        $data = CustomerController::myCustomer($id);
+        $array = collect($data)->sortBy('total')->reverse()->toArray();
+
+        return response()->json($array);
     }
 }
