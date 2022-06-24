@@ -29,9 +29,14 @@ class OrderProduct extends Model
         return $this->belongsTo(OrderStatus::class, 'status_id');
     }
 
-    public function discount()
+    public function discount_product()
     {
         return $this->belongsTo(DiscountProduct::class, 'discount_products_id');
+    }
+
+    public function discount_code()
+    {
+        return $this->belongsTo(DiscountCode::class, 'discount_codes_id');
     }
 
 }

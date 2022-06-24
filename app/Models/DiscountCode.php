@@ -25,4 +25,9 @@ class DiscountCode extends Model
     {
         return $this->belongsToMany(Customer::class,'discount_customers','discount_codes_id','customers_id','id','id' ) ;
     }
+
+    public function orderProduct()
+    {
+        return $this->hasMany(OrderProduct::class , 'discount_codes_id');
+    }
 }

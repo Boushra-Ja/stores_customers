@@ -27,6 +27,6 @@ class DiscountProduct extends Model
 
     public function orderProduct()
     {
-        return $this->hasMany(Product::class , 'discount_products_id');
+        return $this->hasMany(OrderProduct::class , 'discount_products_id');
     }
 }
