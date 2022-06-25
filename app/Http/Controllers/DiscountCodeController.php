@@ -2,85 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\API\BaseController;
+use App\Models\Customer;
+use App\Models\Discount;
 use App\Models\DiscountCode;
-use App\Http\Requests\StoreDiscountCodeRequest;
-use App\Http\Requests\UpdateDiscountCodeRequest;
+use Illuminate\Http\Request;
 
-class DiscountCodeController extends Controller
+class DiscountCodeController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+
+    public static function store(Request $request ,$id ){
+        $request->validate([
+            'its_for'=> 'nullable',
+            'discount_code'=> 'required',
+        ]);
+
+        $discount = DiscountCode::create([
+           // 'usage_times'=> $request->usage_times,
+            'its_for'=> $request->its_for,
+            'discount_code'=> $request->discount_code,
+            'discounts_id'=> $id
+        ]);
+
+        if($request->its_for == 1){
+            $customers = Customer::all();
+            foreach ($customers as $c){
+                DiscountCustomerController::store($discount->id,$c->id,$request->usage_times);
+            }
+        }
+        else{
+            foreach ($request->customer as $c){
+                DiscountCustomerController::store($discount->id,$c,$request->usage_times);
+            }
+        }
+
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreDiscountCodeRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreDiscountCodeRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\DiscountCode  $discountCode
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DiscountCode $discountCode)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DiscountCode  $discountCode
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DiscountCode $discountCode)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateDiscountCodeRequest  $request
-     * @param  \App\Models\DiscountCode  $discountCode
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateDiscountCodeRequest $request, DiscountCode $discountCode)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\DiscountCode  $discountCode
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DiscountCode $discountCode)
-    {
-        //
-    }
 }

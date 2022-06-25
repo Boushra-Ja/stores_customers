@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\BoshraRe\ProductResource;
+use App\Http\ResourcesBayan\collection_product;
+use App\Http\ResourcesBayan\product_classification;
 use App\Models\Collection;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class CollectionController extends BaseController
@@ -15,26 +18,52 @@ class CollectionController extends BaseController
     //عرض منتجات متجر محدد
     public function index($id)
     {
-        $a = array();
-        $i = 0;
-        $collection = Collection::where('store_id', '=', $id)->get();
-        if ($collection) {
 
-            foreach ($collection as $option) {
-                $product = Product::where('collection_id', '=', $option->id)->get();
-                foreach ($product as $option1) {
-                    $a[$i] = $option1;
-                    $i = $i + 1;
-                }
 
-            }
+        $product = DB::table('products')
+            ->join('collections', function ($join) use ($id) {
+                $join->on('collections.id', '=', 'products.collection_id')
+                    ->where('collections.store_id', '=', $id);
+            })
+            ->get();
 
-            return $this->sendResponse($a, 'Store Shop successfully');
 
-        } else {
-            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
+        $g = product_classification::collection($product);
 
-        }
+        return $this->sendResponse($g, 'Store Shop successfully');
+
+
+
+
+//        $a = array();
+//        $i = 0;
+//        $collection = Collection::where('store_id', '=', $id)->get();
+//        if ($collection) {
+//
+//            foreach ($collection as $option) {
+//                $product = Product::where('collection_id', '=', $option->id)->get();
+////                foreach ($product as $option1) {
+////                      $a[$i] = $option1;
+////                    $a[$i] = product_classification::collection($option1->id);
+////
+////                    $i = $i + 1;
+////                }
+//                $g = product_classification::collection($product);
+//
+//                $i = $i + 1;
+//
+//            }
+//
+//            return $this->sendResponse($g, 'Store Shop successfully');
+//
+//        } else {
+//            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
+//
+//        }
+
+
+
+
 
     }
 
@@ -44,7 +73,9 @@ class CollectionController extends BaseController
         $collection = Collection::where('store_id', '=', $id)->get();
         if ($collection) {
 
-            return $this->sendResponse($collection, 'Store Shop successfully');
+            $g = collection_product::collection($collection);
+
+            return $this->sendResponse($g, 'Store Shop successfully');
 
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
@@ -56,7 +87,7 @@ class CollectionController extends BaseController
     // اضافة مجموعة
     public function store(Request $request)
     {
-        // dd(auth::id());
+
         $request->validate([
             'title' => 'required',
             'discription' => 'nullable',

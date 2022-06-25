@@ -1,12 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Controllers\API\BaseController;
-use App\Http\ResourcesBat\OrderCollectionB;
 use App\Http\ResourcesBayan\ordure_product_resource;
+use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Http\Requests\StoreOrderProductRequest;
+use App\Http\Requests\UpdateOrderProductRequest;
+use App\Http\Resources\BoshraRe\BillResource;
+use App\Http\Resources\BoshraRe\OrderProductResource;
+use App\Http\Resources\BoshraRe\ProductBillResource;
 use App\Models\OrderStatus;
+use Illuminate\Support\Facades\DB;
 
 class OrderProductController extends BaseController
 {
@@ -21,38 +27,6 @@ class OrderProductController extends BaseController
         }
         return 0;
     }
-
-    public function index()
-    {
-        $status_id = OrderStatus::where('status', 'في السله')->value('id');
-
-        $order=OrderProduct::query()->where('status_id',$status_id)->get();
-
-        if ($order) {
-            return
-
-                OrderCollectionB::collection($order);
-        } else {
-
-
-            return null;
-        }
-
-        /////////////////////////////////
-
-//        dd("jjj");
-
-//
-//        $order = OrderProduct::with('orders')->where('status_id','=',5)->
-//        get();
-
-
-
-       // return response()->json($order,200);
-
-
-    }
-
 
 
 
@@ -69,7 +43,7 @@ class OrderProductController extends BaseController
         $arr = [$orderProduct];
 
         if ($arr) {
-            return $this->sendResponse($arr, "success");
+            return $this->sendResponse(OrderProductResource::collection($arr), "success");
         }
         return $this->sendErrors([], "error");
     }
@@ -85,6 +59,27 @@ class OrderProductController extends BaseController
         else
             return $this->sendErrors([], "failed");
     }
+
+    public function bill($order_id)
+    {
+
+        $data =  DB::table('order_products')->where('order_products.order_id' ,$order_id )
+        ->join('orders', 'orders.id', '=', 'order_products.order_id')
+        ->get() ;
+
+        return $this->sendResponse(BillResource::collection($data ), 'success') ;
+    }
+
+/*
+public function all_products_bill($order_id)
+    {
+        $products  =OrderProduct::where('order_id' , $order_id)->get() ;
+        return $this->sendResponse(ProductBillResource::collection($products) , 'success') ;
+
+    }
+  */
+
+
 
     public function order_product($id){
         $product=OrderProduct::where('order_id','=',$id)->get();

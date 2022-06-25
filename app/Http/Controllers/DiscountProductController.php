@@ -5,82 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\DiscountProduct;
 use App\Http\Requests\StoreDiscountProductRequest;
 use App\Http\Requests\UpdateDiscountProductRequest;
+use App\Models\Product;
+use Illuminate\Http\Request;
 
 class DiscountProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public static function store(Request $request, $id)
     {
-        //
-    }
+        $request->validate([
+            'title' => 'nullable',
+            'apply_to' => 'required',
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreDiscountProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreDiscountProductRequest $request)
-    {
-        //
-    }
+        $input = $request->all();
+        $discount = DiscountProduct::create([
+            'title' => $request->title,
+            'apply_to' => $request->apply_to,
+            'discounts_id' => $id,
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\DiscountProduct  $discountProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DiscountProduct $discountProduct)
-    {
-        //
-    }
+        if ($discount) {
+            if ($request->product != null) {
+                foreach ($request->product as $value) {
+                    $product = Product::find($value);
+                    if ($product)
+                        $product->update(['discount_products_id' => $discount->id,]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DiscountProduct  $discountProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DiscountProduct $discountProduct)
-    {
-        //
-    }
+                }
+            }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateDiscountProductRequest  $request
-     * @param  \App\Models\DiscountProduct  $discountProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateDiscountProductRequest $request, DiscountProduct $discountProduct)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\DiscountProduct  $discountProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DiscountProduct $discountProduct)
-    {
-        //
+        }
     }
 }
