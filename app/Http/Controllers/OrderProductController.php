@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Controllers\API\BaseController;
-use App\Models\Order;
+use App\Http\ResourcesBat\OrderCollectionB;
+use App\Http\ResourcesBayan\ordure_product_resource;
 use App\Models\OrderProduct;
 use App\Http\Requests\StoreOrderProductRequest;
-use App\Http\Requests\UpdateOrderProductRequest;
 use App\Models\OrderStatus;
 
 class OrderProductController extends BaseController
@@ -22,6 +21,38 @@ class OrderProductController extends BaseController
         }
         return 0;
     }
+
+    public function index()
+    {
+        $status_id = OrderStatus::where('status', 'في السله')->value('id');
+
+        $order=OrderProduct::query()->where('status_id',$status_id)->get();
+
+        if ($order) {
+            return
+
+                OrderCollectionB::collection($order);
+        } else {
+
+
+            return null;
+        }
+
+        /////////////////////////////////
+
+//        dd("jjj");
+
+//
+//        $order = OrderProduct::with('orders')->where('status_id','=',5)->
+//        get();
+
+
+
+       // return response()->json($order,200);
+
+
+    }
+
 
 
 
@@ -53,5 +84,12 @@ class OrderProductController extends BaseController
             return $this->sendResponse($res, "success");
         else
             return $this->sendErrors([], "failed");
+    }
+
+    public function order_product($id){
+        $product=OrderProduct::where('order_id','=',$id)->get();
+        $g = ordure_product_resource::collection($product);
+
+        return $this->sendResponse($g, 'Store Shop successfully');
     }
 }

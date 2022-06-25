@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\BoshraRe\StoresResource;
 use App\Models\FavoriteStore;
 
 use App\Models\Store;
@@ -24,6 +25,12 @@ class FavoriteStoreController extends BaseController
         return response(
             $favorite
         );
+    }
+    public  function  index(){
+        $store=Store::all();
+        return StoresResource::Collection($store);
+
+
     }
 
     ////////ارجاع مفضلتي

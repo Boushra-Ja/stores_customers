@@ -10,6 +10,7 @@ class DiscountProduct extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'title',
         'apply_to',
         'discounts_id',

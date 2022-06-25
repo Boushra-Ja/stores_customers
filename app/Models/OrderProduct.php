@@ -11,7 +11,8 @@ class OrderProduct extends Model
     protected $fillable = [
         'order_id',
         'product_id',
-        'status_id'
+        'status_id',
+        'amount'
 
     ];
 
@@ -25,6 +26,16 @@ class OrderProduct extends Model
   public function status()
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');
+
+    }
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function orders()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
 
