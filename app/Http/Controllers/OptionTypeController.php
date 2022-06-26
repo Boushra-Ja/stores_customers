@@ -7,6 +7,7 @@ use App\Models\OptionType;
 use App\Http\Requests\StoreOptionTypeRequest;
 use App\Http\Requests\UpdateOptionTypeRequest;
 use App\Http\Resources\BoshraRe\OptionResource;
+use App\Models\OptioinValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -25,15 +26,30 @@ class OptionTypeController extends BaseController
     public function option_product($product_id)
     {
         $options = OptionType::where('product_id' , $product_id)->get() ;
-        $values = DB::table('option_types')
-        ->join('optioin_values', function ($join)  {
-            $join->on('optioin_values.option_type_id', '=', 'option_types.id');
 
-        })
-        ->where('option_types.product_id' , $options[$product_id-1]['id'])
-        ->get();
+        $values = array() ;
+        $i = 0   ;
+        $j = 0 ;
+        $res = array() ;
 
-        return $this->sendResponse(OptionResource::collection($values) , "successs") ;
+        foreach ($options as $value) {
+            //$values[$i] = OptioinValue::where('option_type_id' , $value['id'])->get() ;
+
+            $values[$i]  = DB::table('option_types')
+            ->join('optioin_values', 'optioin_values.option_type_id', '=', 'option_types.id')
+            ->where('option_types.id' , $value['id'])
+            ->get() ;
+
+            foreach ($values[$i] as   $val) {
+                $res[$j] = $val ;
+                $j = $j + 1;
+
+
+            }
+            $i = $i + 1 ;
+
+        }
+        return $this->sendResponse(OptionResource::collection($res) , "successs") ;
     }
 
     public static function store($type, int $product_id, int $i)

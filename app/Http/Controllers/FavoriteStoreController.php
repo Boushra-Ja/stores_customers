@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\BoshraRe\StoresResource;
 use App\Models\FavoriteStore;
 
 use App\Models\Store;
@@ -18,12 +19,18 @@ class FavoriteStoreController extends BaseController
         $favorite = DB::table('stores')
             ->join('favorite_stores', function ($join) {
                 $join->on('stores.id', '=', 'favorite_stores.store_id')
-                    ->where('favorite_stores.customer_id', '=', 4);
+                    ->where('favorite_stores.customer_id', '=',4/* Auth::id()*/);
             })
             ->get();
         return response(
             $favorite
         );
+    }
+    public  function  index(){
+        $store=Store::all();
+        return StoresResource::Collection($store);
+
+
     }
 
     ////////ارجاع مفضلتي
