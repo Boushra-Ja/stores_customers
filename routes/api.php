@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SecondrayClassificationController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\FavoriteStoreController;
 use App\Http\Controllers\OptioinValueController;
@@ -101,4 +102,87 @@ Route::get('order/order_product/{id}', [App\Http\Controllers\OrderProductControl
 Route::get('customer/myCustomer/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer']);
 Route::get('customer/myCustomer_most_buy/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_most_buy']);
 Route::get('customer/myCustomer_salles/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_salles']);
+
+
+/////////////////////batool_new/////////
+
+Route::prefix("Customer") ->group(function() {
+    Route::post('/html_email/{name}/{code}/{email}/{title}', 'App\Http\Controllers\CustomerController@html_email');
+    Route::post('/changepassword' ,'App\Http\Controllers\CustomerController@changepassword');
+    Route::post('/login', 'App\Http\Controllers\CustomerController@login');
+    Route::post('/logout', 'App\Http\Controllers\CustomerController@logout');
+    Route::post('/register', 'App\Http\Controllers\CustomerController@register');
+
+});
+//, 'middleware' => ['auth:sanctum']
+
+
+Route::get('/Show_p' , [App\Http\Controllers\SecondrayClassificationController::class,'Show_p']);
+
+Route::group(['prefix' => 'Product'],  function() {
+
+    Route::post('/temp' , [ProductController::class,'temp']) ;
+    Route::get('/Order_sales' , [ProductController::class,'Order_sales']);
+    Route::get('/Order_discount' , [ProductController::class,'Order_discount']);
+    Route::get('/Order_Salary' , [ProductController::class,'Order_Salary']);
+    Route::get('/Order_favorite' , [ProductController::class,'Order_favorite']);
+    Route::get('/Product/Product_All' , [ProductController::class,'Product_All']);
+    Route::get('/Product_All' , [ProductController::class,'Product_All']);
+    Route::get('/Product_Allf' , [ProductController::class,'Product_Allf']);
+    Route::post('/P2' ,[ProductController::class, 'store']);
+    Route::get('/Show_Secondray' , [SecondrayClassificationController::class,'Show_Secondray']);
+    Route::get('/ShowClassification2/{id}' , [SecondrayClassificationController::class,'ShowClassification2']);
+    Route::get('/Show_Detalis/{id}' , [ProductController::class,'Show_Detalis']);
+
+
+});
+
+Route::prefix("FavoriteProduct")->namespace('App\Http\Controllers')->group(function() {
+    Route::get('/index' , 'FavoriteProductController@index');
+    Route::resource('f' , 'FavoriteProductController');
+    Route::get('/show' , 'FavoriteProductController@Show');
+    Route::post('/store/{id}' , 'FavoriteProductController@store');
+    //  Route::get('index' , 'FavoriteStoreController@index');
+
+});
+
+
+//,'middleware' => ['auth:sanctum']
+Route::prefix("FavoriteStore")->namespace('App\Http\Controllers')->group(function() {
+
+    Route::post('/Add_Favorite/{id}' , 'App\Http\Controllers\FavoriteStoreController@Add_Favorite');
+    Route::get('/Show_Favorite' , 'App\Http\Controllers\FavoriteStoreController@Show_Favorite');
+    Route::get('/index' , 'App\Http\Controllers\FavoriteStoreController@index');
+    Route::resource('f2' , 'FavoriteStoreController');
+
+
+});
+
+
+Route::prefix("SecondrayClassification") ->group(function() {
+
+    Route::post('/ShowClassification/{id}/{title}' , 'App\Http\Controllers\SecondrayClassificationController@shwoo');
+
+});
+
+
+Route::get('/index' , [App\Http\Controllers\OrderProductController::class,'index']);
+Route::post('/ChangeToCommit/{orderid}/{productid}' , [App\Http\Controllers\OrderProductController::class,'ChangeToCommit']);
+Route::post('/ChangeAmount/{productid}/{orderid}/{amount}' , [App\Http\Controllers\OrderProductController::class,'ChangeAmount']);
+
+
+
+
+
+
+
+
+
+
+
+
+//Route::group(['middleware' => ['auth:sanctum']],
+//    function () {
+//
+//});
 

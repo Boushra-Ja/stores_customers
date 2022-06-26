@@ -34,6 +34,7 @@ class FavoriteProductController extends BaseController
         //  return $favorite;
     }
 
+
     //اضافه لمفضله المنتجات او حذف  //
     public function store($id)
     {

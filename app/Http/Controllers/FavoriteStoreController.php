@@ -19,7 +19,7 @@ class FavoriteStoreController extends BaseController
         $favorite = DB::table('stores')
             ->join('favorite_stores', function ($join) {
                 $join->on('stores.id', '=', 'favorite_stores.store_id')
-                    ->where('favorite_stores.customer_id', '=', 4);
+                    ->where('favorite_stores.customer_id', '=',4/* Auth::id()*/);
             })
             ->get();
         return response(
