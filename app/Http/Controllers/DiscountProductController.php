@@ -18,7 +18,6 @@ class DiscountProductController extends Controller
         ]);
 
 
-        $input = $request->all();
         $discount = DiscountProduct::create([
             'title' => $request->title,
             'apply_to' => $request->apply_to,
