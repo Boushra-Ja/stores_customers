@@ -15,8 +15,8 @@ class Discount extends Model
         'value',
         'start_date',
         'end_date',
-        'condition',
-        'condition_value',
+//        'condition',
+//        'condition_value',
         'store_id',
 
     ];

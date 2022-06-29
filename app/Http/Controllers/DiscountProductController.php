@@ -15,6 +15,7 @@ class DiscountProductController extends Controller
         $request->validate([
             'title' => 'nullable',
             'apply_to' => 'required',
+
         ]);
 
 
@@ -22,6 +23,7 @@ class DiscountProductController extends Controller
             'title' => $request->title,
             'apply_to' => $request->apply_to,
             'discounts_id' => $id,
+
         ]);
 
         if ($discount) {
@@ -33,8 +35,6 @@ class DiscountProductController extends Controller
 
                 }
             }
-
-
         }
     }
 }
