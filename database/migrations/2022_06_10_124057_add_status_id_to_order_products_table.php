@@ -14,10 +14,6 @@ return new class extends Migration
             $table->foreign('status_id')->references('id')->on('order_statuses')->onDelete('cascade');
             $table->integer('discount_products_id')->unsigned();
             $table->foreign('discount_products_id')->references('id')->on('discount_products')->onDelete('cascade');
-//            $table->integer('discount_codes_id')->unsigned();
-//            $table->foreign('discount_codes_id')->references('id')->on('discount_codes')->onDelete('cascade');
-
-
         });
     }
 
@@ -26,7 +22,6 @@ return new class extends Migration
         Schema::table('order_products', function (Blueprint $table) {
             $table->dropColumn('status_id');
             $table->dropColumn('discount_products_id');
-//            $table->dropColumn('discount_codes_id');
         });
     }
 };
