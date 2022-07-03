@@ -167,7 +167,7 @@ Route::prefix("SecondrayClassification") ->group(function() {
 
 
 Route::get('/index' , [App\Http\Controllers\OrderProductController::class,'index']);
-Route::post('/ChangeToCommit/{orderid}/{productid}' , [App\Http\Controllers\OrderProductController::class,'ChangeToCommit']);
+Route::post('/ChangeToCommit/{productid}/{orderid}' , [App\Http\Controllers\OrderProductController::class,'ChangeToCommit']);
 Route::post('/ChangeAmount/{productid}/{orderid}/{amount}' , [App\Http\Controllers\OrderProductController::class,'ChangeAmount']);
 
 

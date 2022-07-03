@@ -36,6 +36,7 @@ class OrderCollectionB extends JsonResource
 
             'order_id' =>  $this->order_id ,
             'amount'=>$this->amount,
+             'created_at'=>$this->created_at->format('Y/m/d'),
             '$customer_id'=>Order::where('id' , $this->order_id)->first()['customer_id'],
             'my_products' => OrderProductB::collection(Product::where('id' , $this->product_id)->get()),
 

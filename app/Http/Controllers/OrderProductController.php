@@ -36,7 +36,7 @@ class OrderProductController extends BaseController
     {
         $status_id = OrderStatus::where('status', 'في السله')->value('id');
 
-        $order=OrderProduct::query()->where('status_id',$status_id)->get();
+        $order=OrderProduct::query()->where('status_id',$status_id)->orderBy('order_id', 'asc')->get();
 
         if ($order) {
             return
