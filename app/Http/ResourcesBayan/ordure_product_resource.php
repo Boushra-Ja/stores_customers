@@ -31,8 +31,8 @@ class ordure_product_resource extends JsonResource
 
         return [
             'id' => $this->product_id,
-//            'created_at' => $this->created_at->format('Y-m-d '),
-//            'updated_at' => $this->updated_at->format('Y-m-d '),
+            'created_at' => $this->created_at->format('Y-m-d '),
+            'updated_at' => $this->updated_at->format('Y-m-d '),
             'product' => Product::where('id', '=', $this->product_id)->value('name'),
             'option' => $a
 

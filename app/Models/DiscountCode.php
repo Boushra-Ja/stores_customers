@@ -10,9 +10,10 @@ class DiscountCode extends Model
     use HasFactory;
 
     protected $fillable = [
-        'its_for',
         'discount_code',
         'discounts_id',
+        'condition',
+        'condition_value',
     ];
 
     public function discount()
@@ -25,8 +26,8 @@ class DiscountCode extends Model
         return $this->belongsToMany(Customer::class,'discount_customers','discount_codes_id','customers_id','id','id' ) ;
     }
 
-    public function orderProduct()
+    public function order()
     {
-        return $this->hasMany(OrderProduct::class , 'discount_codes_id');
+        return $this->hasMany(Order::class , 'discount_codes_id');
     }
 }

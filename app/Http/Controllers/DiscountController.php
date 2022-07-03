@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class DiscountController extends BaseController
 {
 
-    public static function store(Request $request,$id)
+    public static function store(Request $request, $id)
     {
         $request->validate([
             'type' => 'required',
@@ -18,8 +18,6 @@ class DiscountController extends BaseController
             'value' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'condition' => 'required',
-            'condition_value' => 'required',
         ]);
 
         $discount = Discount::create([
@@ -28,18 +26,15 @@ class DiscountController extends BaseController
             'value' => $request->value,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'condition' => $request->condition,
-            'condition_value' => $request->condition_value,
             'store_id' => $id,
         ]);
 
         if ($discount) {
 
-            if ($request->type == 1){
-                DiscountProductController::store($request, $discount->id);}
-            else
-            {
-                DiscountCodeController::store($request, $discount->id);
+            if ($request->type == 1) {
+                DiscountProductController::store($request, $discount->id);
+            } else {
+                DiscountCodeController::store($request, $discount->id, $id);
             }
         }
     }

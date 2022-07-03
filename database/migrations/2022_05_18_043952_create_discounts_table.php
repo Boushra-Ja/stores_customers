@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integer('value');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('condition')->nullable();
-            $table->integer('condition_value')->nullable();
+//            $table->string('condition')->nullable();
+//            $table->integer('condition_value')->nullable();
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->timestamps();

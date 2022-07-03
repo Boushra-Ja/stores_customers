@@ -14,7 +14,7 @@ class OrderProduct extends Model
         'product_id',
         'status_id',
         'discount_products_id',
-        'discount_codes_id'
+        //'discount_codes_id'
 
     ];
 
@@ -35,9 +35,6 @@ class OrderProduct extends Model
         return $this->belongsTo(DiscountProduct::class, 'discount_products_id');
     }
 
-    public function discount_code()
-    {
-        return $this->belongsTo(DiscountCode::class, 'discount_codes_id');
-    }
+
 
 }

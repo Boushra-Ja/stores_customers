@@ -15,14 +15,15 @@ class DiscountProductController extends Controller
         $request->validate([
             'title' => 'nullable',
             'apply_to' => 'required',
+
         ]);
 
 
-        $input = $request->all();
         $discount = DiscountProduct::create([
             'title' => $request->title,
             'apply_to' => $request->apply_to,
             'discounts_id' => $id,
+
         ]);
 
         if ($discount) {
@@ -34,8 +35,6 @@ class DiscountProductController extends Controller
 
                 }
             }
-
-
         }
     }
 }
