@@ -13,6 +13,7 @@ return new class extends Migration
             $table->integer('order_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->string('amount');
+            $table->string('gift_order');
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 

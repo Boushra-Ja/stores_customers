@@ -14,6 +14,8 @@ class OrderProduct extends Model
         'product_id',
         'status_id',
         'discount_products_id',
+         'amount',
+        'gift_order',
         //'discount_codes_id'
 
     ];
