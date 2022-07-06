@@ -27,7 +27,7 @@ class StoreManagerController extends BaseController
     }
 
     //////انشاء حساب صاحب متجر
-    public static function register(Request $request,$store_id)
+    public static function register( $request,$store_id)
     {
 
         $valid = $request->validate([
