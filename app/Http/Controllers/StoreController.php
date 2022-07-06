@@ -81,7 +81,6 @@ class StoreController extends BaseController
         $input = $request->all();
         $shop = Store::create($input);
 
-        ///////////هاد كود تجربة
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $extention = $file->getClientOriginalExtension();
@@ -111,7 +110,8 @@ class StoreController extends BaseController
 //                "product"=>[0]
 //            ];
             DiscountController::store($request,$shop->id);
-            return $this->sendResponse($shop, 'Store Shop successfully');
+            StoreManagerController::register($request,$shop->id);
+            return $this->sendResponse($shop->id, 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
 
