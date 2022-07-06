@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\BoshraRe\ProductAllResource;
 use App\Http\Resources\BoshraRe\ProductResource;
+use App\Models\Collection;
 use App\Models\SecondrayClassificationProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -118,14 +119,26 @@ class ProductController extends BaseController
     //////عرض منتجات مشابهة
     public function similar_products($id)
     {
-        $my_classification = SecondrayClassificationProduct::where('product_id' , $id)->value('secondary_id') ;
+        $my_classification = SecondrayClassificationProduct::where('product_id' , $id)->get() ;
 
-        $products_class_ids = DB::table('secondray_classification_products')->where('secondary_id' , $my_classification)->where('product_id' , '!='  , $id)
-        ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
-        ->get();
+        $products_class_ids = array() ;
+        $i = 0;
+        $res = array() ;
+        $j = 0;
+        foreach ($my_classification as $value) {
+            $products_class_ids[$i] = DB::table('secondray_classification_products')->where('secondary_id' , $value['secondary_id'])->where('product_id' , '!='  , $id)
+            ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
+            ->get();
 
-        return $this->sendResponse( ProductResource::collection($products_class_ids) , "success");
+            foreach ($products_class_ids[$i] as $val) {
+                $res[$j] = $val ;
+                $j++;
+            }
+            $i++;
+    }
 
+
+        return $this->sendResponse( ProductResource::collection($res) , "success");
     }
 
     // اضافة منتج
@@ -215,4 +228,91 @@ class ProductController extends BaseController
     }
 
 
+
+    public function temp(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required',
+            'party' => 'nullable',
+            'discription'  => 'required',
+            'image' => 'required',
+            'selling_price' => 'required',
+            'cost_price' => 'required',
+            'collection_id' => 'required',
+            'return_or_replace' => 'required',
+            'discount_products_id' => 'required',
+            'prepration_time' => 'required',
+            'gift'=> 'required',
+            'number_of_sales' => 'required',
+            'age' => 'required',
+        ]);
+        $product = new Product();
+        $product->name =$request->name;
+        $product->discription = $request->discription;
+        $product->age =$request->age;
+        $product->gift = $request->gift;
+        $product->prepration_time = $request->prepration_time;
+        $product->discount_products_id = $request->discount_products_id;
+        $product->return_or_replace = $request->return_or_replace;
+        $product->collection_id = $request->collection_id;
+        $product->number_of_sales = $request->number_of_sales;
+        $product->cost_price =$request->cost_price;
+        $product->selling_price =$request->selling_price;
+        if($request->hasfile('image'))
+        {
+            $file = $request->file('image');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extention;
+            $file->move('uploads/product/', $filename);
+            $product->image =$filename;
+
+        }
+        else
+            $product->image ='';
+        $product->save();
+
+
+        if ($product) {
+//            foreach ($request->classification as $value) {
+//                SecondrayClassificationProductController::store($product->id, $value);
+//            }
+//            foreach ($request->type as $vv) {
+//
+//                OptionTypeController::store($vv, $product->id, 0);
+//
+//            }
+            return $this->sendResponse($product, 'Store Shop successfully');
+
+        } else {
+            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
+
+        }
+
+    }
+
+
+    public function my_product($store_id)
+    {
+
+        $collections_id = Collection::where('store_id' , $store_id)->get();
+        $product = array() ;
+        $i =0 ;
+        $j = 0 ;
+        $res = array() ;
+
+        foreach ($collections_id as  $value) {
+
+            $product[$i] = Product::where('collection_id' , $value['id']) ->get();
+
+            foreach ($product[$i] as  $val) {
+                $res[$j] = $val ;
+                $j = $j + 1 ;
+            }
+            $i = $i + 1 ;
+        }
+
+        return $this->sendResponse(ProductResource::collection($res) , 'success') ;
+
+    }
 }

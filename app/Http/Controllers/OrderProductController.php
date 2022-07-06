@@ -171,4 +171,10 @@ public function all_products_bill($order_id)
 
         return $this->sendResponse($g, 'Store Shop successfully');
     }
+
+    public function all_orderproduct($order_id , $status_id)
+    {
+        $data = OrderProduct::where('order_id' , $order_id)->where('status_id' , $status_id ) ->get() ;
+        return $this->sendResponse(OrderProductResource::collection($data) , 'success') ;
+    }
 }

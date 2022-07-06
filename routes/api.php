@@ -21,11 +21,17 @@ header("Access-Control-Max-Age", "3600");
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 header("Access-Control-Allow-Credentials", "true");
 
+
 //////////////////Boushra//////////////////////////////
 ////Route Of Stores
 Route::resource('stores' , StoreController :: class) ;
 Route::get('stores/order/reviews' , [StoreController::class , 'order_by_review']) ;
 Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
+
+///add favourite store
+Route::post('FavoriteStore/Add_Favorite' , [FavoriteStoreController::class , 'Add_Favorite']);
+Route::delete('FavoriteStore/Delete_Favorite/{id}/{cus_id}' , [FavoriteStoreController::class , 'Delete_Favorite']);
+Route::get('product_with_class/{id}' , [StoreController::class , 'product_with_class']);
 
 
 ////Routes for products
@@ -60,6 +66,7 @@ Route::get('values_for_option/{id}' , [OptioinValueController::class , 'options_
 
 /////////add_product
 Route::post('temp' , [ProductController::class , 'temp']) ;
+Route::get('my_product_store/{store_id}' , [ProductController::class , 'my_product']) ;
 
 /////////My_Favourite_store
 Route::get('myFavorite/{id}' , [FavoriteStoreController::class , 'myFavorite']);
@@ -67,6 +74,8 @@ Route::get('myFavorite/{id}' , [FavoriteStoreController::class , 'myFavorite']);
 /////bill
 Route::get('bill/{id}' , [OrderProductController::class , 'bill']);
 Route::get('all_products_bill/{id}' , [OrderProductController::class , 'all_products_bill']);
+Route::get('all_orderproduct/{id}/{status_id}' , [OrderProductController::class , 'all_orderproduct']);
+
 
 ////////////////////////******////////////////////////////////////
 
@@ -110,6 +119,7 @@ Route::get('customer/myCustomer/{id}', [App\Http\Controllers\CustomerController:
 Route::get('customer/myCustomer_most_buy/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_most_buy']);
 Route::get('customer/myCustomer_salles/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_salles']);
 
+Route::post('Customer/login', [App\Http\Controllers\CustomerController::class, 'login']);
 
 /////////////////////batool_new/////////
 
