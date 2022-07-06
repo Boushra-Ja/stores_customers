@@ -15,6 +15,11 @@ use App\Http\Controllers\RatingStoreController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS, post, get');
+header("Access-Control-Max-Age", "3600");
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+header("Access-Control-Allow-Credentials", "true");
 
 //////////////////Boushra//////////////////////////////
 ////Route Of Stores
@@ -67,6 +72,8 @@ Route::get('all_products_bill/{id}' , [OrderProductController::class , 'all_prod
 
 
 Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
+
+
 Route::post('storeManager/register', [App\Http\Controllers\StoreManagerController::class, 'register']);
 
 Route::post('collection/create', [App\Http\Controllers\CollectionController::class, 'store']);
@@ -94,7 +101,7 @@ Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerControll
 Route::post('helper/create', [App\Http\Controllers\HelperController::class, 'store']);
 Route::post('storeManager/update', [App\Http\Controllers\StoreManagerController::class, 'update']);
 
-Route::post('discountproduct/create/{id}', [App\Http\Controllers\DiscountController::class, 'store']);
+Route::post('discountproduct/create/{id}/{h}', [App\Http\Controllers\DiscountController::class, 'store']);
 Route::post('customer/register', [App\Http\Controllers\CustomerController::class, 'register']);
 Route::get('order/all_my_order/{id}', [App\Http\Controllers\OrderController::class, 'all_my_order']);
 Route::get('order/order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);

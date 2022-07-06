@@ -92,25 +92,10 @@ class StoreController extends BaseController
             $shop->image = '';
         $shop->save();
 
-        ///////////
         if ($shop) {
             WaitingStoreController::store($shop->id);
-            //////////////////////////////////////////بدها نقل لمكان القبول \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            $r =array(
-                "type" => "1",
-                "status" => "0",
-                "value" => "0",
-                "start_date" => "2022-06-13 09:38:43",
-                "end_date" => "2022-06-13 09:38:43",
-                "condition" => "0",
-                "condition_value" => "0",
-                "title" => ".",
-                "apply_to" => "",
-                "product"=>[0]
-            );
 
-            DiscountController::store($r,$shop->id);
-          //  DiscountController::store($request,$shop->id);
+            DiscountController::store($request,$shop->id,1);
 
             StoreManagerController::register($request,$shop->id);
             return $this->sendResponse($shop->id, 'Store Shop successfully');
