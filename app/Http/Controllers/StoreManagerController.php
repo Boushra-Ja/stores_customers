@@ -66,12 +66,13 @@ class StoreManagerController extends BaseController
             $user1->save();
 
             $privilladge=Privilladge::all();
+            if($privilladge)
 
             foreach($privilladge as $option){
                 PrivilladgeStoreManagerController::store($option->id,$user1->id);
             }
 
-           mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
+        //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
             return response ()->json([
                 'persone_id' => $persone,
