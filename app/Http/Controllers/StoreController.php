@@ -95,7 +95,7 @@ class StoreController extends BaseController
         ///////////
         if ($shop) {
             WaitingStoreController::store($shop->id);
-            ////////////////////////////////////////////بدها نقل لمكان القبول \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+            //////////////////////////////////////////بدها نقل لمكان القبول \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             $r =array(
                 "type" => "1",
                 "status" => "0",
@@ -108,7 +108,7 @@ class StoreController extends BaseController
                 "apply_to" => "",
                 "product"=>[0]
             );
-
+//
 //            $r1 =array(
 //                "type" => "2",
 //                "status" => "0",
@@ -121,7 +121,7 @@ class StoreController extends BaseController
 //                "apply_to" => "",
 //                "product"=>[0]
 //            );
-            DiscountController::store($request,$shop->id);
+            DiscountController::store($r,$shop->id);
           //  DiscountController::store($request,$shop->id);
 
             StoreManagerController::register($request,$shop->id);
