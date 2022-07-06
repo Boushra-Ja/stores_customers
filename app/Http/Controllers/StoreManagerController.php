@@ -31,7 +31,7 @@ class StoreManagerController extends BaseController
     {
 
         $valid = $request->validate([
-            'name' => 'required ',
+            'username' => 'required ',
             'email' => 'required | unique:users',
             'password' => 'required',
         ]);
@@ -47,7 +47,7 @@ class StoreManagerController extends BaseController
 
 
         $persone = Persone::create([
-            'name' => $valid['name'],
+            'name' => $valid['username'],
             'email' => $valid['email'],
             'password' => $valid['password'],
             'code' => $code,
