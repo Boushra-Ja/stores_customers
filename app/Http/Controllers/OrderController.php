@@ -38,26 +38,25 @@ class OrderController extends BaseController
         }
         return 0;
     }
-
     public function store(StoreOrderRequest $request)
     {
+        $order = Order::where('store_id', '=', $request->store_id)-> where('customer_id', '=', $request->customer_id)->first();
+        if ($order === null) {
 
-        if(OrderController:: check_of_order($request->customer_id , $request->store_id) == 0)
-        {
-            $data = Order::create([
-                'customer_id'=>$request->customer_id ,
-                'store_id'=>$request->store_id ,
-                'delivery_time' => '2022-06-10 13:19:18'
-
-            ]) ;
-            if($data)
-                return $this->sendResponse( OrderResource::collection([$data]), "success");
-
-            return $this->sendErrors([], "error");
+            $order = Order::firstOrCreate([
+                'store_id' => $request->store_id,
+                'customer_id' => $request->customer_id,
+                'delivery_time' => "2022-06-25 16:39:06",
+                'delivery_price' => 0,
+            ]);
 
         }
-        return $this->sendResponse( OrderResource::collection([Order::where('customer_id',$request->customer_id)->where('store_id',$request->store_id)->first()])  , 'succes') ;
+
+        $arr = [$order] ;
+        return $this->sendResponse( OrdersResource::collection($arr) , 'success');
+
     }
+
 
 
 
@@ -110,6 +109,7 @@ class OrderController extends BaseController
         return $this->sendResponse(OrderProductResource::collection($res) , 'successs');
     }
 
+    ///الطلبات المسلمة
     public function received_orders($customer_id)
     {
         $orders = Order::select('id')->where('customer_id', $customer_id)->get();

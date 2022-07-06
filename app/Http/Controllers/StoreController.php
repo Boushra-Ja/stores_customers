@@ -7,7 +7,10 @@ use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Resources\BoshraRe\ProductClassResource;
 use App\Http\Resources\BoshraRe\StoreResource;
+use App\Models\Collection;
+use App\Models\Product;
 
 class StoreController extends BaseController
 {
@@ -119,14 +122,16 @@ class StoreController extends BaseController
 
     }
 
-    ////عرض متجر محدد
-    public function show($id)
-    {
-        $store = Store::find($id);
-        return $this->sendResponse($store, 'تم ارجاع ملف المتجر بنجاح');
+     ////عرض متجر محدد
+     public function show($id){
+        $data = Store::where('id' , $id)->get();
+        if ($data) {
+            return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
+        } else {
+            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show product info']);
 
+        }
     }
-
     ////////تعديل بيانات المتجر
     public function update(Request $request)
     {
@@ -134,6 +139,33 @@ class StoreController extends BaseController
         return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
 
 
+    }
+
+    ///جلب المنتجات مع تصنيفاتها
+    public function product_with_class($store_id)
+    {
+        $collections_id = Collection::where('store_id' , $store_id)->get();
+
+        $pr = array() ;
+        $i = 0 ;
+        $res = array() ;
+        $j = 0 ;
+        foreach ($collections_id as $value) {
+            $pr[$i] =DB::table('products')->where('products.collection_id' , $value['id'])
+            ->join('secondray_classification_products',  'products.id' , '=',  'secondray_classification_products.product_id')
+            ->join('secondray_classifications',  'secondray_classification_products.secondary_id' , '=',  'secondray_classifications.id')
+            ->join('classifications',  'classifications.id' , '=',  'secondray_classifications.classification_id')
+            ->select('secondray_classifications.id as secondary_id' ,'secondray_classifications.title as secondray_title', 'secondray_classifications.classification_id as classification_id' ,'classifications.title as classifications_title' , 'products.*' , 'secondray_classification_products.*')
+            ->get();
+
+            foreach ($pr[$i] as $val) {
+
+                $res[$j] = $val ;
+                $j++ ;
+            }
+            $i++;
+        }
+        return $this->sendResponse(ProductClassResource::collection($res) , 'success') ;
     }
 
 }

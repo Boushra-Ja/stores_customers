@@ -17,7 +17,7 @@ class orderResource extends JsonResource
             'delivery_price' => $this->delivery_price,
 //            'created_at' => $this->created_at->format('Y-m-d '),
 //            'updated_at' => $this->updated_at->format('Y-m-d '),
-            'customer_name' => Persone::where('id', '=', Customer::where('id', '=', $this->id)->value('persone_id'))->value('name'),
+            'customer_name' => Persone::where('id', '=', Customer::where('id', '=', $this->customer_id)->value('persone_id'))->value('name'),
         ];
     }
 }
