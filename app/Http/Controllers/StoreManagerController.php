@@ -27,11 +27,11 @@ class StoreManagerController extends BaseController
     }
 
     //////انشاء حساب صاحب متجر
-    public function register(Request $request)
+    public static function register(Request $request,$store_id)
     {
 
         $valid = $request->validate([
-            'name' => 'required ',
+            'username' => 'required ',
             'email' => 'required | unique:users',
             'password' => 'required',
         ]);
@@ -47,7 +47,7 @@ class StoreManagerController extends BaseController
 
 
         $persone = Persone::create([
-            'name' => $valid['name'],
+            'name' => $valid['username'],
             'email' => $valid['email'],
             'password' => $valid['password'],
             'code' => $code,
@@ -60,7 +60,7 @@ class StoreManagerController extends BaseController
 
             $user1 = StoreManager::create([
                 'person_id' => $persone->id,
-                'store_id' => $request->store_id,
+                'store_id' => $store_id,
             ]);
 
             $user1->save();
@@ -78,9 +78,6 @@ class StoreManagerController extends BaseController
                 'token'=>$token,
             ]);
             // return $this->sendResponse($persone, 'Store Shop successfully');
-        } else {
-            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
-
         }
 
 

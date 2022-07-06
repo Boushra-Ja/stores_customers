@@ -17,26 +17,26 @@ class ProductController extends BaseController
 {
 
     //الاقل سعرا//
-    public function Product_Order_Salary()
+    public function Order_Salary()
     {
-        $ProductModel = Product::orderBy('cost_price', 'asc')->get() ;
+        $ProductModel = Product::orderBy('cost_price', 'asc')->get();
+        // all();
+        //orderBy('cost_price', 'asc')->get() ;
 
 
-        //->paginate(2);
         return response()->json($ProductModel, 200);
 
-        //http://127.0.0.1:8000/api/product/Display?page=2
     }
 
     //الاكثر شيوعا//
-    public function Product_Order_sales()
+    public function Order_sales()
     {
         $ProductModel = Product::orderBy('number_of_sales', 'desc')->get() ;
         return response()->json($ProductModel, 200);
     }
 
-//العروض والحسومات//
-    public function Product_Order_discount()
+    //العروض والحسومات//
+    public function Order_discount()
     {
         $favorite = DB::table('products')
             ->join('discount_products', function ($join) {
@@ -44,33 +44,40 @@ class ProductController extends BaseController
                     ->where('discount_products.title', '=', 'null');
             })
             ->get();
-        //->paginate(2);
-        return response([
+
+        return response(
             $favorite
-        ]);
+        );
     }
 
     //اقتراحات قد تعجبك//
-    public function Product_Order_favorite()
+    public function Order_favorite()
     {
+//
+        $re = array();
+        $i = 0;
+//        $prooo=array();
 
-        $pro = DB::table('secondray_classification_products')->select('*')
-            ->join('favorite_products', 'favorite_products.product_id', '=', 'classification_products.product_id')
+        $pro = DB::table('secondray_classification_products')
+            ->join('favorite_products', 'favorite_products.product_id', '=', 'secondray_classification_products.product_id')
             ->get();
 
 
-        $re = array();
-        $i = 0;
+
         foreach ($pro as $val) {
-
             $prooo = DB::table('secondray_classification_products')
-                ->join('products', 'products.id', '=', 'classification_products.product_id')
+                ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
+
                 ->where('secondray_classification_products.secondary_id', '=', $val->secondary_id)->get();
+            foreach ($prooo as $valk) {
 
-
-            $re[$i] = $prooo;
-            $i++;
+                $re[$i]=$valk;
+                $i++;
+            }
         }
+
+
+        //  echo $prooo[0];
 
         return response($re, 200);
 

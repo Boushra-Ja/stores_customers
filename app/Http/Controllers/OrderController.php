@@ -132,6 +132,8 @@ class OrderController extends BaseController
 
         return $this->sendResponse(OrderProductResource::collection($res) , 'successs');
     }
+
+
     //الطلبات المعلقة/المنفذة/المقبولة لمتجر
     public function all_my_order($id,$i){
 

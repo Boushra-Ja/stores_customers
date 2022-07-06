@@ -11,7 +11,9 @@ class OrderStatus extends Model
     protected  $table = 'order_statuses' ;
 
     protected $fillable = [
+        'id',
         'status',
+
     ];
 
     public function orders()

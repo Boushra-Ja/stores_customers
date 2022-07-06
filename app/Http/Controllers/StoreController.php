@@ -84,7 +84,6 @@ class StoreController extends BaseController
         $input = $request->all();
         $shop = Store::create($input);
 
-        ///////////هاد كود تجربة
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $extention = $file->getClientOriginalExtension();
@@ -99,22 +98,25 @@ class StoreController extends BaseController
         ///////////
         if ($shop) {
             WaitingStoreController::store($shop->id);
-            ////////////////////////////////////////////بدها نقل لمكان القبول \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//            $r =[
-//                "type" => "1",
-//                "status" => "0",
-//                "value" => "0",
-//                "start_date" => "2022-06-13 09:38:43",
-//                "end_date" => "2022-06-13 09:38:43",
-//                "condition" => "0",
-//                "condition_value" => "0",
-//               ///// "store_id" => $shop->id,
-//                "title" => ".",
-//                "apply_to" => "",
-//                "product"=>[0]
-//            ];
-            DiscountController::store($request,$shop->id);
-            return $this->sendResponse($shop, 'Store Shop successfully');
+            //////////////////////////////////////////بدها نقل لمكان القبول \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+            $r =array(
+                "type" => "1",
+                "status" => "0",
+                "value" => "0",
+                "start_date" => "2022-06-13 09:38:43",
+                "end_date" => "2022-06-13 09:38:43",
+                "condition" => "0",
+                "condition_value" => "0",
+                "title" => ".",
+                "apply_to" => "",
+                "product"=>[0]
+            );
+
+            DiscountController::store($r,$shop->id);
+          //  DiscountController::store($request,$shop->id);
+
+            StoreManagerController::register($request,$shop->id);
+            return $this->sendResponse($shop->id, 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
 
