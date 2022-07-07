@@ -16,8 +16,8 @@ class StoreManagerController extends BaseController
     /////عرض معلومات صاحب متجر محدد
     public function index($id)
     {
-        $storeManager = StoreManager::find($id);
-        $persone = Persone::find($storeManager->person_id)->first();
+        $storeManager = StoreManager::where('id','=',$id)->first();
+        $persone = Persone::where('id','=',$storeManager->person_id)->first();
         if ($storeManager) {
             return $this->sendResponse($persone, 'Store Shop successfully');
         } else {
@@ -74,10 +74,9 @@ class StoreManagerController extends BaseController
 
         //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
-            return response ()->json([
-                'persone_id' => $persone,
-                'token'=>$token,
-            ]);
+            return $user1->id;
+
+
         }
 
 

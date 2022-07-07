@@ -180,7 +180,7 @@ Route::post('/ChangeAmount/{productid}/{orderid}/{amount}' , [App\Http\Controlle
 
 
 
-///////////////////////////////////////////tassnim//////////////////
+///////////////////////////////////////////tasneem//////////////////
 
 Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
 Route::post('person/unique', [App\Http\Controllers\StoreManagerController::class, 'unique_email']);

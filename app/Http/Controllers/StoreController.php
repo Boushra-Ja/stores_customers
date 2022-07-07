@@ -91,7 +91,7 @@ class StoreController extends BaseController
             DiscountController::store($request,$shop->id,1);
 
            $manager_id= StoreManagerController::register($request,$shop->id);
-            return $this->sendResponse($shop->id, 'Store Shop successfully');
+            return $this->sendResponse(['shop_id'=>$shop->id,'manager_id'=>$manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
 
@@ -105,10 +105,11 @@ class StoreController extends BaseController
         if ($data) {
             return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
         } else {
-            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show product info']);
+            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show store']);
 
         }
     }
+
     ////////تعديل بيانات المتجر
     public function update(Request $request)
     {
