@@ -86,7 +86,7 @@ class StoreManagerController extends BaseController
     public function unique_email(Request $request){
         $person=Persone::where('email','=',$request->email)->first();
         if($person){
-            return $this->sendErrors('The Email already exists', ['error' => 'The Email already exists ']);
+            return $this->sendResponse("error", 'The Email already exists');
         }
         else
             return $this->sendResponse("success", 'The Email is unique');
