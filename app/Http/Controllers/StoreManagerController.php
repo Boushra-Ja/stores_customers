@@ -72,7 +72,7 @@ class StoreManagerController extends BaseController
                 PrivilladgeStoreManagerController::store($option->id,$user1->id);
             }
 
-           mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
+        //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
             return response ()->json([
                 'persone_id' => $persone,
