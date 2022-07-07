@@ -75,6 +75,9 @@ Route::get('all_orderproduct/{id}/{status_id}' , [OrderProductController::class 
 
 Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
 
+Route::post('person/unique', [App\Http\Controllers\StoreManagerController::class, 'unique_email']);
+
+
 
 Route::post('storeManager/register', [App\Http\Controllers\StoreManagerController::class, 'register']);
 

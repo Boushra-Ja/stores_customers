@@ -78,10 +78,16 @@ class StoreManagerController extends BaseController
                 'persone_id' => $persone,
                 'token'=>$token,
             ]);
-            // return $this->sendResponse($persone, 'Store Shop successfully');
         }
 
 
+    }
+
+    public function unique_email(Request $request){
+        $person=Persone::where('email','=',$request->email);
+        if($person){
+            return $this->sendErrors('The Email already exists', ['error' => 'The Email already exists ']);
+        }
     }
 
     public function update(Request $request){
