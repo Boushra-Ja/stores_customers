@@ -73,9 +73,7 @@ Route::get('all_orderproduct/{id}/{status_id}' , [OrderProductController::class 
 ////////////////////////******////////////////////////////////////
 
 
-Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
 
-Route::post('person/unique', [App\Http\Controllers\StoreManagerController::class, 'unique_email']);
 
 
 
@@ -98,7 +96,6 @@ Route::get('product/index', [App\Http\Controllers\ProductController::class, 'ind
 Route::get('product/show', [App\Http\Controllers\ProductController::class, 'show']);
 
 Route::post('store/update', [App\Http\Controllers\StoreController::class, 'update']);
-Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'show']);
 
 Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerController::class, 'index']);
 
@@ -186,16 +183,9 @@ Route::post('/ChangeAmount/{productid}/{orderid}/{amount}' , [App\Http\Controlle
 
 
 
+///////////////////////////////////////////tassnim//////////////////
 
+Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
+Route::post('person/unique', [App\Http\Controllers\StoreManagerController::class, 'unique_email']);
 
-
-
-
-
-
-
-//Route::group(['middleware' => ['auth:sanctum']],
-//    function () {
-//
-//});
-
+Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'show']);
