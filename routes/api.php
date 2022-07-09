@@ -93,12 +93,12 @@ Route::post('product/create', [App\Http\Controllers\ProductController::class, 's
 Route::get('product/index', [App\Http\Controllers\ProductController::class, 'index']);
 Route::get('product/show', [App\Http\Controllers\ProductController::class, 'show']);
 
-Route::post('store/update', [App\Http\Controllers\StoreController::class, 'update']);
 
 
 
-Route::post('helper/create', [App\Http\Controllers\HelperController::class, 'store']);
-Route::post('storeManager/update', [App\Http\Controllers\StoreManagerController::class, 'update']);
+
+
+
 
 Route::post('discountproduct/create/{id}/{h}', [App\Http\Controllers\DiscountController::class, 'store']);
 Route::post('customer/register', [App\Http\Controllers\CustomerController::class, 'register']);
@@ -187,3 +187,5 @@ Route::post('person/unique', [App\Http\Controllers\StoreManagerController::class
 
 Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'show']);
 Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerController::class, 'index']);
+
+Route::post('store/update', [App\Http\Controllers\StoreController::class, 'update']);

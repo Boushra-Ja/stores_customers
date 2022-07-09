@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Persone;
 use Illuminate\Http\Request;
 use App\Models\Store;
 use Illuminate\Support\Facades\DB;
@@ -88,10 +89,10 @@ class StoreController extends BaseController
         if ($shop) {
             WaitingStoreController::store($shop->id);
 
-            DiscountController::store($request,$shop->id,1);
+            DiscountController::store($request, $shop->id, 1);
 
-           $manager_id= StoreManagerController::register($request,$shop->id);
-            return $this->sendResponse(['shop_id'=>$shop->id,'manager_id'=>$manager_id], 'Store Shop successfully');
+            $manager_id = StoreManagerController::register($request, $shop->id);
+            return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
 
@@ -99,9 +100,10 @@ class StoreController extends BaseController
 
     }
 
-     ////عرض متجر محدد
-     public function show($id){
-        $data = Store::where('id' , $id)->get();
+    ////عرض متجر محدد
+    public function show($id)
+    {
+        $data = Store::where('id', $id)->get();
         if ($data) {
             return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
         } else {
@@ -113,8 +115,12 @@ class StoreController extends BaseController
     ////////تعديل بيانات المتجر
     public function update(Request $request)
     {
-        $store = Store::find($request->store)->update($request->all());
-        return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
+        $persone = Persone::where('id', '=', $request->persone_id)->first();
+        if ($persone->password == $request->old_password) {
+            $store = Store::find($request->store_id)->update($request->all());
+            StoreManagerController::update($request);
+            return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
+        } else return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
 
 
     }
@@ -122,28 +128,28 @@ class StoreController extends BaseController
     ///جلب المنتجات مع تصنيفاتها
     public function product_with_class($store_id)
     {
-        $collections_id = Collection::where('store_id' , $store_id)->get();
+        $collections_id = Collection::where('store_id', $store_id)->get();
 
-        $pr = array() ;
-        $i = 0 ;
-        $res = array() ;
-        $j = 0 ;
+        $pr = array();
+        $i = 0;
+        $res = array();
+        $j = 0;
         foreach ($collections_id as $value) {
-            $pr[$i] =DB::table('products')->where('products.collection_id' , $value['id'])
-            ->join('secondray_classification_products',  'products.id' , '=',  'secondray_classification_products.product_id')
-            ->join('secondray_classifications',  'secondray_classification_products.secondary_id' , '=',  'secondray_classifications.id')
-            ->join('classifications',  'classifications.id' , '=',  'secondray_classifications.classification_id')
-            ->select('secondray_classifications.id as secondary_id' ,'secondray_classifications.title as secondray_title', 'secondray_classifications.classification_id as classification_id' ,'classifications.title as classifications_title' , 'products.*' , 'secondray_classification_products.*')
-            ->get();
+            $pr[$i] = DB::table('products')->where('products.collection_id', $value['id'])
+                ->join('secondray_classification_products', 'products.id', '=', 'secondray_classification_products.product_id')
+                ->join('secondray_classifications', 'secondray_classification_products.secondary_id', '=', 'secondray_classifications.id')
+                ->join('classifications', 'classifications.id', '=', 'secondray_classifications.classification_id')
+                ->select('secondray_classifications.id as secondary_id', 'secondray_classifications.title as secondray_title', 'secondray_classifications.classification_id as classification_id', 'classifications.title as classifications_title', 'products.*', 'secondray_classification_products.*')
+                ->get();
 
             foreach ($pr[$i] as $val) {
 
-                $res[$j] = $val ;
-                $j++ ;
+                $res[$j] = $val;
+                $j++;
             }
             $i++;
         }
-        return $this->sendResponse(ProductClassResource::collection($res) , 'success') ;
+        return $this->sendResponse(ProductClassResource::collection($res), 'success');
     }
 
 }

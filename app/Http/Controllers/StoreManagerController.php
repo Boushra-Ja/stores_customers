@@ -16,8 +16,8 @@ class StoreManagerController extends BaseController
     /////عرض معلومات صاحب متجر محدد
     public function index($id)
     {
-        $storeManager = StoreManager::where('id','=',$id)->first();
-        $persone = Persone::where('id','=',$storeManager->person_id)->first();
+        $storeManager = StoreManager::where('id', '=', $id)->first();
+        $persone = Persone::where('id', '=', $storeManager->person_id)->first();
         if ($storeManager) {
             return $this->sendResponse($persone, 'Store Shop successfully');
         } else {
@@ -27,7 +27,7 @@ class StoreManagerController extends BaseController
     }
 
     //////انشاء حساب صاحب متجر
-    public static function register(Request $request,$store_id)
+    public static function register(Request $request, $store_id)
     {
 
         $valid = $request->validate([
@@ -65,14 +65,14 @@ class StoreManagerController extends BaseController
 
             $user1->save();
 
-            $privilladge=Privilladge::all();
-            if($privilladge)
+            $privilladge = Privilladge::all();
+            if ($privilladge)
 
-            foreach($privilladge as $option){
-                PrivilladgeStoreManagerController::store($option->id,$user1->id);
-            }
+                foreach ($privilladge as $option) {
+                    PrivilladgeStoreManagerController::store($option->id, $user1->id);
+                }
 
-        //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
+            //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
             return $user1->id;
 
@@ -82,20 +82,27 @@ class StoreManagerController extends BaseController
 
     }
 
-    public function unique_email(Request $request){
-        $person=Persone::where('email','=',$request->email)->first();
-        if($person){
+    public function unique_email(Request $request)
+    {
+        $person = Persone::where('email', '=', $request->email)->first();
+        if ($person) {
             return $this->sendResponse("error", 'The Email already exists');
-        }
-        else
+        } else
             return $this->sendResponse("success", 'The Email is unique');
 
     }
 
-    public function update(Request $request){
-        $store_manager = StoreManager::find($request->id)->first();
-        $persone = Persone::find($store_manager->person_id)->update($request->all());
-        return $this->sendResponse($persone, 'تم تعديل ملف المتجر بنجاح');
+    public static function update(Request $request)
+    {
+        $store_manager = StoreManager::find($request->store_manager_id)->first();
+        Persone::find($store_manager->person_id)->update([
+            'name'=>$request->username,
+            'email'=>$request->email,
+            'password'=>$request->password
+
+        ]);
+        if ($request->helper_name)
+            HelperController::store($request);
     }
 
     ///// تسجيل الدخول كصاحب متجر
