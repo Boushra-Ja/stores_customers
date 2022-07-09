@@ -189,7 +189,6 @@ Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'sho
 Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerController::class, 'index']);
 
 Route::post('store/update', [App\Http\Controllers\StoreController::class, 'update']);
-
 Route::post('storeManager/true_password', [App\Http\Controllers\StoreManagerController::class, 'true_password']);
-
 Route::get('PrivilladgeHelperController/my_helper/{id}', [App\Http\Controllers\PrivilladgeHelperController::class, 'my_helper']);
+

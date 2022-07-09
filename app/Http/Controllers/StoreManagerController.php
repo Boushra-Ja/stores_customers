@@ -94,16 +94,15 @@ class StoreManagerController extends BaseController
 
     public static function update(Request $request)
     {
-        $store_manager = StoreManager::find($request->store_manager_id)->first();
         if ($request->password)
-            Persone::find($store_manager->person_id)->update([
+            Persone::where('id','=',$request->persone_id)->first()->update([
                 'name' => $request->username,
                 'email' => $request->email,
                 'password' => $request->password
 
             ]);
         else
-            Persone::find($store_manager->person_id)->update([
+            Persone::where('id','=',$request->persone_id)->first()->update([
                 'name' => $request->username,
                 'email' => $request->email,
             ]);

@@ -117,7 +117,7 @@ class StoreController extends BaseController
     {
         $persone = Persone::where('id', '=', $request->persone_id)->first();
         if ($persone->password == $request->old_password) {
-            $store = Store::find($request->store_id)->update($request->all());
+            $store = Store::where('id','=',$request->store_id)->first()->update($request->all());
             StoreManagerController::update($request);
             return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
         } else return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
