@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\ResourcesBayan\helper_resorce;
 use App\Models\Helper;
 use App\Models\Privilladge;
 
@@ -14,5 +15,14 @@ class PrivilladgeHelperController extends Controller
 
         $response=$privilladge->helper()->attach($helper);
         return response()->json($response,200);
+    }
+
+
+    public function my_helper($id){
+
+        $helper=Helper::where('store_manager_id','=',$id)->get();
+
+        return helper_resorce::collection($helper);
+
     }
 }
