@@ -75,7 +75,7 @@ class CollectionController extends BaseController
 
             $g = collection_product::collection($collection);
 
-            return $this->sendResponse($g, 'Store Shop successfully');
+            return response()->json($g,200);
 
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);

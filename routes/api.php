@@ -77,13 +77,6 @@ Route::get('all_orderproduct/{id}/{status_id}' , [OrderProductController::class 
 
 
 
-Route::post('collection/create', [App\Http\Controllers\CollectionController::class, 'store']);
-Route::get('collection/collectionNane/{id}', [App\Http\Controllers\CollectionController::class, 'collectionNane']);
-Route::put('collection/update', [App\Http\Controllers\CollectionController::class, 'update']);
-Route::put('collection/delete', [App\Http\Controllers\CollectionController::class, 'delete']);
-Route::get('collection/getCollectionId', [App\Http\Controllers\CollectionController::class, 'getCollectionId']);
-Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
-
 
 Route::get('classification/show', [App\Http\Controllers\ClassificationController::class, 'Show_Classification']);
 
@@ -192,3 +185,10 @@ Route::post('store/update', [App\Http\Controllers\StoreController::class, 'updat
 Route::post('storeManager/true_password', [App\Http\Controllers\StoreManagerController::class, 'true_password']);
 Route::get('PrivilladgeHelperController/my_helper/{id}', [App\Http\Controllers\PrivilladgeHelperController::class, 'my_helper']);
 
+
+Route::post('collection/create', [App\Http\Controllers\CollectionController::class, 'store']);
+Route::get('collection/collectionNane/{id}', [App\Http\Controllers\CollectionController::class, 'collectionNane']);
+Route::put('collection/update', [App\Http\Controllers\CollectionController::class, 'update']);
+Route::put('collection/delete', [App\Http\Controllers\CollectionController::class, 'delete']);
+Route::get('collection/getCollectionId', [App\Http\Controllers\CollectionController::class, 'getCollectionId']);
+Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);

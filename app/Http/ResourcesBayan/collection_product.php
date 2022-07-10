@@ -12,6 +12,7 @@ class collection_product extends JsonResource
     public function toArray($request)
     {
         return  [
+            'id'=>$this->id,
             'image' => $this->image,
             'title' => $this->title,
             'discription' => $this->discription,
