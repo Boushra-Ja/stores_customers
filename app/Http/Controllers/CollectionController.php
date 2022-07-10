@@ -117,7 +117,7 @@ class CollectionController extends BaseController
     // تعديل مجموعة
     public function update(Request $request)
     {
-        $collection = Collection::where('id','=',$request->id)->update($request->all());
+        $collection = Collection::where('id','=',$request->id)->first()->update($request->all());
         return $this->sendResponse($collection, 'تم تعديل المجموعة بنجاح');
     }
 
