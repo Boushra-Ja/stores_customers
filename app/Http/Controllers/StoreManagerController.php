@@ -95,14 +95,14 @@ class StoreManagerController extends BaseController
     public static function update(Request $request)
     {
         if ($request->password)
-            Persone::where('id','=',$request->persone_id)->first()->update([
+            Persone::where('id', '=', $request->persone_id)->first()->update([
                 'name' => $request->username,
                 'email' => $request->email,
                 'password' => $request->password
 
             ]);
         else
-            Persone::where('id','=',$request->persone_id)->first()->update([
+            Persone::where('id', '=', $request->persone_id)->first()->update([
                 'name' => $request->username,
                 'email' => $request->email,
             ]);
@@ -114,10 +114,11 @@ class StoreManagerController extends BaseController
     public function true_password(Request $request)
     {
         $persone = Persone::where('id', '=', $request->persone_id)->first();
-        if ($persone->password == $request->old_password)
-            return $this->sendResponse("success", 'كلمة السر مطابقة');
-        else
-            return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
+        if ($persone)
+            if ($persone->password == $request->old_password)
+                return $this->sendResponse("success", 'كلمة السر مطابقة');
+            else
+                return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
     }
 
     ///// تسجيل الدخول كصاحب متجر
