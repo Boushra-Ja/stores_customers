@@ -25,8 +25,8 @@ class HelperController extends Controller
 
         if($helper){
             foreach($request->privilladge as $value){
-                $v=Privilladge::where('name','=',$value)->first();
-                PrivilladgeHelperController::store($v->id, $helper->id);
+                //$v=Privilladge::where('name','=',$value)->first();
+                PrivilladgeHelperController::store($value, $helper->id);
             }
 
           //  mailcontrol::html_email($helper->name, 323, $helper->email, 'دعوة لادارة متجر');
