@@ -124,7 +124,7 @@ class CollectionController extends BaseController
     //حذف مجموعة
     public function delete(Request $request)
     {
-        $collection = Collection::find($request->id)->delete();
+        $collection = Collection::where('id','=',$request->id)->first()->delete();
     }
 
     public function show($id)
