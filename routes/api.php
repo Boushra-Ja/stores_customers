@@ -190,5 +190,5 @@ Route::post('collection/create', [App\Http\Controllers\CollectionController::cla
 Route::get('collection/collectionNane/{id}', [App\Http\Controllers\CollectionController::class, 'collectionNane']);
 Route::put('collection/update', [App\Http\Controllers\CollectionController::class, 'update']);
 Route::put('collection/delete', [App\Http\Controllers\CollectionController::class, 'delete']);
-Route::get('collection/getCollectionId', [App\Http\Controllers\CollectionController::class, 'getCollectionId']);
 Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
+Route::get('collection/show/{id}', [App\Http\Controllers\CollectionController::class, 'show']);

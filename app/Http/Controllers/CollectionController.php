@@ -33,8 +33,6 @@ class CollectionController extends BaseController
         return $this->sendResponse($g, 'Store Shop successfully');
 
 
-
-
 //        $a = array();
 //        $i = 0;
 //        $collection = Collection::where('store_id', '=', $id)->get();
@@ -62,9 +60,6 @@ class CollectionController extends BaseController
 //        }
 
 
-
-
-
     }
 
     //عرض مجموعات متجر محدد
@@ -75,7 +70,7 @@ class CollectionController extends BaseController
 
             $g = collection_product::collection($collection);
 
-            return response()->json($g,200);
+            return response()->json($g, 200);
 
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
@@ -131,6 +126,18 @@ class CollectionController extends BaseController
     {
         $collection = Collection::find($request->id)->delete();
     }
+
+    public function show($id)
+    {
+        $collection = Collection::where('id', '=', $id)->first();
+        if ($collection)
+            return response()->json($collection, 200);
+        else
+            return $this->sendErrors('failed in Collection', ['error' => 'not Collection']);
+
+
+    }
+
 }
 
 
