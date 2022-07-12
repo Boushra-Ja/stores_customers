@@ -33,7 +33,7 @@ class ProductController extends BaseController
     //الاكثر شيوعا//
     public function Order_sales()
     {
-        $ProductModel = Product::orderBy('number_of_sales', 'desc')->get() ;
+        $ProductModel = Product::orderBy('number_of_sales', 'desc')->get();
         return response()->json($ProductModel, 200);
     }
 
@@ -65,15 +65,13 @@ class ProductController extends BaseController
             ->get();
 
 
-
         foreach ($pro as $val) {
             $prooo = DB::table('secondray_classification_products')
                 ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
-
                 ->where('secondray_classification_products.secondary_id', '=', $val->secondary_id)->get();
             foreach ($prooo as $valk) {
 
-                $re[$i]=$valk;
+                $re[$i] = $valk;
                 $i++;
             }
         }
@@ -108,10 +106,11 @@ class ProductController extends BaseController
     }
 
     ////عرض منتج محدد
-    public function show($id){
-        $data = Product::where('id','=' , $id)->get();
+    public function show($id)
+    {
+        $data = Product::where('id', '=', $id)->get();
         if ($data) {
-            $g=ProductAllResource::collection($data);
+            $g = ProductAllResource::collection($data);
             return response()->json($g[0], 200);
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المنتج', ['error' => 'error in show product info']);
@@ -122,26 +121,26 @@ class ProductController extends BaseController
     //////عرض منتجات مشابهة
     public function similar_products($id)
     {
-        $my_classification = SecondrayClassificationProduct::where('product_id' , $id)->get() ;
+        $my_classification = SecondrayClassificationProduct::where('product_id', $id)->get();
 
-        $products_class_ids = array() ;
+        $products_class_ids = array();
         $i = 0;
-        $res = array() ;
+        $res = array();
         $j = 0;
         foreach ($my_classification as $value) {
-            $products_class_ids[$i] = DB::table('secondray_classification_products')->where('secondary_id' , $value['secondary_id'])->where('product_id' , '!='  , $id)
-            ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
-            ->get();
+            $products_class_ids[$i] = DB::table('secondray_classification_products')->where('secondary_id', $value['secondary_id'])->where('product_id', '!=', $id)
+                ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
+                ->get();
 
             foreach ($products_class_ids[$i] as $val) {
-                $res[$j] = $val ;
+                $res[$j] = $val;
                 $j++;
             }
             $i++;
-    }
+        }
 
 
-        return $this->sendResponse( ProductResource::collection($res) , "success");
+        return $this->sendResponse(ProductResource::collection($res), "success");
     }
 
     // اضافة منتج
@@ -175,11 +174,9 @@ class ProductController extends BaseController
             $request->image = '';
 
 
-        $i=DiscountProduct::where('discounts_id','=',(Discount::where('store_id','=',$request->store_id)->where('type','=','1')->where('value','=','0')->value('id')))->value('id');
-//        $request->discount_products_id=$i;
-        $request->number_of_sales=0;
+        $i = DiscountProduct::where('discounts_id', '=', (Discount::where('store_id', '=', $request->store_id)->where('type', '=', '1')->where('value', '=', '0')->value('id')))->value('id');
+        $request->number_of_sales = 0;
 
-       // $input = $request->all();
         $product = Product::create([
             'name' => $request->name,
             'discription' => $request->discription,
@@ -193,19 +190,21 @@ class ProductController extends BaseController
             'number_of_sales' => $request->number_of_sales,
             'party' => $request->party,
             'age' => $request->age,
-            'discount_products_id'=>$i,
-            'number_of_sales'=>0
+            'discount_products_id' => $i,
+            'number_of_sales' => 0
         ]);
 
         if ($product) {
-            foreach ($request->classification as $value) {
-                SecondrayClassificationProductController::store($product->id, $value);
-            }
-            foreach ($request->type as $vv) {
+            if ($request->classification)
+                foreach ($request->classification as $value) {
+                    SecondrayClassificationProductController::store($product->id, $value);
+                }
+            if ($request->type)
+                foreach ($request->type as $vv) {
 
-                OptionTypeController::store($vv, $product->id, 0);
+                    OptionTypeController::store($vv, $product->id, 0);
 
-            }
+                }
             return $this->sendResponse($product, 'Store Shop successfully');
 
         } else {
@@ -218,10 +217,10 @@ class ProductController extends BaseController
     // تعديل منتج
     public function update(Request $request)
     {
-        $product = Product::where('id','=',$request->id);
+        $product = Product::where('id', '=', $request->id);
         $product->update($request->all());
 
-        if($request->classification){
+        if ($request->classification) {
             foreach ($request->classification as $value) {
                 SecondrayClassificationProductController::update($product->id, $value);
             }
@@ -241,11 +240,11 @@ class ProductController extends BaseController
     }
 
     //حذف منتج
-    public function delete(Request $request){
-        $product = Product::where('id','=',$request->id)->delete();
+    public function delete(Request $request)
+    {
+        $product = Product::where('id', '=', $request->id)->delete();
 
     }
-
 
 
     public function temp(Request $request)
@@ -254,7 +253,7 @@ class ProductController extends BaseController
         $request->validate([
             'name' => 'required',
             'party' => 'nullable',
-            'discription'  => 'required',
+            'discription' => 'required',
             'image' => 'required',
             'selling_price' => 'required',
             'cost_price' => 'required',
@@ -262,33 +261,31 @@ class ProductController extends BaseController
             'return_or_replace' => 'required',
             'discount_products_id' => 'required',
             'prepration_time' => 'required',
-            'gift'=> 'required',
+            'gift' => 'required',
             'number_of_sales' => 'required',
             'age' => 'required',
         ]);
         $product = new Product();
-        $product->name =$request->name;
+        $product->name = $request->name;
         $product->discription = $request->discription;
-        $product->age =$request->age;
+        $product->age = $request->age;
         $product->gift = $request->gift;
         $product->prepration_time = $request->prepration_time;
         $product->discount_products_id = $request->discount_products_id;
         $product->return_or_replace = $request->return_or_replace;
         $product->collection_id = $request->collection_id;
         $product->number_of_sales = $request->number_of_sales;
-        $product->cost_price =$request->cost_price;
-        $product->selling_price =$request->selling_price;
-        if($request->hasfile('image'))
-        {
+        $product->cost_price = $request->cost_price;
+        $product->selling_price = $request->selling_price;
+        if ($request->hasfile('image')) {
             $file = $request->file('image');
             $extention = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extention;
+            $filename = time() . '.' . $extention;
             $file->move('uploads/product/', $filename);
-            $product->image =$filename;
+            $product->image = $filename;
 
-        }
-        else
-            $product->image ='';
+        } else
+            $product->image = '';
         $product->save();
 
 
@@ -314,24 +311,24 @@ class ProductController extends BaseController
     public function my_product($store_id)
     {
 
-        $collections_id = Collection::where('store_id' , $store_id)->get();
-        $product = array() ;
-        $i =0 ;
-        $j = 0 ;
-        $res = array() ;
+        $collections_id = Collection::where('store_id', $store_id)->get();
+        $product = array();
+        $i = 0;
+        $j = 0;
+        $res = array();
 
-        foreach ($collections_id as  $value) {
+        foreach ($collections_id as $value) {
 
-            $product[$i] = Product::where('collection_id' , $value['id']) ->get();
+            $product[$i] = Product::where('collection_id', $value['id'])->get();
 
-            foreach ($product[$i] as  $val) {
-                $res[$j] = $val ;
-                $j = $j + 1 ;
+            foreach ($product[$i] as $val) {
+                $res[$j] = $val;
+                $j = $j + 1;
             }
-            $i = $i + 1 ;
+            $i = $i + 1;
         }
 
-        return $this->sendResponse(ProductResource::collection($res) , 'success') ;
+        return $this->sendResponse(ProductResource::collection($res), 'success');
 
     }
 }
