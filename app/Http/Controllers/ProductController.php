@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\ResourcesBayan\product_classification;
 use App\Models\Discount;
 use App\Models\DiscountProduct;
 use App\Models\Product;
@@ -110,7 +111,7 @@ class ProductController extends BaseController
     {
         $data = Product::where('id', '=', $id)->get();
         if ($data) {
-            $g = ProductAllResource::collection($data);
+            $g = product_classification::collection($data);
             return response()->json($g[0], 200);
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المنتج', ['error' => 'error in show product info']);
