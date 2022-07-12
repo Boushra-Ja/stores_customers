@@ -30,7 +30,7 @@ class CollectionController extends BaseController
 
         $g = product_classification::collection($product);
 
-        return $this->sendResponse($g, 'Store Shop successfully');
+        return response()->json($g, 200);
 
 
 //        $a = array();
@@ -61,6 +61,22 @@ class CollectionController extends BaseController
 
 
     }
+
+    //عرض منتجات مجموعة محددة
+    public function index2($id)
+    {
+
+
+        $product = Product::where('collection_id','=',$id)->get();
+
+
+        $g = product_classification::collection($product);
+
+        return response()->json($g, 200);
+
+
+    }
+
 
     //عرض مجموعات متجر محدد
     public function collectionNane(int $id)
@@ -127,6 +143,7 @@ class CollectionController extends BaseController
         $collection = Collection::where('id','=',$request->id)->first()->delete();
     }
 
+    //مجموعة محددة
     public function show($id)
     {
         $collection = Collection::where('id', '=', $id)->first();

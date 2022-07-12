@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Models\Discount;
+use App\Models\DiscountProduct;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -107,9 +109,10 @@ class ProductController extends BaseController
 
     ////عرض منتج محدد
     public function show($id){
-        $data = Product::where('id' , $id)->get();
+        $data = Product::where('id','=' , $id)->get();
         if ($data) {
-            return $this->sendResponse(ProductAllResource::collection($data), 'تم ارجاع معلومات المنتج بنجاح');
+            $g=ProductAllResource::collection($data);
+            return response()->json($g[0], 200);
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المنتج', ['error' => 'error in show product info']);
 
@@ -145,6 +148,7 @@ class ProductController extends BaseController
     public function store(Request $request)
     {
 
+
         $request->validate([
             'name' => 'required',
             'discription' => 'nullable',
@@ -153,7 +157,6 @@ class ProductController extends BaseController
             'cost_price' => 'required',
             'collection_id' => 'required',
             'return_or_replace' => 'required',
-            'discount_products_id' => 'nullable',
             'prepration_time' => 'required',
             'gift' => 'nullable',
             'number_of_sales' => 'nullable',
@@ -172,21 +175,37 @@ class ProductController extends BaseController
             $request->image = '';
 
 
-//        $i=CollectionController::getCollectionId($request->collection_name);
-//        $request->collection_id=$i;
+        $i=DiscountProduct::where('discounts_id','=',(Discount::where('store_id','=',$request->store_id)->where('type','=','1')->where('value','=','0')->value('id')))->value('id');
+//        $request->discount_products_id=$i;
+        $request->number_of_sales=0;
 
-        $input = $request->all();
-        $product = Product::create($input);
+       // $input = $request->all();
+        $product = Product::create([
+            'name' => $request->name,
+            'discription' => $request->discription,
+            'image' => $request->image,
+            'selling_price' => $request->selling_price,
+            'cost_price' => $request->cost_price,
+            'collection_id' => $request->collection_id,
+            'return_or_replace' => $request->return_or_replace,
+            'prepration_time' => $request->prepration_time,
+            'gift' => $request->gift,
+            'number_of_sales' => $request->number_of_sales,
+            'party' => $request->party,
+            'age' => $request->age,
+            'discount_products_id'=>$i,
+            'number_of_sales'=>0
+        ]);
 
         if ($product) {
             foreach ($request->classification as $value) {
                 SecondrayClassificationProductController::store($product->id, $value);
             }
-//            foreach ($request->type as $vv) {
-//
-//                OptionTypeController::store($vv, $product->id, 0);
-//
-//            }
+            foreach ($request->type as $vv) {
+
+                OptionTypeController::store($vv, $product->id, 0);
+
+            }
             return $this->sendResponse($product, 'Store Shop successfully');
 
         } else {
@@ -199,7 +218,7 @@ class ProductController extends BaseController
     // تعديل منتج
     public function update(Request $request)
     {
-        $product = Product::find($request->product);
+        $product = Product::where('id','=',$request->id);
         $product->update($request->all());
 
         if($request->classification){
@@ -223,7 +242,7 @@ class ProductController extends BaseController
 
     //حذف منتج
     public function delete(Request $request){
-        $product = Product::find($request->product)->delete();
+        $product = Product::where('id','=',$request->id)->delete();
 
     }
 
