@@ -82,7 +82,6 @@ Route::get('classification/show', [App\Http\Controllers\ClassificationController
 
 Route::post('option_types/create', [App\Http\Controllers\OptionTypeController::class, 'stor1']);
 
-Route::post('product/create', [App\Http\Controllers\ProductController::class, 'store']);
 Route::get('product/index', [App\Http\Controllers\ProductController::class, 'index']);
 Route::get('product/show', [App\Http\Controllers\ProductController::class, 'show']);
 
@@ -177,6 +176,8 @@ Route::post('/ChangeAmount/{productid}/{orderid}/{amount}' , [App\Http\Controlle
 
 Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
 Route::post('person/unique', [App\Http\Controllers\StoreManagerController::class, 'unique_email']);
+Route::post('storeManager/login', [App\Http\Controllers\StoreManagerController::class, 'login']);
+
 
 Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'show']);
 Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerController::class, 'index']);
@@ -192,3 +193,4 @@ Route::post('collection/update', [App\Http\Controllers\CollectionController::cla
 Route::post('collection/delete', [App\Http\Controllers\CollectionController::class, 'delete']);
 Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
 Route::get('collection/show/{id}', [App\Http\Controllers\CollectionController::class, 'show']);
+//Route::post('product/create', [App\Http\Controllers\ProductController::class, 'store']);

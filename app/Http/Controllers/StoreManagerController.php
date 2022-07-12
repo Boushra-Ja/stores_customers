@@ -130,17 +130,33 @@ class StoreManagerController extends BaseController
             'password' => 'required|min:3|max:100',
         ]);
 
-        $person = Persone::where('email', $valid['email'])->first();
-        $password = Persone::where($valid['password'], $person->password);
-        if (!$person || !$password) {
-            return response()->json(['message' => 'Login problem']);
-        } else {
+        $person = Persone::where('email','=', $valid['email'])->first();
+        if($person)
+        if($person->password == $valid['password']){
+            $storManager=StoreManager::where('person_id','=',$person->id)->first();
             $token = $person->createToken('ProductsTolken')->plainTextToken;
             return response()->json([
-                'persone_id' => $person,
-                'token' => $token,
+                'message'=>'success',
+                'manager_id' => $storManager->id,
+                'store_id' => $storManager->store_id,
+            ]);
+
+        }
+        else{
+            return response()->json([
+                'message'=>'erorr',
             ]);
         }
+        //$password = Persone::where($valid['password'],'=', $person->password);
+//        if (!$person || !$password) {
+//            return response()->json(['message' => 'Login problem']);
+//        } else {
+//            $token = $person->createToken('ProductsTolken')->plainTextToken;
+//            return response()->json([
+//                'manager_id' => $storManager->id,
+//                'store_id' => $storManager->store_id,
+//            ]);
+        //}
     }
 
     ////////التحقق من البريد

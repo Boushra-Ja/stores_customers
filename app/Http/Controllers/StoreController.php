@@ -116,6 +116,7 @@ class StoreController extends BaseController
     public function update(Request $request)
     {
         $persone = Persone::where('id', '=', $request->persone_id)->first();
+        if ($persone)
         if ($persone->password == $request->old_password) {
             $store = Store::where('id','=',$request->store_id)->first()->update($request->all());
             StoreManagerController::update($request);
