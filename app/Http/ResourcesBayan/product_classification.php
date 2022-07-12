@@ -40,6 +40,8 @@ class product_classification extends JsonResource
             'discount_products_id' => $this->discount_products_id,
             'classification'=> $sec,
             'collection'=> $this->collection_id,
+            'review' => RatingResource::collection(ProductRating::where('product_id', $this->id)->get()),
+
 
         ];
     }
