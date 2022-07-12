@@ -34,6 +34,7 @@ class product_classification extends JsonResource
             'party' => $this->party,
             'discription' => $this->discription,
             'age' => $this->age,
+            'gift'=>$this->gift,
             'cost_price' => $this->cost_price,
             'return_or_replace' => $this->return_or_replace,
             'discount_products_id' => $this->discount_products_id,
