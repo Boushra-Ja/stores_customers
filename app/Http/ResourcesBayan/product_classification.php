@@ -15,6 +15,8 @@ class product_classification extends JsonResource
 
     public function toArray($request)
     {
+
+
         return  [
             'product_id' => $this->id,
             'product_name' => $this->name,

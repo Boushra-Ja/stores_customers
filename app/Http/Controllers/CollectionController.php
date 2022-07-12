@@ -20,44 +20,33 @@ class CollectionController extends BaseController
     {
 
 
-        $product = DB::table('products')
-            ->join('collections', function ($join) use ($id) {
-                $join->on('collections.id', '=', 'products.collection_id')
-                    ->where('collections.store_id', '=', $id);
-            })
-            ->get();
+//        $product = DB::table('products')
+//            ->join('collections', function ($join) use ($id) {
+//                $join->on('collections.id', '=', 'products.collection_id')
+//                    ->where('collections.store_id', '=', $id);
+//            })
+//            ->get();
+
+        $colection = Collection::where('store_id', '=', $id)->get();
 
 
-        $g = product_classification::collection($product);
 
-        return response()->json($g, 200);
+        $i=0;
+        $g2=array();
+        foreach ($colection as $value){
+            $product = Product::where('collection_id', '=', $value->id)->get();
+
+            $g = product_classification::collection($product);
+            foreach ($g as $v){
+                $g2[$i]=$v;
+                $i=$i+1;
+
+            }
+        }
 
 
-//        $a = array();
-//        $i = 0;
-//        $collection = Collection::where('store_id', '=', $id)->get();
-//        if ($collection) {
-//
-//            foreach ($collection as $option) {
-//                $product = Product::where('collection_id', '=', $option->id)->get();
-////                foreach ($product as $option1) {
-////                      $a[$i] = $option1;
-////                    $a[$i] = product_classification::collection($option1->id);
-////
-////                    $i = $i + 1;
-////                }
-//                $g = product_classification::collection($product);
-//
-//                $i = $i + 1;
-//
-//            }
-//
-//            return $this->sendResponse($g, 'Store Shop successfully');
-//
-//        } else {
-//            return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
-//
-//        }
+
+        return response()->json($g2, 200);
 
 
     }
@@ -67,7 +56,7 @@ class CollectionController extends BaseController
     {
 
 
-        $product = Product::where('collection_id','=',$id)->get();
+        $product = Product::where('collection_id', '=', $id)->get();
 
 
         $g = product_classification::collection($product);
@@ -133,14 +122,14 @@ class CollectionController extends BaseController
     // تعديل مجموعة
     public function update(Request $request)
     {
-        $collection = Collection::where('id','=',$request->id)->first()->update($request->all());
+        $collection = Collection::where('id', '=', $request->id)->first()->update($request->all());
         return $this->sendResponse($collection, 'تم تعديل المجموعة بنجاح');
     }
 
     //حذف مجموعة
     public function delete(Request $request)
     {
-        $collection = Collection::where('id','=',$request->id)->first()->delete();
+        $collection = Collection::where('id', '=', $request->id)->first()->delete();
     }
 
     //مجموعة محددة
