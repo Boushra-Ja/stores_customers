@@ -196,16 +196,26 @@ class ProductController extends BaseController
         ]);
 
         if ($product) {
-            if ($request->classification)
-                foreach ($request->classification as $value) {
+            if ($request->classification){
+
+                $j=json_decode($request->classification);
+
+                foreach ($j as $value) {
                     SecondrayClassificationProductController::store($product->id, $value);
                 }
-            if ($request->type)
-                foreach ($request->type as $vv) {
+            }
+
+            if ($request->type){
+
+                $j=json_decode($request->type);
+
+                foreach ($j as $vv) {
 
                     OptionTypeController::store($vv, $product->id, 0);
 
                 }
+            }
+
             return $this->sendResponse($product, 'Store Shop successfully');
 
         } else {
