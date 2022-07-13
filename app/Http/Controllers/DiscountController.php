@@ -27,7 +27,7 @@ class DiscountController extends BaseController
             DiscountProductController::store($request, $discount->id, $h);
 
             $discount2 = Discount::create([
-                'type' => "1",
+                'type' => "2",
                 'status' => "0",
                 'value' => "0",
                 'start_date' => "2022-06-13 09:38:43",
