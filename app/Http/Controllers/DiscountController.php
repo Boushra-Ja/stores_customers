@@ -10,17 +10,10 @@ use Illuminate\Http\Request;
 class DiscountController extends BaseController
 {
 
-    public static function store( Request $request, $id,$h)
+    public static function store(Request $request, $id, $h)
     {
-//        $request->validate([
-//            'type' => 'required',
-//            'status' => 'nullable',
-//            'value' => 'required',
-//            'start_date' => 'required',
-//            'end_date' => 'required',
-//        ]);
 
-        if($h==1){
+        if ($h == 1) {
             $discount = Discount::create([
                 'type' => "1",
                 'status' => "0",
@@ -30,16 +23,21 @@ class DiscountController extends BaseController
                 'store_id' => $id,
             ]);
 
-            if ($discount) {
 
-                if ($discount->type == 1) {
-                    DiscountProductController::store($request, $discount->id,$h);
-                } else {
-                    DiscountCodeController::store($request, $discount->id, $id);
-                }
-            }
+            DiscountProductController::store($request, $discount->id, $h);
 
-        }else {
+            $discount2 = Discount::create([
+                'type' => "1",
+                'status' => "0",
+                'value' => "0",
+                'start_date' => "2022-06-13 09:38:43",
+                'end_date' => "2022-06-13 09:38:43",
+                'store_id' => $id,
+            ]);
+            DiscountCodeController::store($request, $discount2->id, $id);
+
+
+        } else {
 
             $discount = Discount::create([
                 'type' => $request["type"],
@@ -53,7 +51,7 @@ class DiscountController extends BaseController
             if ($discount) {
 
                 if ($request["type"] == 1) {
-                    DiscountProductController::store($request, $discount->id,$h);
+                    DiscountProductController::store($request, $discount->id, $h);
                 } else {
                     DiscountCodeController::store($request, $discount->id, $id);
                 }

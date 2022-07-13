@@ -73,7 +73,6 @@ Route::get('all_orderproduct/{id}/{status_id}' , [OrderProductController::class 
 ////////////////////////******////////////////////////////////////
 
 
-Route::post('discountproduct/create/{id}/{h}', [App\Http\Controllers\DiscountController::class, 'store']);
 Route::post('customer/register', [App\Http\Controllers\CustomerController::class, 'register']);
 Route::get('order/all_my_order/{id}', [App\Http\Controllers\OrderController::class, 'all_my_order']);
 Route::get('order/order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);
@@ -181,3 +180,4 @@ Route::post('product/update', [App\Http\Controllers\ProductController::class, 'u
 Route::get('product/index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
 Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index2']);
 Route::get('product/show/{id}', [App\Http\Controllers\ProductController::class, 'show']);
+Route::post('discountproduct/create/{id}/{h}', [App\Http\Controllers\DiscountController::class, 'store']);
