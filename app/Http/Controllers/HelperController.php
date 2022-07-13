@@ -24,7 +24,8 @@ class HelperController extends Controller
         ]);
 
         if($helper){
-            foreach($request->privilladge as $value){
+            $j=json_decode($request->privilladge);
+            foreach($j as $value){
                 $v=Privilladge::where('name','=',$value)->first();
                 PrivilladgeHelperController::store($v->id, $helper->id);
             }
