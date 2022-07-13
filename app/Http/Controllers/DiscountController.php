@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\ResourcesBayan\discount_coud;
+use App\Http\ResourcesBayan\discount_resource;
 use App\Models\Discount;
+use App\Models\DiscountCode;
 use App\Models\DiscountProduct;
 use Illuminate\Http\Request;
 
@@ -80,16 +83,38 @@ class DiscountController extends BaseController
 
     public function show($id, $type)
     {
+        $descount = Discount::where('id', '=', $id)->first();
         if ($type == 1) {
-            $descount_p = DiscountProduct::where('id', '=', $id)->first();
-            $descount=Discount::where('id','=',$descount_p->discounts_id)->first();
-            return response()->json([$descount_p,$descount], 200);
+            $r = discount_resource::make($descount);
         } else {
-            $descount_p = DiscountCode::where('id', '=', $id)->first();
-            $descount=Discount::where('id','=',$descount_p->discounts_id)->first();
-            return response()->json([$descount_p,$descount], 200);
+            $r = discount_coud::make($descount);
+
         }
+        return response()->json($r, 200);
 
 
     }
+
+    public function index($id)
+    {
+
+        $a = array();
+        $i = 0;
+        $descount = Discount::where('store_id', '=', $id)->get();
+
+        foreach ($descount as $value) {
+            if ($value->type == 1) {
+
+                $a[$i] = discount_resource::make($value);
+
+            } else
+                $a[$i] = discount_coud::make($value);
+            $i += 1;
+
+        }
+        return response()->json($a, 200);
+
+
+    }
+
 }

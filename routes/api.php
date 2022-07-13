@@ -183,3 +183,4 @@ Route::get('product/show/{id}', [App\Http\Controllers\ProductController::class, 
 Route::post('discountproduct/create/{id}/{h}', [App\Http\Controllers\DiscountController::class, 'store']);
 Route::post('discountproduct/update', [App\Http\Controllers\DiscountController::class, 'update']);
 Route::get('discountproduct/show/{id}/{type}', [App\Http\Controllers\DiscountController::class, 'show']);
+Route::get('discountproduct/index/{id}', [App\Http\Controllers\DiscountController::class, 'index']);
