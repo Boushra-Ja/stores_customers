@@ -66,10 +66,10 @@ class DiscountController extends BaseController
         if ($descount)
             $descount->update($request);
         if ($request->type == 1) {
-            $descount_p = DiscountProductController::where('id', '=', $request->id)->first();
+            $descount_p = DiscountProduct::where('id', '=', $request->id)->first();
             $descount_p->update($request);
         } else {
-            $descount_p = DiscountCodeController::where('id', '=', $request->id)->first();
+            $descount_p = DiscountCode::where('id', '=', $request->id)->first();
             $descount_p->update($request);
         }
 
@@ -81,13 +81,13 @@ class DiscountController extends BaseController
     public function show($id, $type)
     {
         if ($type == 1) {
-            $descount_p = DiscountProductController::where('id', '=', $id)->first();
+            $descount_p = DiscountProduct::where('id', '=', $id)->first();
             $descount=Discount::where('id','=',$descount_p->discounts_id)->first();
-            response()->json([$descount_p,$descount], 200);
+            return response()->json([$descount_p,$descount], 200);
         } else {
-            $descount_p = DiscountCodeController::where('id', '=', $id)->first();
+            $descount_p = DiscountCode::where('id', '=', $id)->first();
             $descount=Discount::where('id','=',$descount_p->discounts_id)->first();
-            response()->json([$descount_p,$descount], 200);
+            return response()->json([$descount_p,$descount], 200);
         }
 
 
