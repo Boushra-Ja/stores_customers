@@ -46,7 +46,8 @@ class DiscountController extends BaseController
             DiscountCodeController::store($request, $discount2->id, $id,$h);
 
 
-        } else {
+        }
+        else {
 
             $discount = Discount::create([
                 'type' => $request["type"],
@@ -57,11 +58,14 @@ class DiscountController extends BaseController
                 'store_id' => $id,
             ]);
 
+
+
             if ($discount) {
 
                 if ($request["type"] == 1) {
                     DiscountProductController::store($request, $discount->id, $h);
                 } else {
+
                     DiscountCodeController::store($request, $discount->id, $id,$h);
                 }
             }

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\ResourcesBayan\customerResource;
 use App\Http\ResourcesBayan\discountCodeResource;
+use App\Models\Customer;
 use App\Models\DiscountCode;
 use App\Models\Order;
+use App\Models\OrderProduct;
+use App\Models\Persone;
 use Illuminate\Http\Request;
 
 class DiscountCodeController extends BaseController
@@ -33,46 +36,92 @@ class DiscountCodeController extends BaseController
 
             //product  1
             //price    2
-////تعديلللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللل
             $discount = DiscountCode::create([
                 'discount_code' => $request->discount_code,
                 'discounts_id' => $id,
-//            'condition' => $request->condition,
-//            'condition_value' => $request->condition_value,
+                'condition' => $request->condition,
+                'condition_value' => $request->condition_value,
             ]);
-//        if($request->its_for == 1){
-//            $customers = Customer::all();
-//            foreach ($customers as $c){
-//                DiscountCustomerController::store($discount->id,$c->id,$request->usage_times);
-//            }
-//        }
-//        else{
-//            foreach ($request->customer as $c){
-//                DiscountCustomerController::store($discount->id,$c,$request->usage_times);
-//            }
-//        }
-
 
             $order = Order::where('store_id', '=', $stor_id)->get();
 
             $d = $order->groupBy('customer_id');
 
-
             if ($request->condition == 2) {
+                $i = 0;
 
-                $customer = customerResource::collection($d);
+                foreach ($d as $value) {
+                    foreach ($value as $v) {
+                        $my_customer = Customer::where('id', '=', $v->customer_id)->first();
+                        $sum = Order::where('customer_id', '=', $v->customer_id)->sum('delivery_price');
+                        $customer_id = $v->customer_id;
+                        break;
+                    }
+                    $orders = count($value);
+                    $person = Persone::where('id', '=', $my_customer->persone_id)->first();
 
-                $customers = $customer->where($customer->total, '>=', $request->condition_value);
+                    $cust[$i] = [
+                        'orders' => $orders,
+                        'name' => $person->name,
+                        'date' => $person->created_at->format('Y-m-d '),
+                        'total' => $sum,
+                        'customer_id' => $customer_id
+                    ];
+                    $i += 1;
+                }
+
+
+                $i = 0;
+                foreach ($cust as $value) {
+                    if ($value["total"] >= $request->condition_value) {
+                        $customers[$i] = $value["customer_id"];
+                        $i += 1;
+
+                    }
+                    //   $customers[$i] = $value->where($value->total, '>=', $request->condition_value);
+
+                }
+
                 foreach ($customers as $c) {
-                    DiscountCustomerController::store($discount->id, $c->id, $request->usage_times);
+                    DiscountCustomerController::store($discount->id, $c);
                 }
             } else {
 
                 $customer = discountCodeResource::collection($d);
-                $customers = $customer->where($customer->count, '>=', $request->condition_value);
 
-                foreach ($customers as $c) {
-                    DiscountCustomerController::store($discount->id, $c->id, $request->usage_times);
+                $i = 0;
+                $c = 0;
+                foreach ($d as $value) {
+                    foreach ($value as $v) {
+                        $my_customer = Customer::where('id', '=', $v->customer_id)->first();
+                        $c += OrderProduct::where('order_id', '=', $v->id)->count();
+                    }
+                    $person = Persone::where('id', '=', $my_customer->persone_id)->first();
+                    $a[$i] = [
+                        'count' => $c,
+                        'my_customer' => $my_customer,
+                        'name' => $person->name,
+                        'date' => $person->created_at->format('Y-m-d '),
+
+
+                    ];
+                    $i += 1;
+
+                }
+
+
+                $i = 0;
+                foreach ($a as $item) {
+                    if ($item["count"] >= $request->condition_value) {
+                        $customers[$i] = $item["my_customer"]->id;
+                        $i += 1;
+                    }
+                }
+
+//                $customers = $customer->where($customer->count, '>=', $request->condition_value);
+
+                foreach ($customers as $vv) {
+                    DiscountCustomerController::store($discount->id, $vv, $request->usage_times);
                 }
             }
 
