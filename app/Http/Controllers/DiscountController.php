@@ -62,7 +62,7 @@ class DiscountController extends BaseController
                 if ($request["type"] == 1) {
                     DiscountProductController::store($request, $discount->id, $h);
                 } else {
-                    DiscountCodeController::store($request, $discount->id, $id);
+                    DiscountCodeController::store($request, $discount->id, $id,$h);
                 }
             }
         }
