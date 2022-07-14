@@ -12,23 +12,34 @@ use Illuminate\Http\Request;
 class DiscountCodeController extends BaseController
 {
 
-    public static function store(Request $request, $id, $stor_id)
+    public static function store(Request $request, $id, $stor_id, $h)
     {
-        $request->validate([
-            'discount_code' => 'required',
-            'condition' => 'required',
-            'condition_value' => 'required',
-        ]);
 
-        //product  1
-        //price    2
+        if ($h == 1) {
+
+            $discount = DiscountCode::create([
+                'discount_code' => ".",
+                'discounts_id' => $id,
+                'condition' => ".",
+                'condition_value' => 0,
+            ]);
+
+        } else {
+            $request->validate([
+                'discount_code' => 'required',
+                'condition' => 'required',
+                'condition_value' => 'required',
+            ]);
+
+            //product  1
+            //price    2
 ////تعديلللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللللل
-        $discount = DiscountCode::create([
-            'discount_code' => $request->discount_code,
-            'discounts_id' => $id,
+            $discount = DiscountCode::create([
+                'discount_code' => $request->discount_code,
+                'discounts_id' => $id,
 //            'condition' => $request->condition,
 //            'condition_value' => $request->condition_value,
-        ]);
+            ]);
 //        if($request->its_for == 1){
 //            $customers = Customer::all();
 //            foreach ($customers as $c){
@@ -42,29 +53,30 @@ class DiscountCodeController extends BaseController
 //        }
 
 
-        $order = Order::where('store_id', '=', $stor_id)->get();
+            $order = Order::where('store_id', '=', $stor_id)->get();
 
-        $d = $order->groupBy('customer_id');
+            $d = $order->groupBy('customer_id');
 
 
-        if ($request->condition == 2) {
+            if ($request->condition == 2) {
 
-            $customer = customerResource::collection($d);
+                $customer = customerResource::collection($d);
 
-            $customers = $customer->where($customer->total, '>=', $request->condition_value);
-            foreach ($customers as $c) {
-                DiscountCustomerController::store($discount->id, $c->id, $request->usage_times);
+                $customers = $customer->where($customer->total, '>=', $request->condition_value);
+                foreach ($customers as $c) {
+                    DiscountCustomerController::store($discount->id, $c->id, $request->usage_times);
+                }
+            } else {
+
+                $customer = discountCodeResource::collection($d);
+                $customers = $customer->where($customer->count, '>=', $request->condition_value);
+
+                foreach ($customers as $c) {
+                    DiscountCustomerController::store($discount->id, $c->id, $request->usage_times);
+                }
             }
-        } else {
 
-            $customer = discountCodeResource::collection($d);
-            $customers = $customer->where($customer->count, '>=', $request->condition_value);
-
-            foreach ($customers as $c) {
-                DiscountCustomerController::store($discount->id, $c->id, $request->usage_times);
-            }
         }
-
 
     }
 
