@@ -70,9 +70,6 @@ Route::get('all_products_bill/{id}', [OrderProductController::class, 'all_produc
 Route::get('all_orderproduct/{id}/{status_id}', [OrderProductController::class, 'all_orderproduct']);
 
 
-////////////////////////******////////////////////////////////////
-
-
 /////////////////////batool_new/////////
 
 Route::prefix("Customer")->group(function () {
@@ -203,6 +200,8 @@ Route::prefix("myorder")->group(function () {
     Route::post('delete_order/{id}', [App\Http\Controllers\OrderController::class, 'delete_order']);
     Route::post('deliver_order/{id}', [App\Http\Controllers\OrderController::class, 'deliver_order']);
     Route::get('order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);
+    Route::get('bill/{id}', [App\Http\Controllers\OrderProductController::class, 'bill']);
+
 
 });
 
