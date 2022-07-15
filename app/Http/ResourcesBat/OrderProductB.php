@@ -34,7 +34,7 @@ class OrderProductB extends JsonResource
             'review' => RatingResource::collection(ProductRating::where('product_id', $this->id)->get()),
             'num_cell' => $this->number_of_sales,
             'cost_price' => $this->cost_price,
-            'reviewstore' => RatingResource::collection(RatingStore::where('store_id' , Store::where('id' , Collection::where('id' , $this->collection_id )->value('store_id'))->value('id'))->get()) ,
+            'reviews' => RatingResource::collection(RatingStore::where('store_id' , Store::where('id' , Collection::where('id' , $this->collection_id )->value('store_id'))->value('id'))->get()) ,
 
 
         ];

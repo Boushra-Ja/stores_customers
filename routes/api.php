@@ -132,6 +132,7 @@ Route::group(['prefix' => 'Product'],  function() {
     Route::post('/P2' ,[ProductController::class, 'store']);
     Route::get('/Show_Secondray' , [SecondrayClassificationController::class,'Show_Secondray']);
     Route::get('/ShowClassification2/{id}' , [SecondrayClassificationController::class,'ShowClassification2']);
+    Route::get('/ShowClassification/{id}/{title}' , [SecondrayClassificationController::class,'ShowClassification']);
     Route::get('/Show_Detalis/{id}' , [ProductController::class,'Show_Detalis']);
 
 

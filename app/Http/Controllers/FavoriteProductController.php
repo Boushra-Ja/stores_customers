@@ -48,7 +48,8 @@ class FavoriteProductController extends BaseController
         if (!is_null($favorite)) {
             $favorite->delete();
             return $v;
-        } else {
+        }
+        else {
             FavoriteProduct::create([
                 'customer_id' => 1,
                 'product_id' => $id

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\ResourcesBat\RatingProB;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -37,16 +38,21 @@ class ProductController extends BaseController
     //العروض والحسومات//
     public function Order_discount()
     {
-        $favorite = DB::table('products')
-            ->join('discount_products', function ($join) {
+        $favorite = DB::table('discount_products')
+            ->join('products', function ($join) {
                 $join->on('discount_products.id', '=', 'products.discount_products_id')
                     ->where('discount_products.title', '=', 'null');
             })
             ->get();
 
-        return response(
-            $favorite
-        );
+
+
+//        return response(
+//            $favorite
+//        );
+        return
+
+            RatingProB::collection($favorite);
     }
 
     //اقتراحات قد تعجبك//
