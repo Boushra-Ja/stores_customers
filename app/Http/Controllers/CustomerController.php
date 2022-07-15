@@ -177,6 +177,7 @@ class CustomerController extends BaseController
     }
 
 
+
     public static function myCustomer($id)
     {
 
@@ -205,6 +206,7 @@ class CustomerController extends BaseController
 
         return response()->json($array);
     }
+
     public function EditMyProfile($id , StorePersoneRequest $request)
     {
 

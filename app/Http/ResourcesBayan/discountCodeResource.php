@@ -27,7 +27,7 @@ class discountCodeResource extends JsonResource
         $person = Persone::where('id', '=', $my_customer->persone_id)->first();
         return [
             'count' => $c,
-           // 'my_customer' => $my_customer,
+            // 'my_customer' => $my_customer,
             'name'=>$person->name,
             'date'=>$person->created_at->format('Y-m-d '),
 

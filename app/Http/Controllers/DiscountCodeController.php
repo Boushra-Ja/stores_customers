@@ -50,6 +50,7 @@ class DiscountCodeController extends BaseController
 
             if ($request->condition == 2) {
                 $i = 0;
+                $cust=array();
 
                 foreach ($d as $value) {
                     foreach ($value as $v) {
@@ -73,14 +74,13 @@ class DiscountCodeController extends BaseController
 
 
                 $i = 0;
+                $customers=array();
                 foreach ($cust as $value) {
                     if ($value["total"] >= $request->condition_value) {
                         $customers[$i] = $value["customer_id"];
                         $i += 1;
 
                     }
-                    //   $customers[$i] = $value->where($value->total, '>=', $request->condition_value);
-
                 }
 
                 foreach ($customers as $c) {
@@ -89,10 +89,9 @@ class DiscountCodeController extends BaseController
             }
             else {
 
-                $customer = discountCodeResource::collection($d);
-
                 $i = 0;
                 $c = 0;
+                $a=array();
                 foreach ($d as $value) {
                     foreach ($value as $v) {
                         $my_customer = Customer::where('id', '=', $v->customer_id)->first();
@@ -120,10 +119,8 @@ class DiscountCodeController extends BaseController
                     }
                 }
 
-//                $customers = $customer->where($customer->count, '>=', $request->condition_value);
-
                 foreach ($customers as $vv) {
-                    DiscountCustomerController::store($discount->id, $vv, $request->usage_times);
+                    DiscountCustomerController::store($discount->id, $vv);
                 }
             }
 
