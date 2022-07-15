@@ -100,46 +100,6 @@ Route::get('search/store/{name}' , [StoreController::class , 'search_by_name']) 
 //////All_material
 Route::get('All_material' , [OptioinValueController::class , 'All_material']) ;
 Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}/{d6}' , [ProductController::class , 'Gift_request']) ;
-////////////////////////******////////////////////////////////////
-
-
-Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
-Route::post('storeManager/register', [App\Http\Controllers\StoreManagerController::class, 'register']);
-
-Route::post('collection/create', [App\Http\Controllers\CollectionController::class, 'store']);
-Route::get('collection/collectionNane/{id}', [App\Http\Controllers\CollectionController::class, 'collectionNane']);
-Route::put('collection/update', [App\Http\Controllers\CollectionController::class, 'update']);
-Route::put('collection/delete', [App\Http\Controllers\CollectionController::class, 'delete']);
-Route::get('collection/getCollectionId', [App\Http\Controllers\CollectionController::class, 'getCollectionId']);
-Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
-
-
-Route::get('classification/show', [App\Http\Controllers\ClassificationController::class, 'Show_Classification']);
-
-Route::post('option_types/create', [App\Http\Controllers\OptionTypeController::class, 'stor1']);
-
-Route::post('product/create', [App\Http\Controllers\ProductController::class, 'store']);
-Route::get('product/index', [App\Http\Controllers\ProductController::class, 'index']);
-Route::get('product/show', [App\Http\Controllers\ProductController::class, 'show']);
-
-Route::post('store/update', [App\Http\Controllers\StoreController::class, 'update']);
-Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'show']);
-
-Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerController::class, 'index']);
-
-
-Route::post('helper/create', [App\Http\Controllers\HelperController::class, 'store']);
-Route::post('storeManager/update', [App\Http\Controllers\StoreManagerController::class, 'update']);
-
-Route::post('discountproduct/create/{id}', [App\Http\Controllers\DiscountController::class, 'store']);
-Route::post('customer/register', [App\Http\Controllers\CustomerController::class, 'register']);
-Route::get('order/all_my_order/{id}', [App\Http\Controllers\OrderController::class, 'all_my_order']);
-Route::get('order/order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);
-
-Route::get('customer/myCustomer/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer']);
-Route::get('customer/myCustomer_most_buy/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_most_buy']);
-Route::get('customer/myCustomer_salles/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_salles']);
-
 
 /////////////////////batool_new/////////
 
@@ -212,18 +172,75 @@ Route::post('/ChangeAmount/{productid}/{orderid}/{amount}' , [App\Http\Controlle
 
 
 
+//////////////////////////////////////tassnem///////////
+///
+Route::prefix("settings")->group(function () {
+
+    Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
+    Route::post('person/unique', [App\Http\Controllers\StoreManagerController::class, 'unique_email']);
+    Route::post('storeManager/login', [App\Http\Controllers\StoreManagerController::class, 'login']);
 
 
+    Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'show']);
+    Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerController::class, 'index']);
+
+    Route::post('store/update', [App\Http\Controllers\StoreController::class, 'update']);
+    Route::post('storeManager/true_password', [App\Http\Controllers\StoreManagerController::class, 'true_password']);
+    Route::get('PrivilladgeHelperController/my_helper/{id}', [App\Http\Controllers\PrivilladgeHelperController::class, 'my_helper']);
 
 
+});
+
+Route::prefix("collection")->group(function () {
+
+    Route::post('create', [App\Http\Controllers\CollectionController::class, 'store']);
+    Route::get('collectionNane/{id}', [App\Http\Controllers\CollectionController::class, 'collectionNane']);
+    Route::post('update', [App\Http\Controllers\CollectionController::class, 'update']);
+    Route::post('delete', [App\Http\Controllers\CollectionController::class, 'delete']);
+    Route::get('show/{id}', [App\Http\Controllers\CollectionController::class, 'show']);
+
+});
+
+Route::get('SecondrayClassification/list_seconderay', [App\Http\Controllers\SecondrayClassificationController::class, 'list_seconderay']);
+
+Route::prefix("product")->group(function () {
+
+    Route::post('create', [App\Http\Controllers\ProductController::class, 'store']);
+    Route::post('delete', [App\Http\Controllers\ProductController::class, 'delete']);
+    Route::post('update', [App\Http\Controllers\ProductController::class, 'update']);
+    Route::get('index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
+    Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index2']);
+    Route::get('show/{id}', [App\Http\Controllers\ProductController::class, 'show']);
+
+});
+
+Route::prefix("discountproduct")->group(function () {
 
 
+    Route::post('create/{id}/{h}', [App\Http\Controllers\DiscountController::class, 'store']);
+    Route::post('update', [App\Http\Controllers\DiscountController::class, 'update']);
+    Route::get('show/{id}/{type}', [App\Http\Controllers\DiscountController::class, 'show']);
+    Route::get('index/{id}', [App\Http\Controllers\DiscountController::class, 'index']);
+    Route::post('delete', [App\Http\Controllers\DiscountController::class, 'delete']);
 
-//Route::group(['middleware' => ['auth:sanctum']],
-//    function () {
-//
-//});
+});
 
+Route::prefix("myorder")->group(function () {
+
+
+    Route::get('all_my_order/{id}', [App\Http\Controllers\OrderController::class, 'all_my_order']);
+    Route::get('order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);
+
+});
+
+Route::prefix("mycustomer")->group(function () {
+
+
+    Route::get('myCustomer/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer']);
+    Route::get('myCustomer_most_buy/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_most_buy']);
+    Route::get('myCustomer_salles/{id}', [App\Http\Controllers\CustomerController::class, 'myCustomer_salles']);
+
+
+});
 
 Route::get('dashbord/{id}', [App\Http\Controllers\CollectionController::class, 'dashbord']);
-
