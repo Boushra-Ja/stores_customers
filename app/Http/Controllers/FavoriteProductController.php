@@ -48,7 +48,8 @@ class FavoriteProductController extends BaseController
         if (!is_null($favorite)) {
             $favorite->delete();
             return $v;
-        } else {
+        }
+        else {
             FavoriteProduct::create([
                 'customer_id' => 1,
                 'product_id' => $id
@@ -77,6 +78,16 @@ class FavoriteProductController extends BaseController
     }
 
 
+    public function isFavourite($product_id , $customer_id)
+    {
+
+        $check = FavoriteProduct::where('customer_id' , $customer_id)->where('product_id' , $product_id)->first()  ;
+
+        if($check)
+            return 1 ;
+        else
+            return 0 ;
+    }
 
 
 }

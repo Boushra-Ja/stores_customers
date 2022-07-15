@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePersoneRequest;
 use App\Models\Customer;
 use App\Models\Persone;
 use Dotenv\Validator;
@@ -203,5 +204,17 @@ class CustomerController extends BaseController
         $array = collect($data)->sortBy('total')->reverse()->toArray();
 
         return response()->json($array);
+    }
+    public function EditMyProfile($id , StorePersoneRequest $request)
+    {
+
+        if(Persone::find($id)->update($request->all()))
+        {
+            $data = Persone::where('id' , $id)->get() ;
+
+            if($request->hasfile('image'))
+                return $this->sendResponse($data, 'success');
+        }
+        return $this->sendErrors([], 'error');
     }
 }

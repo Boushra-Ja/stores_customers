@@ -31,4 +31,13 @@ class ProductRatingController extends BaseController
             return $this->sendErrors('فشل في عملية التقييم', ['error' => 'not rating store']);
         }
     }
+
+    public function isRating($product_id , $customer_id)
+    {
+        $check = ProductRating::where('customer_id' , $customer_id)->where('product_id' , $product_id)->first()  ;
+        if($check)
+            return 1 ;
+        else
+            return 0 ;
+    }
 }

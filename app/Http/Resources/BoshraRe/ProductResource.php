@@ -20,8 +20,8 @@ class ProductResource extends JsonResource
             'product_name' => $this->name ,
             'image' => $this->image ,
             'selling_price' => $this->selling_price,
-            'store_id' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('id'))->value('id'),
-            'store_name' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('id'))->value('name'),
+            'store_id' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('store_id'))->value('id'),
+            'store_name' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('store_id'))->value('name'),
             'num_salling_store' => Store::where('id' , Collection::where('id' , $this->collection_id )->value('id'))->value('num_of_salling'),
 
         ];

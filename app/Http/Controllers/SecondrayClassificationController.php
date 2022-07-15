@@ -58,18 +58,18 @@ class SecondrayClassificationController extends Controller
         //العروض والخصومات//
         if ($id == '3') {
             $SecondrayModel = SecondrayClassification::query()->where('title', $title)->get()->pluck('id');
-            $pro = DB::table('products')
-                ->join('discount_products', function ($join) use ($SecondrayModel) {
+            $pro = DB::table('discount_products')
+                ->join('products', function ($join) use ($SecondrayModel) {
                     $join->on('discount_products.id', '=', 'products.discount_products_id')
-                        ->where('discount_products.title', '=', 'null')
-                        ->where('secondray_classification_products.secondary_id', '=', $SecondrayModel[0]);
+                        ->where('discount_products.title', '=', 'null');
+                     // ->where('secondray_classification_products.secondary_id', '=', $SecondrayModel[0]);
                 })
                 ->get();
             return response($pro, 200);
 
         }
 
-        //اقتراحات قد تعجبك//
+       // اقتراحات قد تعجبك//
         if ($id == '4') {
             $SecondrayModel = SecondrayClassification::query()->where('title', $title)->get()->pluck('id');
 
@@ -79,17 +79,16 @@ class SecondrayClassificationController extends Controller
                 ->get();
 
 
-            $re = array();
-            $i = 0;
             foreach ($pro as $val) {
-
                 $prooo = DB::table('secondray_classification_products')
                     ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
-                    ->where('secondray_classification_products.secondary_id', '=', $val->secondary_classification_id)->get();
 
+                    ->where('secondray_classification_products.secondary_id', '=', $val->secondary_id)->get();
+                foreach ($prooo as $valk) {
 
-                $re[$i] = $prooo;
-                $i++;
+                    $re[$i]=$valk;
+                    $i++;
+                }
             }
 
 
