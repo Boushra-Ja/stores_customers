@@ -83,6 +83,10 @@ class ProductOptionController extends BaseController
             $i++;
         }
 
-        return  $this->sendResponse($all_data, "successs");
+        if($all_data)
+            return  $this->sendResponse($all_data, "successs");
+
+        return  $this->sendErrors([], "failed");
+
     }
 }

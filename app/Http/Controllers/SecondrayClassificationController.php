@@ -11,8 +11,6 @@ class SecondrayClassificationController extends Controller
 
     public function Show_Secondray()
     {
-
-
         return response()->json(Classification::with('secondary_classifications')->get());
 
     }
@@ -106,15 +104,13 @@ class SecondrayClassificationController extends Controller
         $a=array();
         $i=0;
         foreach ($secondrayClassification as $option){
-            $data=SecondrayClassification::find($option->secondary_id);
+            $data=SecondrayClassification::where('id','=',$option->secondary_id)->first();
             $a[$i]=$data;
             $i=$i+1;
         }
 
         return $a;
     }
-
-
 
     public function ShowClassification2($id)
     {
@@ -137,4 +133,10 @@ class SecondrayClassificationController extends Controller
 
 
 
-    }}
+    }
+
+    public function list_seconderay(){
+        $secoundry=SecondrayClassification::all();
+        return response()->json($secoundry, 200);
+    }
+}

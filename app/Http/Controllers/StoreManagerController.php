@@ -16,8 +16,8 @@ class StoreManagerController extends BaseController
     /////عرض معلومات صاحب متجر محدد
     public function index($id)
     {
-        $storeManager = StoreManager::find($id);
-        $persone = Persone::find($storeManager->person_id)->first();
+        $storeManager = StoreManager::where('id', '=', $id)->first();
+        $persone = Persone::where('id', '=', $storeManager->person_id)->first();
         if ($storeManager) {
             return $this->sendResponse($persone, 'Store Shop successfully');
         } else {
@@ -27,11 +27,11 @@ class StoreManagerController extends BaseController
     }
 
     //////انشاء حساب صاحب متجر
-    public static function register(Request $request,$store_id)
+    public static function register(Request $request, $store_id)
     {
 
         $valid = $request->validate([
-            'name' => 'required ',
+            'username' => 'required ',
             'email' => 'required | unique:users',
             'password' => 'required',
         ]);
@@ -47,7 +47,7 @@ class StoreManagerController extends BaseController
 
 
         $persone = Persone::create([
-            'name' => $valid['name'],
+            'name' => $valid['username'],
             'email' => $valid['email'],
             'password' => $valid['password'],
             'code' => $code,
@@ -65,28 +65,60 @@ class StoreManagerController extends BaseController
 
             $user1->save();
 
-            $privilladge=Privilladge::all();
+            $privilladge = Privilladge::all();
+            if ($privilladge)
 
-            foreach($privilladge as $option){
-                PrivilladgeStoreManagerController::store($option->id,$user1->id);
-            }
+                foreach ($privilladge as $option) {
+                    PrivilladgeStoreManagerController::store($option->id, $user1->id);
+                }
 
-           mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
+            //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
-            return response ()->json([
-                'persone_id' => $persone,
-                'token'=>$token,
-            ]);
-            // return $this->sendResponse($persone, 'Store Shop successfully');
+            return $user1->id;
+
+
         }
 
 
     }
 
-    public function update(Request $request){
-        $store_manager = StoreManager::find($request->id)->first();
-        $persone = Persone::find($store_manager->person_id)->update($request->all());
-        return $this->sendResponse($persone, 'تم تعديل ملف المتجر بنجاح');
+    public function unique_email(Request $request)
+    {
+        $person = Persone::where('email', '=', $request->email)->first();
+        if ($person) {
+            return $this->sendResponse("error", 'The Email already exists');
+        } else
+            return $this->sendResponse("success", 'The Email is unique');
+
+    }
+
+    public static function update(Request $request)
+    {
+        if ($request->password)
+            Persone::where('id', '=', $request->persone_id)->first()->update([
+                'name' => $request->username,
+                'email' => $request->email,
+                'password' => $request->password
+
+            ]);
+        else
+            Persone::where('id', '=', $request->persone_id)->first()->update([
+                'name' => $request->username,
+                'email' => $request->email,
+            ]);
+
+        if ($request->helper_name)
+            HelperController::store($request);
+    }
+
+    public function true_password(Request $request)
+    {
+        $persone = Persone::where('id', '=', $request->persone_id)->first();
+        if ($persone)
+            if ($persone->password == $request->old_password)
+                return $this->sendResponse("success", 'كلمة السر مطابقة');
+            else
+                return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
     }
 
     ///// تسجيل الدخول كصاحب متجر
@@ -98,17 +130,33 @@ class StoreManagerController extends BaseController
             'password' => 'required|min:3|max:100',
         ]);
 
-        $person = Persone::where('email', $valid['email'])->first();
-        $password = Persone::where($valid['password'], $person->password);
-        if (!$person || !$password) {
-            return response()->json(['message' => 'Login problem']);
-        } else {
+        $person = Persone::where('email','=', $valid['email'])->first();
+        if($person)
+        if($person->password == $valid['password']){
+            $storManager=StoreManager::where('person_id','=',$person->id)->first();
             $token = $person->createToken('ProductsTolken')->plainTextToken;
             return response()->json([
-                'persone_id' => $person,
-                'token' => $token,
+                'message'=>'success',
+                'manager_id' => $storManager->id,
+                'store_id' => $storManager->store_id,
+            ]);
+
+        }
+        else{
+            return response()->json([
+                'message'=>'erorr',
             ]);
         }
+        //$password = Persone::where($valid['password'],'=', $person->password);
+//        if (!$person || !$password) {
+//            return response()->json(['message' => 'Login problem']);
+//        } else {
+//            $token = $person->createToken('ProductsTolken')->plainTextToken;
+//            return response()->json([
+//                'manager_id' => $storManager->id,
+//                'store_id' => $storManager->store_id,
+//            ]);
+        //}
     }
 
     ////////التحقق من البريد

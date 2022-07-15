@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\StoreFavoriteStoreRequest;
 use App\Http\Resources\BoshraRe\StoresResource;
 use App\Models\FavoriteStore;
-
 use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,20 +44,29 @@ class FavoriteStoreController extends BaseController
             return $this->sendErrors([], 'Failed');
     }
     //اضافه لمفضله المتاجر//
-    public function Add_Favorite($id)
+    public function Add_Favorite(StoreFavoriteStoreRequest $request )
     {
 
-        $store = Store::find($id);
-        $customer = auth::id();
-        $response = $store->favourits()->attach($customer);
-        return $this->sendResponse($response, "success");
+        $response = FavoriteStore::Create(
+            [
+                'store_id' => $request->store_id ,
+                'customer_id' => $request->customer_id
+            ]
+            );
+
+        if($response)
+            return $this->sendResponse($response, "success");
+
+        return $this->sendErrors([], "failed");
+
+
     }
 
 
     //حدف مننج من مفضله المتاجر//
-    public function Delete_Favorite($store_id)
+    public function Delete_Favorite($store_id , $cus_id)
     {
-        $res = FavoriteStore::where('store_id', $store_id)->delete();
+        $res = FavoriteStore::where('store_id', $store_id)->where('customer_id' , $cus_id)->delete();
         if ($res)
             return $this->sendResponse($res, "success");
         else

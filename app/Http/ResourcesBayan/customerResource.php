@@ -13,26 +13,23 @@ class customerResource extends JsonResource
     public function toArray($request)
     {
 
-        foreach ($this as $value) {
 
-            foreach ($value as $v) {
-                $my_customer = Customer::where('id', '=', $v->customer_id)->first();
-                $sum=Order::where('customer_id', '=', $v->customer_id)->sum('delivery_price');
+        foreach ($this as $v) {
+            $my_customer = Customer::where('id', '=', $v->customer_id)->first();
+            $sum = Order::where('customer_id', '=', $v->customer_id)->sum('delivery_price');
 
-                break;
-            }
-            $orders = count($value);
             break;
         }
+
+        $orders = count($this);
 
 
         $person = Persone::where('id', '=', $my_customer->persone_id)->first();
         return [
             'orders' => $orders,
-            //'my_customer' => $my_customer,
-            'name'=>$person->name,
-            'date'=>$person->created_at->format('Y-m-d '),
-            'total'=>$sum
+            'name' => $person->name,
+            'date' => $person->created_at->format('Y-m-d '),
+            'total' => $sum
 
         ];
     }

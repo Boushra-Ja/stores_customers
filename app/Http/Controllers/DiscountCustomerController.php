@@ -11,7 +11,7 @@ use App\Models\SecondrayClassification;
 
 class DiscountCustomerController extends Controller
 {
-    public static function store(int $discount_codes_id, int $customers_id,$usage_times)
+    public static function store(int $discount_codes_id, int $customers_id)
     {
 //        $discount_codes = DiscountCode::find($discount_codes_id);
 //        $customers = Customer::find($customers_id);
@@ -20,8 +20,7 @@ class DiscountCustomerController extends Controller
 
         $response = DiscountCustomer::Create([
             'customers_id' => $customers_id,
-            'usage_times' =>$usage_times,
-            //'status_id' => OrderStatus::where('status', 'في السلة')->value('id'),
+            'usage_times' =>1,
             'discount_codes_id' => $discount_codes_id,
         ]);
 

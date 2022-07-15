@@ -57,8 +57,8 @@ class OrderProductController extends BaseController
     public function  ChangeToCommit($orderid,$productid){
 
         $status_id = OrderStatus::where('status', 'في السله')->value('id');
-        $orderl = OrderProduct::query()->where('order_id',$orderid)->where('product_id',$productid)->value('id');
-        $order = OrderProduct::find($orderl);
+        $order = OrderProduct::find($orderid);
+
 
 
         if( $order )
@@ -87,36 +87,30 @@ class OrderProductController extends BaseController
     public function  ChangeAmount($productid,$orderid,$amount){
 
         $status_id = OrderStatus::where('status', 'في السله')->value('id');
-        $orderl = OrderProduct::query()->where('order_id',$orderid)->where('product_id',$productid)->value('id');
-        $order = OrderProduct::find($orderl);
+        $order = OrderProduct::find($orderid);
 
 
 
-      if( $order )
-            if($order->order_id==$orderid && $order->product_id==$productid &&$order->status_id ==5)
+        if( $order )
+            if( $order->order_id==$orderid && $order->product_id==$productid && $order->status_id==5 )
             {
+
                 $order2 = DB::table('order_products')
-                    ->join('orders', 'orders.id', '=', 'order_products.order_id')
-                    ->where('status_id',$status_id)
+                    ->join('orders', 'orders.id', '=', 'order_products.order_id'
+                    )->where('status_id',$status_id)
                     ->where('orders.id',$orderid)
-                   ->where('order_products.product_id',$productid)
-                    ->get()->value('customer_id');
+                    ->where('order_products.product_id',$productid)->get()->value('customer_id');
 
-
-                if($order2=='1'
-                    /*Auth::id()*/
-                )
+                if( $order2==1/*Auth::id()*/)
                 { $order->amount =$amount ;
                     $order->save();
-                    echo 'yyyy';
 
                 }
-          else
-                    echo 'noooo';
+//                else
+//                    echo 'noooo';
           }
 
 
-     return $order;
 
     }
 

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Persone;
 use Illuminate\Http\Request;
 use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Resources\BoshraRe\ProductClassResource;
 use App\Http\Resources\BoshraRe\StoreResource;
+use App\Models\Collection;
+use App\Models\Product;
 
 class StoreController extends BaseController
 {
@@ -81,51 +85,14 @@ class StoreController extends BaseController
         $input = $request->all();
         $shop = Store::create($input);
 
-        if ($request->hasfile('image')) {
-            $file = $request->file('image');
-            $extention = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extention;
-            $file->move('uploads/stores/', $filename);
-            $shop->image = $filename;
 
-        } else
-            $shop->image = '';
-        $shop->save();
-
-        ///////////
         if ($shop) {
             WaitingStoreController::store($shop->id);
-            ////////////////////////////////////////////بدها نقل لمكان القبول \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            $r =array(
-                "type" => "1",
-                "status" => "0",
-                "value" => "0",
-                "start_date" => "2022-06-13 09:38:43",
-                "end_date" => "2022-06-13 09:38:43",
-                "condition" => "0",
-                "condition_value" => "0",
-                "title" => ".",
-                "apply_to" => "",
-                "product"=>[0]
-            );
 
-//            $r1 =array(
-//                "type" => "2",
-//                "status" => "0",
-//                "value" => "0",
-//                "start_date" => "2022-06-13 09:38:43",
-//                "end_date" => "2022-06-13 09:38:43",
-//                "condition" => "0",
-//                "condition_value" => "0",
-//                "title" => ".",
-//                "apply_to" => "",
-//                "product"=>[0]
-//            );
-            DiscountController::store($request,$shop->id);
-          //  DiscountController::store($request,$shop->id);
+            DiscountController::store($request, $shop->id, 1);
 
-            StoreManagerController::register($request,$shop->id);
-            return $this->sendResponse($shop->id, 'Store Shop successfully');
+            $manager_id = StoreManagerController::register($request, $shop->id);
+            return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
 
@@ -136,18 +103,54 @@ class StoreController extends BaseController
     ////عرض متجر محدد
     public function show($id)
     {
-        $store = Store::find($id);
-        return $this->sendResponse($store, 'تم ارجاع ملف المتجر بنجاح');
+        $data = Store::where('id', $id)->get();
+        if ($data) {
+            return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
+        } else {
+            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show store']);
 
+        }
     }
 
     ////////تعديل بيانات المتجر
     public function update(Request $request)
     {
-        $store = Store::find($request->store)->update($request->all());
-        return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
+        $persone = Persone::where('id', '=', $request->persone_id)->first();
+        if ($persone)
+        if ($persone->password == $request->old_password) {
+            $store = Store::where('id','=',$request->store_id)->first()->update($request->all());
+            StoreManagerController::update($request);
+            return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
+        } else return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
 
 
+    }
+
+    ///جلب المنتجات مع تصنيفاتها
+    public function product_with_class($store_id)
+    {
+        $collections_id = Collection::where('store_id', $store_id)->get();
+
+        $pr = array();
+        $i = 0;
+        $res = array();
+        $j = 0;
+        foreach ($collections_id as $value) {
+            $pr[$i] = DB::table('products')->where('products.collection_id', $value['id'])
+                ->join('secondray_classification_products', 'products.id', '=', 'secondray_classification_products.product_id')
+                ->join('secondray_classifications', 'secondray_classification_products.secondary_id', '=', 'secondray_classifications.id')
+                ->join('classifications', 'classifications.id', '=', 'secondray_classifications.classification_id')
+                ->select('secondray_classifications.id as secondary_id', 'secondray_classifications.title as secondray_title', 'secondray_classifications.classification_id as classification_id', 'classifications.title as classifications_title', 'products.*', 'secondray_classification_products.*')
+                ->get();
+
+            foreach ($pr[$i] as $val) {
+
+                $res[$j] = $val;
+                $j++;
+            }
+            $i++;
+        }
+        return $this->sendResponse(ProductClassResource::collection($res), 'success');
     }
 
 }

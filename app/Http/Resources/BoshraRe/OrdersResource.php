@@ -2,22 +2,21 @@
 
 namespace App\Http\Resources\BoshraRe;
 
-use App\Models\Store;
+use App\Models\Customer;
+use App\Models\Persone;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrdersResource extends JsonResource
 {
 
+
     public function toArray($request)
     {
-        return  [
-            'store_id' => $this->store_id ,
-            'store_name' => Store::where('id' ,$this->store_id )->value('name') ,
-            'customer_id' => $this->customer_id ,
-            'order_id' => $this->id ,
-            'delivery_time' => $this->delivery_time ,
-        //    'created_at' => $this->created_at->format('Y-m-d '),
-          //  'updated_at' => $this->updated_at->format('Y-m-d '),
+        return [
+            'customer' => Persone::where('id','=',Customer::where('id','=',$this->customer_id)->value('persone_id'))->value('name'),
+            'order_id' => $this->order_id,
+            'delivery_time' => $this->delivery_time,
+            'created_at' => $this->created_at,
         ];
     }
 }

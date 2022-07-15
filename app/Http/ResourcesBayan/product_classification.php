@@ -15,6 +15,15 @@ class product_classification extends JsonResource
 
     public function toArray($request)
     {
+
+
+        $i=0;
+        $s=SecondrayClassificationProduct::where('product_id','=',$this->id)->get();
+        foreach ($s as $value){
+            $sec[$i]=SecondrayClassification::where('id','=',$value->secondary_id)->value('id');
+            $i+=1;
+
+        }
         return  [
             'product_id' => $this->id,
             'product_name' => $this->name,
@@ -25,13 +34,14 @@ class product_classification extends JsonResource
             'party' => $this->party,
             'discription' => $this->discription,
             'age' => $this->age,
+            'gift'=>$this->gift,
             'cost_price' => $this->cost_price,
-//            'created_at' => $this->created_at->format('Y-m-d '),
-//            'updated_at' => $this->updated_at->format('Y-m-d '),
             'return_or_replace' => $this->return_or_replace,
             'discount_products_id' => $this->discount_products_id,
-          //  'classification'=> SecondrayClassification::where('id','=',SecondrayClassificationProduct::where('id','=',$this->id)->value('id'))->get()->value('title'),
-            'collection'=> Collection::where('id','=',$this->collection_id)->value('title'),
+            'classification'=> $sec,
+            'collection'=> $this->collection_id,
+            'review' => RatingResource::collection(ProductRating::where('product_id', $this->id)->get()),
+
 
         ];
     }
