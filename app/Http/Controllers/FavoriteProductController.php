@@ -78,6 +78,16 @@ class FavoriteProductController extends BaseController
     }
 
 
+    public function isFavourite($product_id , $customer_id)
+    {
+
+        $check = FavoriteProduct::where('customer_id' , $customer_id)->where('product_id' , $product_id)->first()  ;
+
+        if($check)
+            return 1 ;
+        else
+            return 0 ;
+    }
 
 
 }

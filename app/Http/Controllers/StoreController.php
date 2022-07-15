@@ -68,7 +68,6 @@ class StoreController extends BaseController
             $filename = time() . '.' . $extention;
             $file->move('uploads/books/', $filename);
             $request->image = $filename;
-
         } else
             $request->image = '';
 
@@ -78,7 +77,6 @@ class StoreController extends BaseController
             $filename1 = time() . '.' . $extention1;
             $file1->move('uploads/books/', $filename1);
             $request->Brand = $filename1;
-
         } else
             $request->Brand = '';
 
@@ -95,19 +93,16 @@ class StoreController extends BaseController
             return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
-
         }
-
     }
 
-    ////عرض متجر محدد
-    public function show($id)
-    {
-        $data = Store::where('id', $id)->get();
+     ////عرض متجر محدد
+    public function show($id){
+        $data = Store::where('id' , $id)->get();
         if ($data) {
             return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
         } else {
-            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show store']);
+            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show product info']);
 
         }
     }
@@ -117,13 +112,11 @@ class StoreController extends BaseController
     {
         $persone = Persone::where('id', '=', $request->persone_id)->first();
         if ($persone)
-        if ($persone->password == $request->old_password) {
-            $store = Store::where('id','=',$request->store_id)->first()->update($request->all());
-            StoreManagerController::update($request);
-            return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
-        } else return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
-
-
+            if ($persone->password == $request->old_password) {
+                $store = Store::where('id', '=', $request->store_id)->first()->update($request->all());
+                StoreManagerController::update($request);
+                return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
+            } else return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
     }
 
     ///جلب المنتجات مع تصنيفاتها
@@ -137,9 +130,9 @@ class StoreController extends BaseController
         $j = 0;
         foreach ($collections_id as $value) {
             $pr[$i] = DB::table('products')->where('products.collection_id', $value['id'])
-                ->join('secondray_classification_products', 'products.id', '=', 'secondray_classification_products.product_id')
-                ->join('secondray_classifications', 'secondray_classification_products.secondary_id', '=', 'secondray_classifications.id')
-                ->join('classifications', 'classifications.id', '=', 'secondray_classifications.classification_id')
+                ->join('secondray_classification_products',  'products.id', '=',  'secondray_classification_products.product_id')
+                ->join('secondray_classifications',  'secondray_classification_products.secondary_id', '=',  'secondray_classifications.id')
+                ->join('classifications',  'classifications.id', '=',  'secondray_classifications.classification_id')
                 ->select('secondray_classifications.id as secondary_id', 'secondray_classifications.title as secondray_title', 'secondray_classifications.classification_id as classification_id', 'classifications.title as classifications_title', 'products.*', 'secondray_classification_products.*')
                 ->get();
 
@@ -152,5 +145,15 @@ class StoreController extends BaseController
         }
         return $this->sendResponse(ProductClassResource::collection($res), 'success');
     }
+    public function search_by_name($name)
+    {
+        $data = Store::query()
+            ->where('name', 'LIKE',  '%' . $name . '%')
+            ->get();
+        if ($name == "")
+            return $this->sendResponse(StoreResource::collection(Store::all()), 'success');
 
+
+        return $this->sendResponse(StoreResource::collection($data), 'success');
+    }
 }

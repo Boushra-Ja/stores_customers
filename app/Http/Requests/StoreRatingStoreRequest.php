@@ -16,7 +16,6 @@ class StoreRatingStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'notes' => 'required' ,
             'value' => 'required | max:5'  ,
             'customer_id' => 'required | exists:customers,persone_id' ,
             'store_id' => 'required | exists:stores,id'

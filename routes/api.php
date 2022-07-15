@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FavoriteProductController;
 use App\Http\Controllers\SecondrayClassificationController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\FavoriteStoreController;
@@ -12,8 +14,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductOptionController;
 use App\Http\Controllers\ProductRatingController;
 use App\Http\Controllers\RatingStoreController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SearchController;
+use App\Models\FavoriteProduct;
+use App\Models\OptioinValue;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+
 
 
 //////////////////Boushra//////////////////////////////
@@ -21,6 +28,11 @@ use Illuminate\Support\Facades\Route;
 Route::resource('stores' , StoreController :: class) ;
 Route::get('stores/order/reviews' , [StoreController::class , 'order_by_review']) ;
 Route::get('stores/order/sales' , [StoreController::class , 'order_by_sales']) ;
+
+///add favourite store
+Route::post('FavoriteStore/Add_Favorite' , [FavoriteStoreController::class , 'Add_Favorite']);
+Route::delete('FavoriteStore/Delete_Favorite/{id}/{cus_id}' , [FavoriteStoreController::class , 'Delete_Favorite']);
+Route::get('product_with_class/{id}' , [StoreController::class , 'product_with_class']);
 
 
 ////Routes for products
@@ -30,9 +42,11 @@ Route::get('similar_products/{id}' , [ProductController::class , 'similar_produc
 
 /////Routes for rating products
 Route::resource('rating_product' , ProductRatingController::class)->except('show' , 'edit' , 'destroy' ,'update');
+Route::get('isRating/product/{pr_id}/{cus_id}' , [ProductRatingController::class , 'isRating']);
 
 /////Routes for rating stors
 Route::resource('rating_store' , RatingStoreController::class)->except('show' , 'edit' , 'destroy' ,'update');
+Route::get('isRating/store/{store_id}/{cus_id}' , [RatingStoreController::class , 'isRating']);
 
 /////Routes for Orders
 Route::resource('orders' , OrderController::class);
@@ -55,14 +69,37 @@ Route::get('values_for_option/{id}' , [OptioinValueController::class , 'options_
 
 /////////add_product
 Route::post('temp' , [ProductController::class , 'temp']) ;
+Route::get('my_product_store/{store_id}' , [ProductController::class , 'my_product']) ;
 
 /////////My_Favourite_store
 Route::get('myFavorite/{id}' , [FavoriteStoreController::class , 'myFavorite']);
 
+//////add favourite prodcut
+Route::post('FavoriteProduct/Add_Favorite/{id}' , [FavoriteProductController::class , 'store']);
+Route::get('isFavourite/product/{product_id}/{customer_id}' , [FavoriteProductController::class , 'isFavourite']);
+
 /////bill
 Route::get('bill/{id}' , [OrderProductController::class , 'bill']);
 Route::get('all_products_bill/{id}' , [OrderProductController::class , 'all_products_bill']);
+Route::get('all_orderproduct/{id}/{status_id}' , [OrderProductController::class , 'all_orderproduct']);
 
+////edit profile
+Route::post('edit_profile/{id}' , [CustomerController::class , 'EditMyProfile']);
+
+//////report on store
+Route::post('report', [ReportController::class, 'store']);
+Route::get('shop_names', [StoreController::class, 'shop_names']);
+
+/////search_product
+//Route::get('search_product/{name}' , [SearchController::class , 'query']) ;
+Route::get('search/product/{name}' , [ProductController::class , 'search_by_name']) ;
+
+/////search_product
+Route::get('search/store/{name}' , [StoreController::class , 'search_by_name']) ;
+
+//////All_material
+Route::get('All_material' , [OptioinValueController::class , 'All_material']) ;
+Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}/{d6}' , [ProductController::class , 'Gift_request']) ;
 ////////////////////////******////////////////////////////////////
 
 

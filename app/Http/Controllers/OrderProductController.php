@@ -134,15 +134,17 @@ class OrderProductController extends BaseController
 
 
 
+
     //////حذف المنتج من السلة
-    public function destroy($orderProduct)
+    public function destroy($product_id )
     {
-        $res = OrderProduct::where('id', $orderProduct)->delete();
+        $res = OrderProduct::where('product_id', $product_id)->where('status_id' , OrderStatus::where('status' , 'في السلة')->value('id'))->delete();
         if ($res)
             return $this->sendResponse($res, "success");
         else
             return $this->sendErrors([], "failed");
     }
+
 
     public function bill($order_id)
     {
@@ -165,10 +167,16 @@ public function all_products_bill($order_id)
 
 
 
-    public function order_product($id){
-        $product=OrderProduct::where('order_id','=',$id)->get();
-        $g = ordure_product_resource::collection($product);
+  public function order_product($id){
+    $product=OrderProduct::where('order_id','=',$id)->get();
+    $g = ordure_product_resource::collection($product);
 
-        return $this->sendResponse($g, 'Store Shop successfully');
-    }
+    return $this->sendResponse($g, 'Store Shop successfully');
+}
+
+public function all_orderproduct($order_id , $status_id)
+{
+    $data = OrderProduct::where('order_id' , $order_id)->where('status_id' , $status_id ) ->get() ;
+    return $this->sendResponse(OrderProductResource::collection($data) , 'success') ;
+}
 }

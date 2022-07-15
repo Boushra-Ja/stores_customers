@@ -8,6 +8,9 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\BoshraRe\ProductAllResource;
 use App\Http\Resources\BoshraRe\ProductResource;
+use App\Models\Collection;
+use App\Models\OptioinValue;
+use App\Models\OptionType;
 use App\Models\SecondrayClassificationProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -115,17 +118,29 @@ class ProductController extends BaseController
         }
     }
 
-    //////عرض منتجات مشابهة
+   //////عرض منتجات مشابهة
     public function similar_products($id)
     {
-        $my_classification = SecondrayClassificationProduct::where('product_id' , $id)->value('secondary_id') ;
+        $my_classification = SecondrayClassificationProduct::where('product_id' , $id)->get() ;
 
-        $products_class_ids = DB::table('secondray_classification_products')->where('secondary_id' , $my_classification)->where('product_id' , '!='  , $id)
-        ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
-        ->get();
+        $products_class_ids = array() ;
+        $i = 0;
+        $res = array() ;
+        $j = 0;
+        foreach ($my_classification as $value) {
+            $products_class_ids[$i] = DB::table('secondray_classification_products')->where('secondary_id' , $value['secondary_id'])->where('product_id' , '!='  , $id)
+            ->join('products', 'products.id', '=', 'secondray_classification_products.product_id')
+            ->get();
 
-        return $this->sendResponse( ProductResource::collection($products_class_ids) , "success");
+            foreach ($products_class_ids[$i] as $val) {
+                $res[$j] = $val ;
+                $j++;
+            }
+            $i++;
+    }
 
+
+        return $this->sendResponse( ProductResource::collection($res) , "success");
     }
 
     // اضافة منتج
@@ -211,6 +226,193 @@ class ProductController extends BaseController
     //حذف منتج
     public function delete(Request $request){
         $product = Product::find($request->product)->delete();
+
+    }
+
+
+    public function my_product($store_id)
+    {
+
+        $collections_id = Collection::where('store_id' , $store_id)->get();
+        $product = array() ;
+        $i =0 ;
+        $j = 0 ;
+        $res = array() ;
+
+        foreach ($collections_id as  $value) {
+
+            $product[$i] = Product::where('collection_id' , $value['id']) ->get();
+
+            foreach ($product[$i] as  $val) {
+                $res[$j] = $val ;
+                $j = $j + 1 ;
+            }
+            $i = $i + 1 ;
+        }
+
+        return $this->sendResponse(ProductResource::collection($res) , 'success') ;
+
+    }
+
+    public function search_by_name($name)
+    {
+        $data = Product::query()
+        ->where('name', 'LIKE',  '%' . $name . '%')
+        ->get() ;
+        return $data ;
+    }
+
+    public function Gift_request($party , $fromage , $toage, $material , $fromprice , $toprice)
+    {
+        $data4 = array() ;
+        $data5 = array() ;
+        $res = array() ;
+        $k = 0;
+        $i = 0;
+        $j = 0;
+        if($material!='null')
+        {
+            $data = OptioinValue::query()
+            ->where('value' , $material)
+            ->get() ;
+
+            foreach ($data as $value) {
+
+                $data4[$i] = OptionType::where('id' , $value['option_type_id'])->get() ;
+
+                foreach ($data4[$i] as $val){
+                    if($party != " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0'){
+                        $data5[$j]=Product::where('id' , $val['product_id'])
+                        ->where('party', 'LIKE',  '%' . $party . '%')
+                        ->where('age'  ,'>=' , $fromage)
+                        ->where('age'  ,'<='  , $toage)
+                        ->where('selling_price'  ,'>=' , $fromprice)
+                        ->where('selling_price'  ,'<='  , $toprice)
+                        ->get();
+                    }
+                    else if($party == " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0'){
+                        $data5[$j]=Product::where('id' , $val['product_id']) ->get();
+                    }
+
+                    else if($party == " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0')
+                    {
+                        $data5[$j]=Product::where('id' , $val['product_id'])
+                        ->where('age'  ,'>=' , $fromage)
+                        ->where('age'  ,'<='  , $toage)
+                        ->where('selling_price'  ,'>=' , $fromprice)
+                        ->where('selling_price'  ,'<='  , $toprice)
+                        ->get();
+                    }
+                    else if($party != " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0')
+                    {
+                        $data5[$j]=Product::where('id' , $val['product_id'])
+                        ->where('party', 'LIKE',  '%' . $party . '%')
+                        ->get();
+                    }
+                    else if($party == " " && $fromage == "0" && $toage == "0" )
+                    {
+                        $data5[$j]=Product::where('id' , $val['product_id'])
+                        ->where('selling_price'  ,'>=' , $fromprice)
+                        ->where('selling_price'  ,'<='  , $toprice)
+                        ->get();
+                    }
+                    else if($party == " " && $fromprice == "0" && $toprice == "0" )
+                    {
+                        $data5[$j]=Product::where('id' , $val['product_id'])
+                        ->where('age'  ,'>=' , $fromage)
+                        ->where('age'  ,'<='  , $toage)
+                        ->get();
+                    }
+
+                    else if($party != " " && $fromage == "0" && $toage == "0" )
+                    {
+                        $data5[$j]=Product::where('id' , $val['product_id'])
+                        ->where('party', 'LIKE',  '%' . $party . '%')
+                        ->where('selling_price'  ,'>=' , $fromprice)
+                        ->where('selling_price'  ,'<='  , $toprice)
+                        ->get();
+                    }
+                    else if($party != " " && $fromprice == "0" && $toprice == "0" )
+                    {
+                        $data5[$j]=Product::where('id' , $val['product_id'])
+                        ->where('party', 'LIKE',  '%' . $party . '%')
+                        ->where('age'  ,'>=' , $fromage)
+                        ->where('age'  ,'<='  , $toage)
+                        ->get();
+                    }
+
+
+                    foreach ($data5[$j] as $v) {
+                        $res[$k] = $v ;
+                        $k++ ;
+                    }
+                    $j++;
+
+                }
+                $i++;
+            }
+        }
+        else
+        {
+            if($party != " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0'){
+                $data5[$j]=Product::where('party', 'LIKE',  '%' . $party . '%')
+                ->where('age'  ,'>=' , $fromage)
+                ->where('age'  ,'<='  , $toage)
+                ->where('selling_price'  ,'>=' , $fromprice)
+                ->where('selling_price'  ,'<='  , $toprice)
+                ->get();
+            }
+            else if($party == " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0'){
+                $data5[$j]=Product::all();
+            }
+
+            else if($party == " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0')
+            {
+                $data5[$j]=Product::where('age'  ,'>=' , $fromage)
+                ->where('age'  ,'<='  , $toage)
+                ->where('selling_price'  ,'>=' , $fromprice)
+                ->where('selling_price'  ,'<='  , $toprice)
+                ->get();
+            }
+            else if($party != " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0')
+            {
+                $data5[$j]=Product::where('party', 'LIKE',  '%' . $party . '%')
+                ->get();
+            }
+            else if($party == " " && $fromage == "0" && $toage == "0" )
+            {
+                $data5[$j]=Product::where('selling_price'  ,'>=' , $fromprice)
+                ->where('selling_price'  ,'<='  , $toprice)
+                ->get();
+            }
+            else if($party == " " && $fromprice == "0" && $toprice == "0" )
+            {
+                $data5[$j]=Product::where('age'  ,'>=' , $fromage)
+                ->where('age'  ,'<='  , $toage)
+                ->get();
+            }
+
+            else if($party != " " && $fromage == "0" && $toage == "0" )
+            {
+                $data5[$j]=Product::where('party', 'LIKE',  '%' . $party . '%')
+                ->where('selling_price'  ,'>=' , $fromprice)
+                ->where('selling_price'  ,'<='  , $toprice)
+                ->get();
+            }
+            else if($party != " " && $fromprice == "0" && $toprice == "0" )
+            {
+                $data5[$j]=Product::where('party', 'LIKE',  '%' . $party . '%')
+                ->where('age'  ,'>=' , $fromage)
+                ->where('age'  ,'<='  , $toage)
+                ->get();
+            }
+            foreach ($data5[$j] as $v) {
+                $res[$k] = $v ;
+                $k++ ;
+            }
+
+        }
+        return $this->sendResponse(ProductResource::collection($res) , 'success');
 
     }
 

@@ -6,10 +6,11 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\RatingStore;
 use App\Http\Requests\StoreRatingStoreRequest;
 use App\Http\Resources\BoshraRe\RatingResource;
-
+use App\Models\Order;
 
 class RatingStoreController extends BaseController
 {
+
 
 
     ///عرض جميع تقييمات المتاجر
@@ -36,5 +37,21 @@ class RatingStoreController extends BaseController
         } else {
             return $this->sendErrors('فشل في عملية التقييم', ['error' => 'not rating store']);
         }
+    }
+
+    public function isRating($store_id , $customer_id)
+    {
+        /////بيان لما بيحولو الطلب لطلب تم تسليمه بتحذف تقييم هاد الزبون لمتجرها
+        $c = Order::where('customer_id' , $customer_id)->where('store_id' , $store_id)->first()  ;
+        if($c)
+        {
+            $check = RatingStore::where('customer_id' , $customer_id)->where('store_id' , $store_id)->first()  ;
+            if($check)
+                return 1 ;
+            else
+                return 0 ;
+        }
+        return 1 ;
+
     }
 }
