@@ -215,3 +215,6 @@ Route::prefix("mycustomer")->group(function () {
 
 });
 
+
+Route::get('dashbord/{id}', [App\Http\Controllers\CollectionController::class, 'dashbord']);
+

@@ -27,7 +27,8 @@ class DiscountCodeController extends BaseController
                 'condition_value' => 0,
             ]);
 
-        } else {
+        }
+        else {
             $request->validate([
                 'discount_code' => 'required',
                 'condition' => 'required',
@@ -85,7 +86,8 @@ class DiscountCodeController extends BaseController
                 foreach ($customers as $c) {
                     DiscountCustomerController::store($discount->id, $c);
                 }
-            } else {
+            }
+            else {
 
                 $customer = discountCodeResource::collection($d);
 

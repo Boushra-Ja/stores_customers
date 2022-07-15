@@ -14,14 +14,16 @@ class customerResource extends JsonResource
     {
 
 
-        foreach ($this as $v) {
-            $my_customer = Customer::where('id', '=', $v->customer_id)->first();
-            $sum = Order::where('customer_id', '=', $v->customer_id)->sum('delivery_price');
+        foreach ($this as $value) {
+            foreach ($value as $v) {
+                $my_customer = Customer::where('id', '=', $v->customer_id)->first();
+                $sum = Order::where('customer_id', '=', $v->customer_id)->sum('delivery_price');
 
-            break;
+                break;
+            }
+
+            $orders = count($value);
         }
-
-        $orders = count($this);
 
 
         $person = Persone::where('id', '=', $my_customer->persone_id)->first();

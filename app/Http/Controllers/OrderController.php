@@ -139,19 +139,19 @@ class OrderController extends BaseController
 
 
     ///عرض الطلبات
-    public function orderstatus($store_id,$id){
-        if($id==1){
-            $s=OrderStatus::where('status','=','معلق')->value('id');
-        }else if($id==2){
-            $s=OrderStatus::where('status','=','مقبول')->value('id');
-        }
-        else if($id==3){
-            $s=OrderStatus::where('status','=','مسلم')->value('id');
+    public static function orderstatus($store_id, $id)
+    {
+        if ($id == 1) {
+            $s = OrderStatus::where('status', '=', 'معلق')->value('id');
+        } else if ($id == 2) {
+            $s = OrderStatus::where('status', '=', 'مقبول')->value('id');
+        } else if ($id == 3) {
+            $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
         }
 
-        $g=OrderController::all_my_order($store_id,$s);
+        $g = OrderController::all_my_order($store_id, $s);
 
-        return response()->json($g, 200);
+        return $g;
 
 
     }
@@ -165,46 +165,49 @@ class OrderController extends BaseController
         })->where('orders.store_id', '=', $id)->get();
 
 
-        $o=$order->groupBy('order_id');
-        $i=0;
+        $o = $order->groupBy('order_id');
+        $i = 0;
 
-        foreach ($o as $v){
-            foreach ($v as $value){
+        $g = array();
+        foreach ($o as $v) {
+            foreach ($v as $value) {
                 $g[$i] = OrdersResource::make($value);
-                $i+=1;
+                $i += 1;
                 break;
 
             }
         }
 
+
         return $g;
     }
 
-    public function accept_order($id){
-        $s=OrderStatus::where('status','=','مقبول')->value('id');
-       $order=OrderProduct::where('order_id','=',$id)->get();
-       foreach ($order as $value){
-           $value->update(['status_id'=>$s]);
-       }
-    }
-
-    public function delete_order($id){
-        $s=OrderStatus::where('status','=','مرفوض')->value('id');
-        $order=OrderProduct::where('order_id','=',$id)->get();
-        foreach ($order as $value){
-            $value->update(['status_id'=>$s]);
+    public function accept_order($id)
+    {
+        $s = OrderStatus::where('status', '=', 'مقبول')->value('id');
+        $order = OrderProduct::where('order_id', '=', $id)->get();
+        foreach ($order as $value) {
+            $value->update(['status_id' => $s]);
         }
     }
 
-    public function deliver_order($id){
-        $s=OrderStatus::where('status','=','مسلم')->value('id');
-        $order=OrderProduct::where('order_id','=',$id)->get();
-        foreach ($order as $value){
-            $value->update(['status_id'=>$s]);
+    public function delete_order($id)
+    {
+        $s = OrderStatus::where('status', '=', 'مرفوض')->value('id');
+        $order = OrderProduct::where('order_id', '=', $id)->get();
+        foreach ($order as $value) {
+            $value->update(['status_id' => $s]);
         }
     }
 
-
+    public function deliver_order($id)
+    {
+        $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
+        $order = OrderProduct::where('order_id', '=', $id)->get();
+        foreach ($order as $value) {
+            $value->update(['status_id' => $s]);
+        }
+    }
 
 
 }
