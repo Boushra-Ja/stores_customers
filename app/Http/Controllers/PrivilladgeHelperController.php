@@ -8,6 +8,8 @@ use App\Models\Privilladge;
 
 class PrivilladgeHelperController extends Controller
 {
+
+    //bayan
     public Static function store($privilladge_id,$helper_id)
     {
         $privilladge=Privilladge::find($privilladge_id);
@@ -17,6 +19,8 @@ class PrivilladgeHelperController extends Controller
         return response()->json($response,200);
     }
 
+
+    //bayan
 
     public function my_helper($id){
 

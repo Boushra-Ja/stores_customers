@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateWaitingStoreRequest;
 
 class WaitingStoreController extends Controller
 {
+
+    //bayan
     public static function store(int $store){
 
         $waitingStore =WaitingStore::create([

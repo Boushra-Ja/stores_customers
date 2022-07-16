@@ -8,6 +8,8 @@ use App\Models\StoreManager;
 
 class PrivilladgeStoreManagerController extends BaseController
 {
+
+    //bayan
     public Static function store($privilladge_id,$storeManager_id)
     {
         $privilladge=Privilladge::where('id','=',$privilladge_id)->first();

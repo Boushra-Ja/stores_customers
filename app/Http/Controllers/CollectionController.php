@@ -17,6 +17,7 @@ class CollectionController extends BaseController
 {
 
     //عرض منتجات متجر محدد
+    //bayan
     public static function index($id)
     {
 
@@ -53,6 +54,7 @@ class CollectionController extends BaseController
     }
 
     //عرض منتجات مجموعة محددة
+    //bayan
     public function index2($id)
     {
 
@@ -68,6 +70,7 @@ class CollectionController extends BaseController
     }
 
     //عرض مجموعات متجر محدد
+    //bayan
     public function collectionNane(int $id)
     {
         $collection = Collection::where('store_id', '=', $id)->get();
@@ -85,6 +88,7 @@ class CollectionController extends BaseController
     }
 
     // اضافة مجموعة
+    //bayan
     public function store(Request $request)
     {
 
@@ -120,6 +124,7 @@ class CollectionController extends BaseController
     }
 
     // تعديل مجموعة
+    //bayan
     public function update(Request $request)
     {
         $collection = Collection::where('id', '=', $request->id)->first()->update($request->all());
@@ -127,12 +132,14 @@ class CollectionController extends BaseController
     }
 
     //حذف مجموعة
+    //bayan
     public function delete(Request $request)
     {
         $collection = Collection::where('id', '=', $request->id)->first()->delete();
     }
 
     //مجموعة محددة
+    //bayan
     public function show($id)
     {
         $collection = Collection::where('id', '=', $id)->first();
@@ -144,6 +151,7 @@ class CollectionController extends BaseController
 
     }
 
+    //bayan
     public function dashbord ($id){
 
         return dashbord_resours::make($id);
