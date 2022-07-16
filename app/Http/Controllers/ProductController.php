@@ -230,7 +230,7 @@ class ProductController extends BaseController
     //bayan
     public function update(Request $request)
     {
-        $product = Product::where('id', '=', $request->id);
+        $product = Product::where('id', '=', $request->id)->first();
         $product->update([
             'name'=>$request->name,
             'prepration_time'=>$request->prepration_time,
