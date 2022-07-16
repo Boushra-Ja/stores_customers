@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\BoshraRe\ProductResource;
 use App\Http\ResourcesBayan\collection_product;
+use App\Http\ResourcesBayan\dashbord_resours;
 use App\Http\ResourcesBayan\product_classification;
 use App\Models\Collection;
 use App\Models\Product;
@@ -16,7 +17,7 @@ class CollectionController extends BaseController
 {
 
     //عرض منتجات متجر محدد
-    public function index($id)
+    public static function index($id)
     {
 
 
@@ -46,7 +47,7 @@ class CollectionController extends BaseController
 
 
 
-        return response()->json($g2, 200);
+        return $g2;
 
 
     }
@@ -65,7 +66,6 @@ class CollectionController extends BaseController
 
 
     }
-
 
     //عرض مجموعات متجر محدد
     public function collectionNane(int $id)
@@ -142,6 +142,11 @@ class CollectionController extends BaseController
             return $this->sendErrors('failed in Collection', ['error' => 'not Collection']);
 
 
+    }
+
+    public function dashbord ($id){
+
+        return dashbord_resours::make($id);
     }
 
 }

@@ -20,8 +20,8 @@ class helper_resorce extends JsonResource
         foreach ($privillage_id as $v) {
             $privillage_name = Privilladge::where('id', '=', $v->privilladge_id)->first();
 
-                $a[$i] = $privillage_name->name;
-                $i++;
+            $a[$i] = $privillage_name->name;
+            $i++;
 
         }
 

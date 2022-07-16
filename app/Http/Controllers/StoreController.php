@@ -75,6 +75,7 @@ class StoreController extends BaseController
             $filename = time() . '.' . $extention;
             $file->move('uploads/books/', $filename);
             $request->image = $filename;
+
         } else
             $request->image = '';
 
@@ -84,6 +85,7 @@ class StoreController extends BaseController
             $filename1 = time() . '.' . $extention1;
             $file1->move('uploads/books/', $filename1);
             $request->Brand = $filename1;
+
         } else
             $request->Brand = '';
 
@@ -100,7 +102,9 @@ class StoreController extends BaseController
             return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
+
         }
+
     }
 
      ////عرض متجر محدد
@@ -120,10 +124,12 @@ class StoreController extends BaseController
         $persone = Persone::where('id', '=', $request->persone_id)->first();
         if ($persone)
             if ($persone->password == $request->old_password) {
-                $store = Store::where('id', '=', $request->store_id)->first()->update($request->all());
+                $store = Store::where('id','=',$request->store_id)->first()->update($request->all());
                 StoreManagerController::update($request);
                 return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
             } else return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
+
+
     }
 
     ///جلب المنتجات مع تصنيفاتها

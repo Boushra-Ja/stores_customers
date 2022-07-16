@@ -167,16 +167,17 @@ public function all_products_bill($order_id)
 
 
 
-  public function order_product($id){
-    $product=OrderProduct::where('order_id','=',$id)->get();
-    $g = ordure_product_resource::collection($product);
+    public function order_product($id)
+    {
+        $product = OrderProduct::where('order_id', '=', $id)->get();
+        $g = ordure_product_resource::collection($product);
 
-    return $this->sendResponse($g, 'Store Shop successfully');
-}
+        return $this->sendResponse($g, 'Store Shop successfully');
+    }
 
-public function all_orderproduct($order_id , $status_id)
-{
-    $data = OrderProduct::where('order_id' , $order_id)->where('status_id' , $status_id ) ->get() ;
-    return $this->sendResponse(OrderProductResource::collection($data) , 'success') ;
-}
+    public function all_orderproduct($order_id, $status_id)
+    {
+        $data = OrderProduct::where('order_id', $order_id)->where('status_id', $status_id)->get();
+        return $this->sendResponse(OrderProductResource::collection($data), 'success');
+    }
 }

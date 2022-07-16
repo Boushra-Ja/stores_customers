@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class HelperController extends Controller
 {
-    public Static function store(Request $request,){
+    public Static function store(Request $request){
 
 
         $request->validate([
@@ -30,7 +30,7 @@ class HelperController extends Controller
                 PrivilladgeHelperController::store($v->id, $helper->id);
             }
 
-          //  mailcontrol::html_email($helper->name, 323, $helper->email, 'دعوة لادارة متجر');
+            //  mailcontrol::html_email($helper->name, 323, $helper->email, 'دعوة لادارة متجر');
 
         }
 

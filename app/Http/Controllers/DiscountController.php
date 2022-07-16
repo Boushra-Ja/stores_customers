@@ -43,11 +43,10 @@ class DiscountController extends BaseController
                 'end_date' => "2022-06-13 09:38:43",
                 'store_id' => $id,
             ]);
-            DiscountCodeController::store($request, $discount2->id, $id,$h);
+            DiscountCodeController::store($request, $discount2->id, $id, $h);
 
 
-        }
-        else {
+        } else {
 
             $discount = Discount::create([
                 'type' => $request["type"],
@@ -59,14 +58,13 @@ class DiscountController extends BaseController
             ]);
 
 
-
             if ($discount) {
 
                 if ($request["type"] == 1) {
                     DiscountProductController::store($request, $discount->id, $h);
                 } else {
 
-                    DiscountCodeController::store($request, $discount->id, $id,$h);
+                    DiscountCodeController::store($request, $discount->id, $id, $h);
                 }
             }
         }

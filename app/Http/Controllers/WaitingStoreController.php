@@ -8,10 +8,10 @@ use App\Http\Requests\UpdateWaitingStoreRequest;
 
 class WaitingStoreController extends Controller
 {
-  public static function store(int $store){
+    public static function store(int $store){
 
-      $waitingStore =WaitingStore::create([
-          'store_id' => $store
-      ]);
-  }
+        $waitingStore =WaitingStore::create([
+            'store_id' => $store
+        ]);
+    }
 }
