@@ -234,7 +234,9 @@ class ProductController extends BaseController
         $product->update($request->all());
 
         if ($request->classification) {
-            foreach ($request->classification as $value) {
+            $j=json_decode($request->classification);
+
+            foreach ($j as $value) {
                 SecondrayClassificationProductController::update($product->id, $value);
             }
         }
