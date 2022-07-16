@@ -177,6 +177,7 @@ class CustomerController extends BaseController
 
 
 
+    //bayan
     public static function myCustomer($id)
     {
 
@@ -189,7 +190,7 @@ class CustomerController extends BaseController
 
 
     }
-
+    //bayan
     public function myCustomer_most_buy($id)
     {
         $data = CustomerController::myCustomer($id);
@@ -198,6 +199,7 @@ class CustomerController extends BaseController
         return response()->json($array);
     }
 
+    //bayan
     public function myCustomer_salles($id)
     {
         $data = CustomerController::myCustomer($id);

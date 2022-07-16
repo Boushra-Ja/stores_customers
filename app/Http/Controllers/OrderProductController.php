@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\ResourcesBat\OrderCollectionB;
+use App\Http\ResourcesBayan\mybill_resorce;
 use App\Http\ResourcesBayan\ordure_product_resource;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -146,27 +147,38 @@ class OrderProductController extends BaseController
     }
 
 
+
+
     public function bill($order_id)
     {
 
-        $data =  DB::table('order_products')->where('order_products.order_id' ,$order_id )
-        ->join('orders', 'orders.id', '=', 'order_products.order_id')
-        ->get() ;
+        $data = DB::table('order_products')->where('order_products.order_id', $order_id)
+            ->join('orders', 'orders.id', '=', 'order_products.order_id')
+            ->get();
 
-        return $this->sendResponse(BillResource::collection($data ), 'success') ;
+
+        return $this->sendResponse(BillResource::collection($data), 'success');
     }
 
-/*
-public function all_products_bill($order_id)
+
+
+    //bayan
+    public function mybill($order_id)
     {
-        $products  =OrderProduct::where('order_id' , $order_id)->get() ;
-        return $this->sendResponse(ProductBillResource::collection($products) , 'success') ;
 
+        $data = DB::table('order_products')->where('order_products.order_id', $order_id)
+            ->join('orders', 'orders.id', '=', 'order_products.order_id')
+            ->get();
+
+
+        return $this->sendResponse(mybill_resorce::collection($data), 'success');
     }
-  */
 
 
 
+
+
+    //bayan
     public function order_product($id)
     {
         $product = OrderProduct::where('order_id', '=', $id)->get();
@@ -174,6 +186,7 @@ public function all_products_bill($order_id)
 
         return $this->sendResponse($g, 'Store Shop successfully');
     }
+
 
     public function all_orderproduct($order_id, $status_id)
     {

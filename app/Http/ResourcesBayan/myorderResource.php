@@ -6,7 +6,7 @@ use App\Models\Customer;
 use App\Models\Persone;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class orderResource extends JsonResource
+class myorderResource extends JsonResource
 {
 
     public function toArray($request)

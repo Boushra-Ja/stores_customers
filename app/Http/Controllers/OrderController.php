@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\ResourcesBayan\orderResource;
+use App\Http\ResourcesBayan\myorderResource;
 use App\Models\Discount;
 use App\Models\DiscountCode;
 use App\Models\Order;
@@ -140,6 +140,7 @@ class OrderController extends BaseController
 
 
     ///عرض الطلبات
+    /// bayan
     public static function orderstatus($store_id, $id)
     {
         if ($id == 1) {
@@ -156,8 +157,8 @@ class OrderController extends BaseController
 
 
     }
-
     //الطلبات المعلقة/المنفذة/المقبولة لمتجر
+    //bayan
     public static function all_my_order($id, $i)
     {
 
@@ -172,7 +173,7 @@ class OrderController extends BaseController
         $g = array();
         foreach ($o as $v) {
             foreach ($v as $value) {
-                $g[$i] = OrdersResource::make($value);
+                $g[$i] = myorderResource::make($value);
                 $i += 1;
                 break;
 
@@ -183,6 +184,7 @@ class OrderController extends BaseController
         return $g;
     }
 
+    //bayan
     public function accept_order($id)
     {
         $s = OrderStatus::where('status', '=', 'مقبول')->value('id');
@@ -192,6 +194,7 @@ class OrderController extends BaseController
         }
     }
 
+    //bayan
     public function delete_order($id)
     {
         $s = OrderStatus::where('status', '=', 'مرفوض')->value('id');
@@ -201,6 +204,7 @@ class OrderController extends BaseController
         }
     }
 
+    //bayan
     public function deliver_order($id)
     {
         $s = OrderStatus::where('status', '=', 'مسلم')->value('id');

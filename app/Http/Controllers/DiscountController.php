@@ -75,6 +75,8 @@ class DiscountController extends BaseController
         }
     }
 
+
+    //bayan
     public function update(Request $request)
     {
         $descount = Discount::where('id', '=', $request->discounts_id)->first();
@@ -93,6 +95,7 @@ class DiscountController extends BaseController
 
     }
 
+    //bayan
     public function show($id, $type)
     {
         $descount = Discount::where('id', '=', $id)->first();
@@ -106,7 +109,7 @@ class DiscountController extends BaseController
 
 
     }
-
+    //bayan
     public function index($id)
     {
 
@@ -128,7 +131,7 @@ class DiscountController extends BaseController
 
 
     }
-
+    //bayan
     public function indexP($id)
     {
 
@@ -150,7 +153,7 @@ class DiscountController extends BaseController
 
     }
 
-
+    //bayan
     public function delete(Request $request)
     {
         $collection = Discount::where('id', '=', $request->id)->first()->delete();
