@@ -231,7 +231,19 @@ class ProductController extends BaseController
     public function update(Request $request)
     {
         $product = Product::where('id', '=', $request->id);
-        $product->update($request->all());
+        $product->update([
+            'name'=>$request->name,
+            'prepration_time'=>$request->prepration_time,
+            'party'=>$request->party,
+            'discription'=>$request->discription,
+            'image'=>$request->image,
+            'age'=>$request->age,
+            'gift'=>$request->gift,
+            'selling_price'=>$request->selling_price,
+            'cost_price'=>$request->cost_price,
+            'number_of_sales'=>$request->number_of_sales,
+            'return_or_replace'=>$request->return_or_replace,
+        ]);
 
         if ($request->classification) {
             $j=json_decode($request->classification);
