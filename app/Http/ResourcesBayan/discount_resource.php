@@ -19,7 +19,7 @@ class discount_resource extends JsonResource
         if ($product->apply_to == 'p') {
             $p = Product::where('discount_products_id', '=', $product->id)->get();
             foreach ($p as $v) {
-                $products[$i] = $v->name;
+                $products[$i] = $v->id;
                 $i += 1;
 
             }
@@ -28,7 +28,7 @@ class discount_resource extends JsonResource
             $d = $p->groupBy('collection_id');
             foreach ($d as $value) {
                 foreach ($value as $v) {
-                    $products[$i] = Collection::where('id', '=', $v->collection_id)->value('title');
+                    $products[$i] = Collection::where('id', '=', $v->collection_id)->value('id');
                     $i += 1;
                     break;
 
