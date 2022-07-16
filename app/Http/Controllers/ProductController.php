@@ -241,7 +241,6 @@ class ProductController extends BaseController
             'gift'=>$request->gift,
             'selling_price'=>$request->selling_price,
             'cost_price'=>$request->cost_price,
-            'number_of_sales'=>$request->number_of_sales,
             'return_or_replace'=>$request->return_or_replace,
         ]);
 
