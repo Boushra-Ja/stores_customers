@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 
 use App\Models\Order;
 
+use App\Models\ProductRating;
 use App\Models\RatingStore;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -38,6 +39,16 @@ class dashbord_resours extends JsonResource
         $rat=RatingStore::where('store_id','=',$this->resource)->get();
         $rating=count($rat);
 
+        $a=array();
+        $i=0;
+        foreach ($product as $value){
+            $s=ProductRating::where('product_id','=',$value->id)->get();
+            $a[$i]=[$value->name,count($s)];
+            $i+=1;
+        }
+
+
+
         //    $customer = discountCodeResource::collection($d);
 
 
@@ -49,7 +60,8 @@ class dashbord_resours extends JsonResource
             'order_accept' => $order_ac,
             'order_delever' => $order_delever,
             'customer' => $customer,
-            'rating'=>$rating
+            'rating_store'=>$rating,
+            'rating_product'=>$a
         ];
     }
 
