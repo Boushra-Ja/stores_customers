@@ -51,7 +51,6 @@ class DiscountCodeController extends BaseController
             if ($request->condition == 2) {
                 $i = 0;
                 $cust=array();
-
                 foreach ($d as $value) {
                     foreach ($value as $v) {
                         $my_customer = Customer::where('id', '=', $v->customer_id)->first();
@@ -81,6 +80,7 @@ class DiscountCodeController extends BaseController
                         $i += 1;
 
                     }
+
                 }
 
                 foreach ($customers as $c) {
@@ -91,7 +91,6 @@ class DiscountCodeController extends BaseController
 
                 $i = 0;
                 $c = 0;
-                $a=array();
                 foreach ($d as $value) {
                     foreach ($value as $v) {
                         $my_customer = Customer::where('id', '=', $v->customer_id)->first();
@@ -118,6 +117,7 @@ class DiscountCodeController extends BaseController
                         $i += 1;
                     }
                 }
+
 
                 foreach ($customers as $vv) {
                     DiscountCustomerController::store($discount->id, $vv);

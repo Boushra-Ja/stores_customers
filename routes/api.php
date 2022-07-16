@@ -171,8 +171,9 @@ Route::post('/ChangeAmount/{productid}/{orderid}/{amount}' , [App\Http\Controlle
 
 
 
-//////////////////////////////////////tassnem///////////
-///
+///////////////////////////////////////////tasneem//////////////////
+
+
 Route::prefix("settings")->group(function () {
 
     Route::post('store/create', [App\Http\Controllers\StoreController::class, 'store']);
@@ -180,7 +181,7 @@ Route::prefix("settings")->group(function () {
     Route::post('storeManager/login', [App\Http\Controllers\StoreManagerController::class, 'login']);
 
 
-    Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'show']);
+    Route::get('store/show/{id}', [App\Http\Controllers\StoreController::class, 'myshow']);
     Route::get('storeManager/index/{id}', [App\Http\Controllers\StoreManagerController::class, 'index']);
 
     Route::post('store/update', [App\Http\Controllers\StoreController::class, 'update']);
@@ -220,15 +221,21 @@ Route::prefix("discountproduct")->group(function () {
     Route::post('update', [App\Http\Controllers\DiscountController::class, 'update']);
     Route::get('show/{id}/{type}', [App\Http\Controllers\DiscountController::class, 'show']);
     Route::get('index/{id}', [App\Http\Controllers\DiscountController::class, 'index']);
+    Route::get('indexP/{id}', [App\Http\Controllers\DiscountController::class, 'indexP']);
     Route::post('delete', [App\Http\Controllers\DiscountController::class, 'delete']);
+
 
 });
 
 Route::prefix("myorder")->group(function () {
 
-
-    Route::get('all_my_order/{id}', [App\Http\Controllers\OrderController::class, 'all_my_order']);
+    Route::get('all_my_order/{store_id}/{id}', [App\Http\Controllers\OrderController::class, 'orderstatus']);
+    Route::post('accept_order/{id}', [App\Http\Controllers\OrderController::class, 'accept_order']);
+    Route::post('delete_order/{id}', [App\Http\Controllers\OrderController::class, 'delete_order']);
+    Route::post('deliver_order/{id}', [App\Http\Controllers\OrderController::class, 'deliver_order']);
     Route::get('order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);
+    Route::get('bill/{id}', [App\Http\Controllers\OrderProductController::class, 'bill']);
+
 
 });
 
@@ -242,4 +249,6 @@ Route::prefix("mycustomer")->group(function () {
 
 });
 
+
 Route::get('dashbord/{id}', [App\Http\Controllers\CollectionController::class, 'dashbord']);
+

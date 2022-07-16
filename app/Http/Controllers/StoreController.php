@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\ResourcesBayan\my_stores_resors;
 use App\Models\Persone;
 use Illuminate\Http\Request;
 use App\Models\Store;
@@ -56,7 +57,7 @@ class StoreController extends BaseController
         return $this->sendResponse(StoreResource::collection($data), "تم ارجاع المتاجر حسب الاكثر مبيعاً");
     }
 
-    /////انشاء متجر
+    /////انشاء متجر bayan
     public function store(StoreStoreRequest $request)
     {
         $request->validate([
@@ -118,7 +119,22 @@ class StoreController extends BaseController
         }
     }
 
+
+    ////عرض متجر محدد
+    /// bayan
+    public function myshow($id)
+    {
+        $data = Store::where('id', $id)->get();
+        if ($data) {
+            return $this->sendResponse(my_stores_resors::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
+        } else {
+            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show store']);
+
+        }
+    }
+
     ////////تعديل بيانات المتجر
+    /// bayan
     public function update(Request $request)
     {
         $persone = Persone::where('id', '=', $request->persone_id)->first();
