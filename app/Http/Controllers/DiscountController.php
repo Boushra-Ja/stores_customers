@@ -23,7 +23,9 @@ class DiscountController extends BaseController
     public static function store(Request $request, $id, $h)
     {
 
+
         if ($h == 1) {
+
             $discount = Discount::create([
                 'type' => "1",
                 'status' => "0",

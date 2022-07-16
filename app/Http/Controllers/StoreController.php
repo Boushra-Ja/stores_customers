@@ -95,7 +95,9 @@ class StoreController extends BaseController
 
 
         if ($shop) {
+
             WaitingStoreController::store($shop->id);
+
 
             DiscountController::store($request, $shop->id, 1);
 

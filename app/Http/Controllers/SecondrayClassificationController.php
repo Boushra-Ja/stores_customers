@@ -135,6 +135,7 @@ class SecondrayClassificationController extends Controller
 
     }
 
+    //bayan
     public function list_seconderay(){
         $secoundry=SecondrayClassification::all();
         return response()->json($secoundry, 200);

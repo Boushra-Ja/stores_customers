@@ -11,12 +11,9 @@ class Discount extends Model
 
     protected $fillable = [
         'type',
-        'status',
         'value',
         'start_date',
         'end_date',
-//        'condition',
-//        'condition_value',
         'store_id',
 
     ];
