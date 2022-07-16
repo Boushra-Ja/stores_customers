@@ -17,6 +17,7 @@ class OptioinValueController extends BaseController
 
     }
 
+    //bayan
     public Static function store( $value,int $option_type_id)
     {
         OptioinValue::create([
@@ -25,7 +26,6 @@ class OptioinValueController extends BaseController
         ]);
 
     }
-
     public function All_material()
     {
         $types = OptionType::select('id')->where('name' , 'المادة')->get() ;

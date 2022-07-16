@@ -109,6 +109,7 @@ class ProductController extends BaseController
     }
 
     ////عرض منتج محدد
+    /// bayan
     public function show($id)
     {
         $data = Product::where('id', '=', $id)->get();
@@ -120,7 +121,6 @@ class ProductController extends BaseController
 
         }
     }
-
    //////عرض منتجات مشابهة
     public function similar_products($id)
     {
@@ -147,6 +147,7 @@ class ProductController extends BaseController
     }
 
     // اضافة منتج
+    //bayan
     public function store(Request $request)
     {
 
@@ -190,7 +191,6 @@ class ProductController extends BaseController
             'return_or_replace' => $request->return_or_replace,
             'prepration_time' => $request->prepration_time,
             'gift' => $request->gift,
-            'number_of_sales' => $request->number_of_sales,
             'party' => $request->party,
             'age' => $request->age,
             'discount_products_id' => $i,
@@ -226,8 +226,8 @@ class ProductController extends BaseController
         }
 
     }
-
     // تعديل منتج
+    //bayan
     public function update(Request $request)
     {
         $product = Product::where('id', '=', $request->id);
@@ -251,8 +251,8 @@ class ProductController extends BaseController
         }
         return $this->sendResponse($product, 'تم تعديل المجموعة بنجاح');
     }
-
     //حذف منتج
+    //bayan
     public function delete(Request $request)
     {
         $product = Product::where('id', '=', $request->id)->delete();

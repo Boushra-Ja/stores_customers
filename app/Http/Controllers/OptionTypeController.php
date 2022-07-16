@@ -52,6 +52,8 @@ class OptionTypeController extends BaseController
         return $this->sendResponse(OptionResource::collection($res) , "successs") ;
     }
 
+
+    //bayan
     public static function store($type, int $product_id, int $i)
     {
         foreach ($type as $option) {
@@ -71,8 +73,8 @@ class OptionTypeController extends BaseController
         }
 
     }
-
     //  تعديل الخيارات الاضافية
+    //bayan
     public static function update($type, int $product_id)
     {
 
@@ -84,6 +86,5 @@ class OptionTypeController extends BaseController
         OptionTypeController::store($type, $product_id,0);
 
     }
-
 
 }

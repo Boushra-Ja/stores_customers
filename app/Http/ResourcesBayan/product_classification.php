@@ -18,10 +18,9 @@ class product_classification extends JsonResource
 
 
         $i=0;
-        $sec=array();
         $s=SecondrayClassificationProduct::where('product_id','=',$this->id)->get();
         foreach ($s as $value){
-            $sec[$i]=SecondrayClassification::where('id','=',$value->secondary_id)->value('title');
+            $sec[$i]=SecondrayClassification::where('id','=',$value->secondary_id)->value('id');
             $i+=1;
 
         }
@@ -40,7 +39,7 @@ class product_classification extends JsonResource
             'return_or_replace' => $this->return_or_replace,
             'discount_products_id' => $this->discount_products_id,
             'classification'=> $sec,
-            'collection'=> Collection::where('id','=',$this->collection_id)->value('title'),
+            'collection'=> $this->collection_id,
             'review' => RatingResource::collection(ProductRating::where('product_id', $this->id)->get()),
 
 
