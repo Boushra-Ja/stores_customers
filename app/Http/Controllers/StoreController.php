@@ -22,6 +22,13 @@ class StoreController extends BaseController
         $stores = Store::all();
         return $this->sendResponse(StoreResource::collection($stores), "تمت عملية عرض المتاجر بنجاح");
     }
+     /////shop names
+     public function shop_names()
+     {
+         $stores = Store::select('name as value' , 'id')->get();
+         return $this->sendResponse($stores ,'success') ;
+     }
+
 
     ////عرض المنتجات الأكثر تقييماً
     public function order_by_review()

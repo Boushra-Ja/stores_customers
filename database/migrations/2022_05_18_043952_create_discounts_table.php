@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
-            $table->string('status');
             $table->integer('value');
             $table->date('start_date');
             $table->date('end_date');

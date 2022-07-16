@@ -8,7 +8,6 @@ use App\Models\Collection;
 use App\Models\DiscountProduct;
 use App\Models\ProductRating;
 use App\Models\RatingOrder;
-use App\Models\SecondrayClassificationProduct;
 use App\Models\Store;
 use Illuminate\Http\Resources\Json\JsonResource;
 

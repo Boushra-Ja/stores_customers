@@ -34,7 +34,7 @@ class OrderProductController extends BaseController
             // سله المشتريات//
     public function index()
     {
-        $status_id = OrderStatus::where('status', 'في السله')->value('id');
+        $status_id = OrderStatus::where('status', "في السلة")->value('id');
 
         $order=OrderProduct::query()->where('status_id',$status_id)->orderBy('order_id', 'asc')->get();
 
@@ -56,7 +56,7 @@ class OrderProductController extends BaseController
      //تحويل  الطلب لمعلق//
     public function  ChangeToCommit($orderid,$productid){
 
-        $status_id = OrderStatus::where('status', 'في السله')->value('id');
+        $status_id = OrderStatus::where('status', "في السلة")->value('id');
         $order = OrderProduct::find($orderid);
 
 
