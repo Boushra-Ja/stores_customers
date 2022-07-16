@@ -6,18 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('store_visitores', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('delivery_time');
-            $table->integer('delivery_price');
-            $table->integer('customer_id')->unsigned();
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-
+            $table->integer('visit_num');
+            $table->date('visit_date');
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
@@ -25,6 +22,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('store_visitores');
     }
 };

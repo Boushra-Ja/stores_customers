@@ -14,11 +14,11 @@ return new class extends Migration
             $table->timestamps();
             $table->String('image');
             $table->String('discription');
-            $table->String('gift');
+            $table->boolean('gift');
             $table->String('name');
             $table->integer('prepration_time');
             $table->String('party')->nullable();
-            $table->integer('age');
+            $table->string('age');
             $table->bigInteger('selling_price');
             $table->bigInteger('cost_price');
             $table->integer('number_of_sales');

@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('discount_customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('usage_times');
             $table->integer('discount_codes_id')->unsigned();
             $table->foreign('discount_codes_id')->references('id')->on('discount_codes')->onDelete('cascade');
             $table->integer('customers_id')->unsigned();

@@ -34,6 +34,7 @@ class OrderController extends BaseController
     ////////التأكد أن الطلب موجود
     public function check_of_order($customer_id, $store_id)
     {
+
         $data = Order::where('customer_id', $customer_id)->where('store_id', $store_id)->first();
         if ($data) {
             return $data->id;
@@ -45,7 +46,7 @@ class OrderController extends BaseController
     public function store(StoreOrderRequest $request)
     {
         $order = Order::where('store_id', '=', $request->store_id)->where('customer_id', '=', $request->customer_id)->first();
-        $code = DiscountCode::where('discounts_id', '=', Discount::where('store_id', '=', $request->store_id)->where('value', '=', 0)->value('id'))->value('id');
+       // $code = DiscountCode::where('discounts_id', '=', Discount::where('store_id', '=', $request->store_id)->where('value', '=', 0)->value('id'))->value('id');
         if ($order === null) {
 
             $order = Order::firstOrCreate([
@@ -53,7 +54,7 @@ class OrderController extends BaseController
                 'customer_id' => $request->customer_id,
                 'delivery_time' => "2022-06-25 16:39:06",
                 'delivery_price' => 0,
-                'discount_codes_id' => $code
+               // 'discount_codes_id' => $code
             ]);
 
         }

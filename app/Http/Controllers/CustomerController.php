@@ -14,8 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePersoneRequest;
 use App\Models\Customer;
 use App\Models\Persone;
-use Dotenv\Validator;
-
+use Illuminate\Support\Facades\Validator;
 class CustomerController extends BaseController
 {
 
@@ -150,7 +149,7 @@ class CustomerController extends BaseController
         $validator = Validator:: make($request->all(), [
             'old_password' => 'required',
             'password' => 'required|min:3|max:100',
-            'confirm_password' => 'required|same:password'
+           // 'confirm_password' => 'required|same:password'
         ]);
 
         if ($validator->fails()) {
@@ -162,7 +161,7 @@ class CustomerController extends BaseController
 
             $password = Persone::query()->get()->pluck(['password']);
             if ($password[0] == $request->old_password) {
-                $usermodel = Persone::find('1');
+                $usermodel = Persone::find('3');
                 if ($usermodel) {
                     $usermodel->password = $request->password;
                     $usermodel->save();

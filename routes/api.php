@@ -15,7 +15,6 @@ use App\Http\Controllers\ProductOptionController;
 use App\Http\Controllers\ProductRatingController;
 use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\SearchController;
 use App\Models\FavoriteProduct;
 use App\Models\OptioinValue;
 use App\Models\Product;
@@ -105,7 +104,7 @@ Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}/{d6}' , [ProductController::cl
 
 Route::prefix("Customer") ->group(function() {
     Route::post('/html_email/{name}/{code}/{email}/{title}', 'App\Http\Controllers\CustomerController@html_email');
-    Route::post('/changepassword' ,'App\Http\Controllers\CustomerController@changepassword');
+    Route::post('/changepassword' ,'App\Http\Controllers\CustomerController@change_password');
     Route::post('/login', 'App\Http\Controllers\CustomerController@login');
     Route::post('/logout', 'App\Http\Controllers\CustomerController@logout');
     Route::post('/register', 'App\Http\Controllers\CustomerController@register');

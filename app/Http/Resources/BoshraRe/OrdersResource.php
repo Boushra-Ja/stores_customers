@@ -14,7 +14,7 @@ class OrdersResource extends JsonResource
     {
         return [
             'customer' => Persone::where('id','=',Customer::where('id','=',$this->customer_id)->value('persone_id'))->value('name'),
-            'order_id' => $this->order_id,
+            'order_id' => $this->id,
             'delivery_time' => $this->delivery_time,
             'created_at' => $this->created_at,
         ];
