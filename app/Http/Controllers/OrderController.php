@@ -148,7 +148,7 @@ class OrderController extends BaseController
         } else if ($id == 2) {
             $s = OrderStatus::where('status', '=', 'مقبول')->value('id');
         } else if ($id == 3) {
-            $s =5;//= OrderStatus::where('status', '=', 'مسلم')->value('id');
+            $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
         }
 
         $g = OrderController::all_my_order($store_id, $s);
