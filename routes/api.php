@@ -250,5 +250,17 @@ Route::prefix("mycustomer")->group(function () {
 });
 
 
+Route::prefix("report")->group(function () {
+
+    Route::get('selles/{id}', [App\Http\Controllers\CollectionController::class, 'selles']);
+    Route::get('orders/{id}', [App\Http\Controllers\CollectionController::class, 'orders']);
+    Route::get('rate_store/{id}', [App\Http\Controllers\CollectionController::class, 'rate_store']);
+    Route::get('rate_product/{id}', [App\Http\Controllers\CollectionController::class, 'rate_product']);
+
+
+});
+
 Route::get('dashbord/{id}', [App\Http\Controllers\CollectionController::class, 'dashbord']);
 
+
+Route::post('classification/create', [App\Http\Controllers\ClassificationController::class, 'store']);

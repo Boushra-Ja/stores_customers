@@ -136,6 +136,15 @@ class SecondrayClassificationController extends Controller
     }
 
     //bayan
+    public static function store($value,$id){
+
+        SecondrayClassification::create([
+            'title'=>$value,
+            'classification_id'=>$id,
+        ]);
+    }
+
+    //bayan
     public function list_seconderay(){
         $secoundry=SecondrayClassification::all();
         return response()->json($secoundry, 200);

@@ -7,8 +7,16 @@ use App\Http\Resources\BoshraRe\ProductResource;
 use App\Http\ResourcesBayan\collection_product;
 use App\Http\ResourcesBayan\dashbord_resours;
 use App\Http\ResourcesBayan\product_classification;
+use App\Http\ResourcesBayan\report_store_order;
+use App\Http\ResourcesBayan\report_store_rate_store;
+use App\Http\ResourcesBayan\report_store_selles;
+use App\Http\ResourcesBayan\report_storeSelles;
 use App\Models\Collection;
+use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductRating;
+use App\Models\RatingStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,20 +40,18 @@ class CollectionController extends BaseController
         $colection = Collection::where('store_id', '=', $id)->get();
 
 
-
-        $i=0;
-        $g2=array();
-        foreach ($colection as $value){
+        $i = 0;
+        $g2 = array();
+        foreach ($colection as $value) {
             $product = Product::where('collection_id', '=', $value->id)->get();
 
             $g = product_classification::collection($product);
-            foreach ($g as $v){
-                $g2[$i]=$v;
-                $i=$i+1;
+            foreach ($g as $v) {
+                $g2[$i] = $v;
+                $i = $i + 1;
 
             }
         }
-
 
 
         return $g2;
@@ -152,11 +158,79 @@ class CollectionController extends BaseController
     }
 
     //bayan
-    public function dashbord ($id){
+    public function dashbord($id)
+    {
 
         return dashbord_resours::make($id);
     }
 
+    //bayan
+    public function selles($id)
+    {
+
+        $collection = Collection::where('store_id', '=', $id)->get();
+
+        $product = array();
+        $i = 0;
+        foreach ($collection as $value) {
+
+            $p = Product::where('collection_id', '=', $value->id)->get();
+            foreach ($p as $item) {
+                $product[$i] = $item;
+                $i += 1;
+            }
+
+        }
+
+        $g = report_store_selles::collection($product);
+        return $g;
+
+
+    }
+
+    //bayan
+    public function orders($id)
+    {
+
+        $order =Order::where('store_id','=',$id)->get();
+        $g=report_store_order::collection($order);
+        return $g;
+    }
+
+    //bayan
+    public function rate_store($id)
+    {
+
+        $rate=RatingStore::where('store_id','=',$id)->get();
+        $g=report_store_rate_store::collection($rate);
+        return $g;
+    }
+
+    //bayan
+    public function rate_product($id)
+    {
+
+        $collection = Collection::where('store_id', '=', $id)->get();
+
+        $product = array();
+        $i = 0;
+        foreach ($collection as $value) {
+
+            $p = Product::where('collection_id', '=', $value->id)->get();
+            foreach ($p as $item) {
+                $pr =ProductRating::where('product_id','=',$item->id)->get();
+                foreach ($pr as $r){
+                    $product[$i]=$r;
+                    $i += 1;
+
+                }
+            }
+
+        }
+
+        $g=report_store_rate_store::collection($product);
+        return $g;
+    }
 
 
 }

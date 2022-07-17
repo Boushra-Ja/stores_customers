@@ -92,8 +92,11 @@ class DiscountController extends BaseController
                 $descount_0 = Discount::where('store_id', '=', $request->store_id)->where('value', '=', '0')->where('type','=',1)->value('id');
                 $descount_product_0 = DiscountProduct::where('discounts_id', '=', $descount_0)->value('id');
                 $poduct_descount = Product::where('discount_products_id', '=', $descount_p->id)->get();
+
                 foreach ($poduct_descount as $p_value) {
+
                     $p_value->update(['discount_products_id' => $descount_product_0,]);
+
                 }
                 foreach ($request["product"] as $value) {
                     $product = Product::where('id', '=', $value)->first();

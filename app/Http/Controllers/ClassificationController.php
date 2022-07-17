@@ -22,18 +22,20 @@ class ClassificationController extends BaseController
     }
 
     // اضافة تصنيف
+    //bayan
     public Static function store(Request $request)
     {
 
         $request->validate([
             'title' => 'required',
         ]);
-        $input = $request->all();
-        $classification = Classification::create($input);
+        $classification = Classification::create([
+            'title'=>$request->title
+        ]);
 
 
         if ($classification) {
-            foreach ($request->id as  $value) {
+            foreach ($request->secondray as  $value) {
                 SecondrayClassificationController::store($value,$classification->id);
             }
         }
