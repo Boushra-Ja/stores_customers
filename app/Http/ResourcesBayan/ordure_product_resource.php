@@ -4,6 +4,7 @@ namespace App\Http\ResourcesBayan;
 
 use App\Models\OptioinValue;
 use App\Models\OptionType;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
@@ -29,12 +30,15 @@ class ordure_product_resource extends JsonResource
             }
         }
 
+        $f=Order::where('id','=',$this->order_id)->value('delivery_time');
+
         return [
             'id' => $this->product_id,
             'created_at' => $this->created_at->format('Y-m-d '),
             'updated_at' => $this->updated_at->format('Y-m-d '),
             'product' => Product::where('id', '=', $this->product_id)->value('name'),
             'gift'=>$this->gift_order,
+            'delivery_time'=>$f,
             'option' => $a
 
         ];
