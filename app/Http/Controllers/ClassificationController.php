@@ -16,6 +16,9 @@ class ClassificationController extends BaseController
     public function Show_Classification()
     {
         $ClassificationModel=Classification::query()->get();
+        foreach ($ClassificationModel as $value){
+           // $secundery=
+        }
         return response()->json($ClassificationModel,200);
 
 
