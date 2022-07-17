@@ -21,7 +21,7 @@ class product_classification extends JsonResource
         $s=SecondrayClassificationProduct::where('product_id','=',$this->id)->get();
         $sec=array();
         foreach ($s as $value){
-            $sec[$i]=SecondrayClassification::where('id','=',$value->secondary_id)->value('title');
+            $sec[$i]=SecondrayClassification::where('id','=',$value->secondary_id)->value('id');
             $i+=1;
 
         }

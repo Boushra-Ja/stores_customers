@@ -110,7 +110,7 @@ class ProductController extends BaseController
 
     ////عرض منتج محدد
     /// bayan
-    public function show($id)
+    public function myshow($id)
     {
         $data = Product::where('id', '=', $id)->get();
         if ($data) {

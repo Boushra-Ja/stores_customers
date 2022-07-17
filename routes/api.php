@@ -210,7 +210,7 @@ Route::prefix("product")->group(function () {
     Route::post('update', [App\Http\Controllers\ProductController::class, 'update']);
     Route::get('index/{id}', [App\Http\Controllers\CollectionController::class, 'index']);
     Route::get('collection/index/{id}', [App\Http\Controllers\CollectionController::class, 'index2']);
-    Route::get('show/{id}', [App\Http\Controllers\ProductController::class, 'show']);
+    Route::get('show/{id}', [App\Http\Controllers\ProductController::class, 'myshow']);
 
 });
 

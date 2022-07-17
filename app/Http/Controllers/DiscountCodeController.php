@@ -111,6 +111,7 @@ class DiscountCodeController extends BaseController
 
 
                 $i = 0;
+                $customers=array();
                 foreach ($a as $item) {
                     if ($item["count"] >= $request->condition_value) {
                         $customers[$i] = $item["my_customer"]->id;
