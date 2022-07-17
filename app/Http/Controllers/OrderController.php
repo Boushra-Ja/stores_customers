@@ -148,7 +148,7 @@ class OrderController extends BaseController
         } else if ($id == 2) {
             $s = OrderStatus::where('status', '=', 'مقبول')->value('id');
         } else if ($id == 3) {
-            $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
+            $s =5;//= OrderStatus::where('status', '=', 'مسلم')->value('id');
         }
 
         $g = OrderController::all_my_order($store_id, $s);
@@ -207,11 +207,10 @@ class OrderController extends BaseController
     //bayan
     public function deliver_order($id)
     {
-      //  $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
-
+        $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
         $order = OrderProduct::where('order_id', '=', $id)->get();
         foreach ($order as $value) {
-            $value->update(['status_id' => 5]);
+            $value->update(['status_id' => $s]);
         }
     }
 
