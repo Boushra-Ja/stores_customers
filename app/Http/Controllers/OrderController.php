@@ -207,10 +207,10 @@ class OrderController extends BaseController
     //bayan
     public function deliver_order($id)
     {
-        $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
+      //  $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
         $order = OrderProduct::where('order_id', '=', $id)->get();
         foreach ($order as $value) {
-            $value->update(['status_id' => $s]);
+            $value->update(['status_id' => $id]);
         }
     }
 
