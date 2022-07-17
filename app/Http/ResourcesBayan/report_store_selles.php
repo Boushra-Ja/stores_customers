@@ -21,7 +21,8 @@ class report_store_selles extends JsonResource
             'name' => $this->name,
             'selling_price' => $this->selling_price,
             'selling_count' => $product_count,
-            'Profit' => $profit
+            'Profit' => $profit,
+            'cost_price'=>$this->cost_price
         ];
     }
 }
