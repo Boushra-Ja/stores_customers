@@ -30,7 +30,7 @@ class ClassificationController extends BaseController
                 $product = SecondrayClassificationProduct::where('secondary_id', '=', $t)->get();
                 $c += count($product);
             }
-            $a[$i] = ["classification" => $value->title, "secondrayClassification" => $secundery, "product" => $c];
+            $a[$i] = ["classification" => $value->title, "id" => $value->id, "secondrayClassification" => $secundery, "product" => $c];
         }
         return response()->json($a, 200);
 
@@ -58,7 +58,8 @@ class ClassificationController extends BaseController
     }
 
     //bayan
-    public function update(){
+    public function update()
+    {
 
     }
 
