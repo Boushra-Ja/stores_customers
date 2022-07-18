@@ -19,7 +19,7 @@ class ordure_product_resource extends JsonResource
         $i = 0;
 
         $option_value = DB::table('optioin_values')->join('product_options', function ($join) {
-            $join->on('product_options.option_values_id', '=', 'optioin_values.id')->where('product_options.order_product_id', '=', $this->order_id);
+            $join->on('product_options.option_values_id', '=', 'optioin_values.id')->where('product_options.order_product_id', '=', $this->id);
         })->get();
 
         foreach ($option_value as $v) {
