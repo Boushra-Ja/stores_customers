@@ -23,6 +23,7 @@ class customerResource extends JsonResource
             }
 
             $orders = count($value);
+            break;
         }
 
 
@@ -30,6 +31,7 @@ class customerResource extends JsonResource
         return [
             'orders' => $orders,
             'name' => $person->name,
+            'email'=>$person->email,
             'date' => $person->created_at->format('Y-m-d '),
             'total' => $sum
 

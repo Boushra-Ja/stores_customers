@@ -44,7 +44,7 @@ class dashbord_resours extends JsonResource
         $i = 0;
         foreach ($product as $value) {
             $s = ProductRating::where('product_id', '=', $value->id)->get();
-            $a[$i] = ["name" => $value->name, "count" => count($s)];
+            $a[$i] = ["name" => $value->name, "count" => count($s),"image"=>$value->image];
             $i += 1;
         }
         $array = collect($a)->sortBy('count')->reverse()->take('4')->toArray();
