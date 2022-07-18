@@ -122,6 +122,9 @@ class OrderProductController extends BaseController
             'product_id' => $request->product_id,
             'status_id' => OrderStatus::where('status', 'في السلة')->value('id'),
             'order_id' => $request->order_id,
+            'amount' => $request->amount,
+            "gift_order" => $request->gift_order,
+            "discount_products_id" => 1
         ]);
 
         $arr = [$orderProduct];

@@ -109,12 +109,10 @@ class ProductController extends BaseController
     }
 
     ////عرض منتج محدد
-    public function show($id)
-    {
-        $data = Product::where('id', '=', $id)->get();
+    public function show($id){
+        $data = Product::where('id' , $id)->get();
         if ($data) {
-            $g = product_classification::collection($data);
-            return response()->json($g[0], 200);
+            return $this->sendResponse(ProductAllResource::collection($data), 'تم ارجاع معلومات المنتج بنجاح');
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المنتج', ['error' => 'error in show product info']);
 

@@ -25,6 +25,8 @@ class OrderProductResource extends JsonResource
             'store_image' => Store::where('id' ,  Order::where('id' , $this->order_id )->value('store_id'))->value('image') ,
             'delivery_time' => Order::where('id' , $this->order_id )->value('delivery_time') ,
             'order_time' => $this->created_at->format('Y-m-d '),
+            'gift_order' => $this->gift_order ,
+            'amount' => $this->amount
         ];
     }
 }
