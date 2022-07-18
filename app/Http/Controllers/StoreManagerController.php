@@ -202,4 +202,9 @@ class StoreManagerController extends BaseController
 
     }
 
+    public function my_Store_manager($id){
+        $person=Persone::where('id','=',StoreManager::where('id','=',$id)->value('person_id'))->first();
+        return response()->json($person,200);
+    }
+
 }
