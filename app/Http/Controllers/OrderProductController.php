@@ -24,6 +24,7 @@ class OrderProductController extends BaseController
 
 
     ////////التأكد أن الطلب في السلة
+    //boshra
     public function check_of_order($product_id, $order_id)
     {
         $data = OrderProduct::where('product_id', $product_id)->where('order_id', $order_id)->where('status_id', OrderStatus::where('status', 'في السلة')->value('id'))->first();
@@ -118,6 +119,7 @@ class OrderProductController extends BaseController
     }
 
     //////اضافة المنتج الى السلة
+    ///boshra
     public function store(StoreOrderProductRequest $request)
     {
 
@@ -125,6 +127,9 @@ class OrderProductController extends BaseController
             'product_id' => $request->product_id,
             'status_id' => OrderStatus::where('status', 'في السلة')->value('id'),
             'order_id' => $request->order_id,
+            'amount' => $request->amount,
+            "gift_order" => $request->gift_order,
+            "discount_products_id" => 1
         ]);
 
         $arr = [$orderProduct];
@@ -139,6 +144,7 @@ class OrderProductController extends BaseController
 
 
     //////حذف المنتج من السلة
+    ///boshra
     public function destroy($product_id )
     {
         $res = OrderProduct::where('product_id', $product_id)->where('status_id' , OrderStatus::where('status' , 'في السلة')->value('id'))->delete();
@@ -151,6 +157,7 @@ class OrderProductController extends BaseController
 
 
 
+    //boshra
     public function bill($order_id)
     {
 

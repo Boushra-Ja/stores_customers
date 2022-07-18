@@ -34,6 +34,7 @@ class FavoriteStoreController extends BaseController
     }
 
     ////////ارجاع مفضلتي
+    ///boshra
     public function myFavorite($user_id)
     {
 
@@ -43,7 +44,9 @@ class FavoriteStoreController extends BaseController
         else
             return $this->sendErrors([], 'Failed');
     }
+
     //اضافه لمفضله المتاجر//
+    //boshra
     public function Add_Favorite(StoreFavoriteStoreRequest $request )
     {
 
@@ -64,6 +67,7 @@ class FavoriteStoreController extends BaseController
 
 
     //حدف مننج من مفضله المتاجر//
+    ///boshra
     public function Delete_Favorite($store_id , $cus_id)
     {
         $res = FavoriteStore::where('store_id', $store_id)->where('customer_id' , $cus_id)->delete();

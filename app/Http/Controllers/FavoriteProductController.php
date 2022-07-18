@@ -78,6 +78,7 @@ class FavoriteProductController extends BaseController
     }
 
 
+    //boshra
     public function isFavourite($product_id , $customer_id)
     {
 

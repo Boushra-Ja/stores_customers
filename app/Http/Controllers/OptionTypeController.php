@@ -23,6 +23,7 @@ class OptionTypeController extends BaseController
 
     }
 
+    ///boshra
     public function option_product($product_id)
     {
         $options = OptionType::where('product_id' , $product_id)->get() ;

@@ -17,6 +17,7 @@ class OrdersResource extends JsonResource
             'order_id' => $this->id,
             'delivery_time' => $this->delivery_time,
             'created_at' => $this->created_at,
+            'discount_codes_id' => $this->discount_codes_id
         ];
     }
 }

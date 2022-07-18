@@ -10,6 +10,7 @@ use App\Models\OptionType;
 
 class OptioinValueController extends BaseController
 {
+    ///boshra
     public static function options_type_with_value($type_id)
     {
         $values = OptioinValue::where('option_type_id' , $type_id)->get() ;
@@ -26,6 +27,8 @@ class OptioinValueController extends BaseController
         ]);
 
     }
+
+    ///boshra
     public function All_material()
     {
         $types = OptionType::select('id')->where('name' , 'المادة')->get() ;
