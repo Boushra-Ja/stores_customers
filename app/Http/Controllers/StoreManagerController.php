@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Persone;
 use App\Models\Privilladge;
+use App\Models\Store;
 use App\Models\StoreManager;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
@@ -203,8 +204,10 @@ class StoreManagerController extends BaseController
     }
 
     public function my_Store_manager($id){
-        $person=Persone::where('id','=',StoreManager::where('id','=',$id)->value('person_id'))->first();
-        return response()->json($person,200);
+        $s=StoreManager::where('id','=',$id)->first();
+        $person=Persone::where('id','=',$s->person_id)->first();
+        $stor=Store::where('id','=',$s->store_id)->value('image');
+        return response()->json(["person"=>$person,"image"=>$stor],200);
     }
 
 }

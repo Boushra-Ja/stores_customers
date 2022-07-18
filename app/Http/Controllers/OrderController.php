@@ -13,6 +13,7 @@ use App\Http\Resources\BoshraRe\OrderProductResource;
 use App\Http\Resources\BoshraRe\OrdersResource;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,7 @@ class OrderController extends BaseController
     {
         $order = Order::where('store_id', '=', $request->store_id)->where('customer_id', '=', $request->customer_id)->first();
         $code = DiscountCode::where('discounts_id', '=', Discount::where('store_id', '=', $request->store_id)->where('value', '=', 0)->value('id'))->value('id');
-        print($code) ;
+        print($code);
         if ($order === null) {
 
             $order = Order::firstOrCreate([
@@ -201,29 +202,25 @@ class OrderController extends BaseController
             $join->on('order_products.order_id', '=', 'orders.id')->where('order_products.status_id', '=', $s);
         })->where('orders.store_id', '=', $store_id)->get();
 
+        $i=2022;
 
-        //$o = $order->groupBy('delivery_time');
-
-
-//        $g = array();
-//
- //       $g[0]=$order->where(date_format('delivery_time', '%m-%d'),'>=' , date_format('2022-1-1', '%m-%d'))->where(date_format('delivery_time', '%m-%d'),'<' , date_format('2022-2-1', '%m-%d'))->count();
-        $g=$order->whereDate('delivery_time','>=','2022-2-1')->whereDate('delivery_time','<','2022-3-1')->count();
-//        $g[2]=$order->where('delivery_time','>=','2022-3-1')->where('delivery_time','<','2022-4-1')->count();
-//        $g[3]=$order->where('delivery_time','>=','2022-4-1')->where('delivery_time','<','2022-5-1')->count();
-//        $g[4]=$order->where('delivery_time','>=','2022-5-1')->where('delivery_time','<','2022-6-1')->count();
-//        $g[5]=$order->where('delivery_time','>=','2022-6-1')->where('delivery_time','<','2022-7-1')->count();
-//        $g[6]=$order->where('delivery_time','>=','2022-7-1')->where('delivery_time','<','2022-8-1')->count();
-//        $g[7]=$order->where('delivery_time','>=','2022-8-1')->where('delivery_time','<','2022-9-1')->count();
-//        $g[8]=$order->where('delivery_time','>=','2022-9-1')->where('delivery_time','<','2022-10-1')->count();
-//        $g[9]=$order->where('delivery_time','>=','2022-10-1')->where('delivery_time','<','2022-11-1')->count();
-//        $g[10]=$order->where('delivery_time','>=','2022-11-1')->where('delivery_time','<','2022-12-1')->count();
-//        $g[11]=$order->where('delivery_time','>=','2022-12-1')->where('delivery_time','<','2023-1-1')->count();
+        $g = array();
+        $g[0] = $order->whereBetween('delivery_time', ['2022-01-02', '2022-02-1'])->count();
+        $g[1] = $order->whereBetween('delivery_time', ['2022-02-02', '2022-03-01'])->count();
+        $g[2] = $order->whereBetween('delivery_time', ['2022-03-02', '2022-04-01'])->count();
+        $g[3] = $order->whereBetween('delivery_time', ['2022-04-02', '2022-05-01'])->count();
+        $g[4] = $order->whereBetween('delivery_time', ['2022-05-02', '2022-06-01'])->count();
+        $g[5] = $order->whereBetween('delivery_time', ['2022-06-02', '2022-07-01'])->count();
+        $g[6] = $order->whereBetween('delivery_time', ['2022-07-02', '2022-08-01'])->count();
+        $g[7] = $order->whereBetween('delivery_time', ['2022-08-02', '2022-09-01'])->count();
+        $g[8] = $order->whereBetween('delivery_time', ['2022-09-02', '2022-10-01'])->count();
+        $g[9] = $order->whereBetween('delivery_time', ['2022-10-02', '2022-11-01'])->count();
+        $g[10] = $order->whereBetween('delivery_time', ['2022-11-02', '2022-12-01'])->count();
+        $g[11] = $order->whereBetween('delivery_time', ['2022-12-02', '2022-1-01'])->count();
 
 
         return $g;
     }
-
 
 
     //bayan

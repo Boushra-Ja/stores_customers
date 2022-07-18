@@ -53,7 +53,7 @@ class dashbord_resours extends JsonResource
 //        $b = array();
 //        $j = 0;
 
-      //  $h = OrderController::dash_bord_art($this->resource);
+        $h = OrderController::dash_bord_art($this->resource);
 //        foreach ($h as $item) {
 //            $b[$j] = ["date" => $item[0]->delivery_time, "count" => count($item)];
 //            $j += 1;
@@ -79,7 +79,7 @@ class dashbord_resours extends JsonResource
             'order_delever' => $order_delever,
             'customer' => $customer,
             'rating_product' => $array,
-            //'salls' => $h,
+            'salls' => $h,
             'visit'=>$visit_store
         ];
     }
