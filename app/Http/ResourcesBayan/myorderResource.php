@@ -12,7 +12,7 @@ class myorderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->order_id,
             'delivery_time' => $this->delivery_time,
             'delivery_price' => $this->delivery_price,
             'created_at' => $this->created_at,

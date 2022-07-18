@@ -170,6 +170,7 @@ class OrderController extends BaseController
         $o = $order->groupBy('order_id');
         $i = 0;
 
+
         $g = array();
         foreach ($o as $v) {
             foreach ($v as $value) {
