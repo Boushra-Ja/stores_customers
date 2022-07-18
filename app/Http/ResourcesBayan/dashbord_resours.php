@@ -50,14 +50,14 @@ class dashbord_resours extends JsonResource
         $array = collect($a)->sortBy('count')->reverse()->take('4')->toArray();
 
 
-        $b = array();
-        $j = 0;
+//        $b = array();
+//        $j = 0;
 
         $h = OrderController::dash_bord_art($this->resource);
-        foreach ($h as $item) {
-            $b[$j] = ["date" => $item[0]->delivery_time, "count" => count($item)];
-            $j += 1;
-        }
+//        foreach ($h as $item) {
+//            $b[$j] = ["date" => $item[0]->delivery_time, "count" => count($item)];
+//            $j += 1;
+//        }
 
         $visit=StoreVisitore::where('store_id','=',$this->resource)->get();
         $visit_store=array();
@@ -79,7 +79,7 @@ class dashbord_resours extends JsonResource
             'order_delever' => $order_delever,
             'customer' => $customer,
             'rating_product' => $array,
-            'salls' => $b,
+            'salls' => $h,
             'visit'=>$visit_store
         ];
     }

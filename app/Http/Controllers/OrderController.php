@@ -202,21 +202,26 @@ class OrderController extends BaseController
         })->where('orders.store_id', '=', $store_id)->get();
 
 
-        $o = $order->groupBy('delivery_time');
-//        $i = 0;
-//
+        //$o = $order->groupBy('delivery_time');
+
+
 //        $g = array();
-//        foreach ($o as $v) {
-//            foreach ($v as $value) {
-//                $g[$i] = myorderResource::make($value);
-//                $i += 1;
-//                break;
 //
-//            }
-//        }
+ //       $g[0]=$order->where(date_format('delivery_time', '%m-%d'),'>=' , date_format('2022-1-1', '%m-%d'))->where(date_format('delivery_time', '%m-%d'),'<' , date_format('2022-2-1', '%m-%d'))->count();
+        $g=$order->whereDate('delivery_time','>=','2022-2-1')->whereDate('delivery_time','<','2022-3-1')->count();
+//        $g[2]=$order->where('delivery_time','>=','2022-3-1')->where('delivery_time','<','2022-4-1')->count();
+//        $g[3]=$order->where('delivery_time','>=','2022-4-1')->where('delivery_time','<','2022-5-1')->count();
+//        $g[4]=$order->where('delivery_time','>=','2022-5-1')->where('delivery_time','<','2022-6-1')->count();
+//        $g[5]=$order->where('delivery_time','>=','2022-6-1')->where('delivery_time','<','2022-7-1')->count();
+//        $g[6]=$order->where('delivery_time','>=','2022-7-1')->where('delivery_time','<','2022-8-1')->count();
+//        $g[7]=$order->where('delivery_time','>=','2022-8-1')->where('delivery_time','<','2022-9-1')->count();
+//        $g[8]=$order->where('delivery_time','>=','2022-9-1')->where('delivery_time','<','2022-10-1')->count();
+//        $g[9]=$order->where('delivery_time','>=','2022-10-1')->where('delivery_time','<','2022-11-1')->count();
+//        $g[10]=$order->where('delivery_time','>=','2022-11-1')->where('delivery_time','<','2022-12-1')->count();
+//        $g[11]=$order->where('delivery_time','>=','2022-12-1')->where('delivery_time','<','2023-1-1')->count();
 
 
-        return $o;
+        return $g;
     }
 
 
