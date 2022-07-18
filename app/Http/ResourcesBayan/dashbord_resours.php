@@ -79,7 +79,7 @@ class dashbord_resours extends JsonResource
             'order_delever' => $order_delever,
             'customer' => $customer,
             'rating_product' => $array,
-            'salls' => $h,
+            //'salls' => $h,
             'visit'=>$visit_store
         ];
     }
