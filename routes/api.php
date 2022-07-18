@@ -230,7 +230,7 @@ Route::prefix("myorder")->group(function () {
     Route::post('delete_order/{id}', [App\Http\Controllers\OrderController::class, 'delete_order']);
     Route::post('deliver_order/{id}', [App\Http\Controllers\OrderController::class, 'deliver_order']);
     Route::get('order_product/{id}', [App\Http\Controllers\OrderProductController::class, 'order_product']);
-    Route::get('bill/{id}', [App\Http\Controllers\OrderProductController::class, 'mybill']);
+    Route::get('bill/{id}/{store_maneger_id}', [App\Http\Controllers\OrderProductController::class, 'mybill']);
 
 
 });

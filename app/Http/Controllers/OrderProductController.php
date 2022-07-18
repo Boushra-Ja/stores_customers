@@ -14,6 +14,8 @@ use App\Http\Resources\BoshraRe\BillResource;
 use App\Http\Resources\BoshraRe\OrderProductResource;
 use App\Http\Resources\BoshraRe\ProductBillResource;
 use App\Models\OrderStatus;
+use App\Models\Persone;
+use App\Models\StoreManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -163,15 +165,18 @@ class OrderProductController extends BaseController
 
 
     //bayan
-    public function mybill($order_id)
+    public function mybill($order_id,$store_maneger_id)
     {
 
         $data = DB::table('order_products')->where('order_products.order_id', $order_id)
             ->join('orders', 'orders.id', '=', 'order_products.order_id')
             ->get();
 
+          $stor_maneger=StoreManager::where('id','=',$store_maneger_id)->value('person_id');
+          $email=Persone::where('id','=',$stor_maneger)->value('email');
 
-        return $this->sendResponse(mybill_resorce::collection($data), 'success');
+
+        return ["email"=>$email,"data"=>mybill_resorce::collection($data)];
     }
 
 

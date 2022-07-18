@@ -29,28 +29,28 @@ class product_classification extends JsonResource
         $rate = ProductRating::where('product_id', $this->id)->get();
         $i1 = 0;
         $i2 = 0;
-        $i3 = 0;
+        $i0 = 0;
         foreach ($rate as $item) {
-            if ($item->value == 1)
+            if ($item->value == 0)
+                $i0 += 1;
+            else if ($item->value == 1)
                 $i1 += 1;
             else if ($item->value == 2)
                 $i2 += 1;
-            else if ($item->value == 3)
-                $i3 += 1;
         }
 
-        if ($i1 == 0 && $i2 == 0 && $i3 == 0)
-            $reselt = 0;
-        else if ($i1 <= $i2) {
-            if ($i2 <= $i3)
-                $reselt = 3;
-            else
+        if ($i1 == 0 && $i2 == 0 && $i0 == 0)
+            $reselt = 3;
+        else if ($i0 <= $i1) {
+            if ($i1 <= $i2)
                 $reselt = 2;
-        } else {
-            if ($i1 <= $i3)
-                $reselt = 3;
             else
                 $reselt = 1;
+        } else {
+            if ($i0 <= $i2)
+                $reselt = 2;
+            else
+                $reselt = 0;
         }
         return [
             'product_id' => $this->id,
