@@ -31,22 +31,26 @@ class product_classification extends JsonResource
         $i2 = 0;
         $i3 = 0;
         foreach ($rate as $item) {
-            if ($item == 1)
+            if ($item->value == 1)
                 $i1 += 1;
-            else if ($item == 2)
+            else if ($item->value == 2)
                 $i2 += 1;
-            else if ($item == 3)
+            else if ($item->value == 3)
                 $i3 += 1;
         }
 
-        if ($i1 <= $i2) {
+        if ($i1 == 0 && $i2 == 0 && $i3 == 0)
+            $reselt = 0;
+        else if ($i1 <= $i2) {
             if ($i2 <= $i3)
                 $reselt = 3;
-            $reselt = 2;
+            else
+                $reselt = 2;
         } else {
             if ($i1 <= $i3)
                 $reselt = 3;
-            $reselt = 1;
+            else
+                $reselt = 1;
         }
         return [
             'product_id' => $this->id,
