@@ -26,7 +26,6 @@ class SecondrayClassificationProductController extends BaseController
     public static function update(int $product_id, int $secondrayClassification_id)
     {
 
-        $secondrayClassification = SecondrayClassificationProduct::where('product_id', '=', $product_id)->delete();
 
         SecondrayClassificationProductController::store($product_id, $secondrayClassification_id);
 
