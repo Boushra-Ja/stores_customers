@@ -267,3 +267,4 @@ Route::prefix("admin")->group(function () {
 
 });
 
+Route::post('Raise/store', [App\Http\Controllers\RaiseController::class, 'store']);

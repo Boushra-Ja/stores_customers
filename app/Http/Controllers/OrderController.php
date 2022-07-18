@@ -185,6 +185,35 @@ class OrderController extends BaseController
     }
 
     //bayan
+    public static function dash_bord_art($store_id)
+    {
+        $s = OrderStatus::where('status', '=', 'مسلم')->value('id');
+
+        $order = DB::table('orders')->join('order_products', function ($join) use ($s) {
+            $join->on('order_products.order_id', '=', 'orders.id')->where('order_products.status_id', '=', $s);
+        })->where('orders.store_id', '=', $store_id)->get();
+
+
+        $o = $order->groupBy('delivery_time');
+//        $i = 0;
+//
+//        $g = array();
+//        foreach ($o as $v) {
+//            foreach ($v as $value) {
+//                $g[$i] = myorderResource::make($value);
+//                $i += 1;
+//                break;
+//
+//            }
+//        }
+
+
+        return $o;
+    }
+
+
+
+    //bayan
     public function accept_order($id)
     {
         $s = OrderStatus::where('status', '=', 'مقبول')->value('id');
