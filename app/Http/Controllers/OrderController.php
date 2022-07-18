@@ -160,7 +160,7 @@ class OrderController extends BaseController
 
         $g = OrderController::all_my_order($store_id, $s);
 
-        return $g;
+        return response()->json($g, 200);
 
 
     }

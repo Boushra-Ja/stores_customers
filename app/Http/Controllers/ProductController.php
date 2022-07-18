@@ -256,6 +256,7 @@ class ProductController extends BaseController
             'image' => $request->image,
             'age' => $request->age,
             'gift' => $request->gift,
+            'collection_id'=>$request->collection_id,
             'selling_price' => $request->selling_price,
             'cost_price' => $request->cost_price,
             'return_or_replace' => $request->return_or_replace,
