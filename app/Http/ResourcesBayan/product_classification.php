@@ -17,15 +17,38 @@ class product_classification extends JsonResource
     {
 
 
-        $i=0;
-        $s=SecondrayClassificationProduct::where('product_id','=',$this->id)->get();
-        $sec=array();
-        foreach ($s as $value){
-            $sec[$i]=SecondrayClassification::where('id','=',$value->secondary_id)->value('id');
-            $i+=1;
+        $i = 0;
+        $s = SecondrayClassificationProduct::where('product_id', '=', $this->id)->get();
+        $sec = array();
+        foreach ($s as $value) {
+            $sec[$i] = SecondrayClassification::where('id', '=', $value->secondary_id)->value('id');
+            $i += 1;
 
         }
-        return  [
+
+        $rate = ProductRating::where('product_id', $this->id)->get();
+        $i1 = 0;
+        $i2 = 0;
+        $i3 = 0;
+        foreach ($rate as $item) {
+            if ($item == 1)
+                $i1 += 1;
+            else if ($item == 2)
+                $i2 += 1;
+            else if ($item == 3)
+                $i3 += 1;
+        }
+
+        if ($i1 <= $i2) {
+            if ($i2 <= $i3)
+                $reselt = 3;
+            $reselt = 2;
+        } else {
+            if ($i1 <= $i3)
+                $reselt = 3;
+            $reselt = 1;
+        }
+        return [
             'product_id' => $this->id,
             'product_name' => $this->name,
             'image' => $this->image,
@@ -35,13 +58,13 @@ class product_classification extends JsonResource
             'party' => $this->party,
             'discription' => $this->discription,
             'age' => $this->age,
-            'gift'=>$this->gift,
+            'gift' => $this->gift,
             'cost_price' => $this->cost_price,
             'return_or_replace' => $this->return_or_replace,
             'discount_products_id' => $this->discount_products_id,
-            'classification'=> $sec,
-            'collection'=> Collection::where('id','=',$this->collection_id)->value('title'),
-            'review' => RatingResource::collection(ProductRating::where('product_id', $this->id)->get()),
+            'classification' => $sec,
+            'collection' => Collection::where('id', '=', $this->collection_id)->value('title'),
+            'review' => $reselt
 
 
         ];
