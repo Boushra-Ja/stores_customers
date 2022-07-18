@@ -38,7 +38,7 @@ class discount_resource extends JsonResource
 
 
         return [
-            'id' => $product->id,
+           // 'id' => $product->id,
             'discounts_id' => $this->id,
             'type' => $this->type,
             'value' => $this->value,
