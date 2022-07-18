@@ -8,6 +8,7 @@ use App\Http\ResourcesBayan\collection_product;
 use App\Http\ResourcesBayan\dashbord_resours;
 use App\Http\ResourcesBayan\product_classification;
 use App\Http\ResourcesBayan\report_store_order;
+use App\Http\ResourcesBayan\report_store_rate_product;
 use App\Http\ResourcesBayan\report_store_rate_store;
 use App\Http\ResourcesBayan\report_store_selles;
 use App\Http\ResourcesBayan\report_storeSelles;
@@ -228,7 +229,7 @@ class CollectionController extends BaseController
 
         }
 
-        $g=report_store_rate_store::collection($product);
+        $g=report_store_rate_product::collection($product);
         return $g;
     }
 
