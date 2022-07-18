@@ -14,6 +14,7 @@ class StoreManagerController extends BaseController
 {
 
     /////عرض معلومات صاحب متجر محدد
+    /// bayan
     public function index($id)
     {
         $storeManager = StoreManager::where('id', '=', $id)->first();
@@ -27,6 +28,7 @@ class StoreManagerController extends BaseController
     }
 
     //////انشاء حساب صاحب متجر
+    /// bayan
     public static function register(Request $request, $store_id)
     {
 
@@ -82,6 +84,7 @@ class StoreManagerController extends BaseController
 
     }
 
+    ///bayan
     public function unique_email(Request $request)
     {
         $person = Persone::where('email', '=', $request->email)->first();
@@ -92,6 +95,8 @@ class StoreManagerController extends BaseController
 
     }
 
+
+    //bayan
     public static function update(Request $request)
     {
         if ($request->password)
@@ -111,6 +116,8 @@ class StoreManagerController extends BaseController
             HelperController::store($request);
     }
 
+
+    ///bayan
     public function true_password(Request $request)
     {
         $persone = Persone::where('id', '=', $request->persone_id)->first();
@@ -120,8 +127,8 @@ class StoreManagerController extends BaseController
             else
                 return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
     }
-
     ///// تسجيل الدخول كصاحب متجر
+    /// bayan
     public function login(Request $request)
     {
 

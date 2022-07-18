@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\ResourcesBat\OrderCollectionB;
+use App\Http\ResourcesBayan\mybill_resorce;
 use App\Http\ResourcesBayan\ordure_product_resource;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -13,6 +14,8 @@ use App\Http\Resources\BoshraRe\BillResource;
 use App\Http\Resources\BoshraRe\OrderProductResource;
 use App\Http\Resources\BoshraRe\ProductBillResource;
 use App\Models\OrderStatus;
+use App\Models\Persone;
+use App\Models\StoreManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +24,7 @@ class OrderProductController extends BaseController
 
 
     ////////التأكد أن الطلب في السلة
+    //boshra
     public function check_of_order($product_id, $order_id)
     {
         $data = OrderProduct::where('product_id', $product_id)->where('order_id', $order_id)->where('status_id', OrderStatus::where('status', 'في السلة')->value('id'))->first();
@@ -115,6 +119,7 @@ class OrderProductController extends BaseController
     }
 
     //////اضافة المنتج الى السلة
+    ///boshra
     public function store(StoreOrderProductRequest $request)
     {
 
@@ -139,6 +144,7 @@ class OrderProductController extends BaseController
 
 
     //////حذف المنتج من السلة
+    ///boshra
     public function destroy($product_id )
     {
         $res = OrderProduct::where('product_id', $product_id)->where('status_id' , OrderStatus::where('status' , 'في السلة')->value('id'))->delete();
@@ -149,27 +155,42 @@ class OrderProductController extends BaseController
     }
 
 
+
+
+    //boshra
     public function bill($order_id)
     {
 
-        $data =  DB::table('order_products')->where('order_products.order_id' ,$order_id )
-        ->join('orders', 'orders.id', '=', 'order_products.order_id')
-        ->get() ;
+        $data = DB::table('order_products')->where('order_products.order_id', $order_id)
+            ->join('orders', 'orders.id', '=', 'order_products.order_id')
+            ->get();
 
-        return $this->sendResponse(BillResource::collection($data ), 'success') ;
+
+        return $this->sendResponse(BillResource::collection($data), 'success');
     }
 
-/*
-public function all_products_bill($order_id)
+
+
+    //bayan
+    public function mybill($order_id,$store_maneger_id)
     {
-        $products  =OrderProduct::where('order_id' , $order_id)->get() ;
-        return $this->sendResponse(ProductBillResource::collection($products) , 'success') ;
 
+        $data = DB::table('order_products')->where('order_products.order_id', $order_id)
+            ->join('orders', 'orders.id', '=', 'order_products.order_id')
+            ->get();
+
+          $stor_maneger=StoreManager::where('id','=',$store_maneger_id)->value('person_id');
+          $email=Persone::where('id','=',$stor_maneger)->value('email');
+
+
+        return ["email"=>$email,"data"=>mybill_resorce::collection($data)];
     }
-  */
 
 
 
+
+
+    //bayan
     public function order_product($id)
     {
         $product = OrderProduct::where('order_id', '=', $id)->get();
@@ -177,6 +198,7 @@ public function all_products_bill($order_id)
 
         return $this->sendResponse($g, 'Store Shop successfully');
     }
+
 
     public function all_orderproduct($order_id, $status_id)
     {

@@ -20,7 +20,6 @@ class DiscountCustomerController extends Controller
 
         $response = DiscountCustomer::Create([
             'customers_id' => $customers_id,
-            'usage_times' =>1,
             'discount_codes_id' => $discount_codes_id,
         ]);
 

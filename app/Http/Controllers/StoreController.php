@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\ResourcesBayan\my_stores_resors;
 use App\Models\Persone;
 use Illuminate\Http\Request;
 use App\Models\Store;
@@ -17,20 +18,23 @@ class StoreController extends BaseController
 {
 
     ////عرض جميع المتاجر
+    //boshra
     public function index()
     {
         $stores = Store::all();
         return $this->sendResponse(StoreResource::collection($stores), "تمت عملية عرض المتاجر بنجاح");
     }
-     /////shop names
-     public function shop_names()
-     {
-         $stores = Store::select('name as value' , 'id')->get();
-         return $this->sendResponse($stores ,'success') ;
-     }
+    /////shop names
+    //boshra
+    public function shop_names()
+    {
+        $stores = Store::select('name as value', 'id')->get();
+        return $this->sendResponse($stores, 'success');
+    }
 
 
     ////عرض المنتجات الأكثر تقييماً
+        //boshra
     public function order_by_review()
     {
         $stores = DB::table('rating_stores')
@@ -49,6 +53,7 @@ class StoreController extends BaseController
     }
 
     ////عرض المنتجات الأكثر مبيعاً
+    //boshra
     public function order_by_sales()
     {
         //[DB::raw('id' ),DB::raw('name' ),DB::raw('image' ),DB::raw('num_of_salling' )]
@@ -56,7 +61,7 @@ class StoreController extends BaseController
         return $this->sendResponse(StoreResource::collection($data), "تم ارجاع المتاجر حسب الاكثر مبيعاً");
     }
 
-    /////انشاء متجر
+    /////انشاء متجر bayan
     public function store(StoreStoreRequest $request)
     {
         $request->validate([
@@ -75,7 +80,6 @@ class StoreController extends BaseController
             $filename = time() . '.' . $extention;
             $file->move('uploads/books/', $filename);
             $request->image = $filename;
-
         } else
             $request->image = '';
 
@@ -85,7 +89,6 @@ class StoreController extends BaseController
             $filename1 = time() . '.' . $extention1;
             $file1->move('uploads/books/', $filename1);
             $request->Brand = $filename1;
-
         } else
             $request->Brand = '';
 
@@ -94,7 +97,9 @@ class StoreController extends BaseController
 
 
         if ($shop) {
+
             WaitingStoreController::store($shop->id);
+
 
             DiscountController::store($request, $shop->id, 1);
 
@@ -102,37 +107,49 @@ class StoreController extends BaseController
             return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
-
         }
-
     }
 
-     ////عرض متجر محدد
-    public function show($id){
-        $data = Store::where('id' , $id)->get();
+    ////عرض متجر محدد
+        //boshra
+    public function show($id)
+    {
+        $data = Store::where('id', $id)->get();
         if ($data) {
             return $this->sendResponse(StoreResource::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show product info']);
+        }
+    }
 
+
+    ////عرض متجر محدد
+    /// bayan
+    public function myshow($id)
+    {
+        $data = Store::where('id', $id)->get();
+        if ($data) {
+            return $this->sendResponse(my_stores_resors::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
+        } else {
+            return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show store']);
         }
     }
 
     ////////تعديل بيانات المتجر
+    /// bayan
     public function update(Request $request)
     {
         $persone = Persone::where('id', '=', $request->persone_id)->first();
         if ($persone)
             if ($persone->password == $request->old_password) {
-                $store = Store::where('id','=',$request->store_id)->first()->update($request->all());
+                $store = Store::where('id', '=', $request->store_id)->first()->update($request->all());
                 StoreManagerController::update($request);
                 return $this->sendResponse($store, 'تم تعديل ملف المتجر بنجاح');
             } else return $this->sendResponse("erorr", 'كلمة السر غير مطابقة');
-
-
     }
 
     ///جلب المنتجات مع تصنيفاتها
+    //boshra
     public function product_with_class($store_id)
     {
         $collections_id = Collection::where('store_id', $store_id)->get();
@@ -158,6 +175,8 @@ class StoreController extends BaseController
         }
         return $this->sendResponse(ProductClassResource::collection($res), 'success');
     }
+
+    /////boshra
     public function search_by_name($name)
     {
         $data = Store::query()

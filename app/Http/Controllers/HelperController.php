@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class HelperController extends Controller
 {
+
+    //bayan
     public Static function store(Request $request){
 
 

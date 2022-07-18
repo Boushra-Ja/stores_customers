@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class SecondrayClassificationProductController extends BaseController
 {
+
+    //bayan
     public static function store(int $product_id, int $secondrayClassification_id)
     {
         $secondrayClassification = SecondrayClassification::find($secondrayClassification_id);
@@ -20,6 +22,7 @@ class SecondrayClassificationProductController extends BaseController
         return response()->json($response, 200);
     }
 
+    //bayan
     public static function update(int $product_id, int $secondrayClassification_id)
     {
 
@@ -28,7 +31,6 @@ class SecondrayClassificationProductController extends BaseController
         SecondrayClassificationProductController::store($product_id, $secondrayClassification_id);
 
     }
-
     public static function show($product_id)
     {
 

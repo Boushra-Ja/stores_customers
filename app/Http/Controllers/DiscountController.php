@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\ResourcesBayan\discount_coud;
 use App\Http\ResourcesBayan\discount_resource;
+use App\Models\Collection;
 use App\Models\Discount;
 use App\Models\DiscountCode;
 use App\Models\DiscountProduct;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 
@@ -19,10 +22,13 @@ class DiscountController extends BaseController
     //p  product
     //c collection
     //all all
+    //bayan
     public static function store(Request $request, $id, $h)
     {
 
+
         if ($h == 1) {
+
             $discount = Discount::create([
                 'type' => "1",
                 'status' => "0",
@@ -70,14 +76,43 @@ class DiscountController extends BaseController
         }
     }
 
+
+    //bayan
     public function update(Request $request)
     {
         $descount = Discount::where('id', '=', $request->discounts_id)->first();
         if ($descount)
             $descount->update($request->all());
+
+
         if ($request->type == 1) {
             $descount_p = DiscountProduct::where('id', '=', $request->id)->first();
             $descount_p->update($request->all());
+
+            if ($request["product"] != null) {
+                $descount_0 = Discount::where('store_id', '=', $request->store_id)->where('value', '=', '0')->where('type', '=', 1)->value('id');
+                $descount_product_0 = DiscountProduct::where('discounts_id', '=', $descount_0)->value('id');
+                $poduct_descount = Product::where('discount_products_id', '=', $descount_p->id)->get();
+
+                foreach ($poduct_descount as $p_value) {
+
+                    $p_value->update(['discount_products_id' => $descount_product_0,]);
+
+                }
+                foreach ($request["product"] as $value) {
+                    $product = Product::where('id', '=', $value)->first();
+                    if ($product)
+                        $product->update(['discount_products_id' => $request->id,]);
+
+                }
+            } else if ($request["groups"] != null) {
+                foreach ($request["groups"] as $group) {
+                    $g = Collection::where('id', '=', $group)->first();
+                    $pro = Product::where('collection_id', '=', $g->id)->update(['discount_products_id' => $request->id,]);
+
+                }
+            }
+
         } else {
             $descount_p = DiscountCode::where('id', '=', $request->id)->first();
             $descount_p->update($request->all());
@@ -88,6 +123,7 @@ class DiscountController extends BaseController
 
     }
 
+    //bayan
     public function show($id, $type)
     {
         $descount = Discount::where('id', '=', $id)->first();
@@ -102,6 +138,7 @@ class DiscountController extends BaseController
 
     }
 
+    //bayan
     public function index($id)
     {
 
@@ -124,6 +161,7 @@ class DiscountController extends BaseController
 
     }
 
+    //bayan
     public function indexP($id)
     {
 
@@ -145,10 +183,34 @@ class DiscountController extends BaseController
 
     }
 
-
+    //bayan
     public function delete(Request $request)
     {
-        $collection = Discount::where('id', '=', $request->id)->first()->delete();
+
+        $discount = Discount::where('id', '=', $request->discounts_id)->first();
+        if ($discount->type == 1) {
+            $descount_0 = Discount::where('store_id', '=', $request->store_id)->where('value', '=', '0')->where('type', '=', 1)->value('id');
+            $descount_product_0 = DiscountProduct::where('discounts_id', '=', $descount_0)->value('id');
+
+            $poduct_descount = Product::where('discount_products_id', '=', $request->discounts_product_id)->get();
+
+            foreach ($poduct_descount as $p_value) {
+
+                $p_value->update(['discount_products_id' => $descount_product_0,]);
+
+            }
+        }
+        else{
+            $descount_0 = Discount::where('store_id', '=', $request->store_id)->where('value', '=', '0')->where('type', '=', 2)->value('id');
+            $descount_code_0 = DiscountCode::where('discounts_id', '=', $descount_0)->value('id');
+
+            $ordre_descount = Order::where('discount_codes_id', '=', $request->discount_codes_id)->get();
+
+
+
+        }
+
+        $discount->delete();
     }
 
 }

@@ -14,6 +14,7 @@ class RatingStoreController extends BaseController
 
 
     ///عرض جميع تقييمات المتاجر
+    //boshra
     public function index()
     {
         $rating = RatingStore::all();
@@ -27,6 +28,7 @@ class RatingStoreController extends BaseController
 
 
     ////////تقيييم متجر من قبل الزبون
+    //boshra
     public function store(StoreRatingStoreRequest $request)
     {
         $input = $request->all();
@@ -39,6 +41,7 @@ class RatingStoreController extends BaseController
         }
     }
 
+    //boshra
     public function isRating($store_id , $customer_id)
     {
         /////بيان لما بيحولو الطلب لطلب تم تسليمه بتحذف تقييم هاد الزبون لمتجرها

@@ -17,6 +17,7 @@ class OrderStatuseController extends BaseController
     }
 
 
+    ///boshra
     public function store(StoreOrderStatuseRequest $request)
     {
         $order_status = OrderStatus::create($request->all()) ;

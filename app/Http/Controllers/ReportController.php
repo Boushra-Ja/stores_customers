@@ -15,6 +15,7 @@ class ReportController extends BaseController
     }
 
 
+    ///boshra
     public function store(StoreReportRequest $request)
     {
         $input = $request->all();
@@ -28,6 +29,7 @@ class ReportController extends BaseController
     }
 
 
+    //boshra
     public function show(Report $report)
     {
         //

@@ -10,6 +10,7 @@ use App\Http\Resources\BoshraRe\RatingResource;
 class ProductRatingController extends BaseController
 {
     //عرض جميع تقييمات المنتجات
+    ///bohsra
     public function index()
     {
         $rating = ProductRating::all();
@@ -20,6 +21,7 @@ class ProductRatingController extends BaseController
         }
     }
     /////تقييم منتج من قبل الزبون
+    ///boshra
     public function store(StoreProductRatingRequest $request)
     {
         $input = $request->all();
@@ -32,6 +34,7 @@ class ProductRatingController extends BaseController
         }
     }
 
+    //boshra
     public function isRating($product_id , $customer_id)
     {
         $check = ProductRating::where('customer_id' , $customer_id)->where('product_id' , $product_id)->first()  ;
