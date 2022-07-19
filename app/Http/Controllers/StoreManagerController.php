@@ -78,6 +78,7 @@ class StoreManagerController extends BaseController
             //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
             return $user1->id;
+            //            return ["user1",$user1->id,"token"=>$token];
 
 
         }

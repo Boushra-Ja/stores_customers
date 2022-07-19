@@ -104,6 +104,7 @@ class StoreController extends BaseController
             DiscountController::store($request, $shop->id, 1);
 
             $manager_id = StoreManagerController::register($request, $shop->id);
+            //            return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id->user1,"token"=>$manager_id->token], 'Store Shop successfully');
             return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
