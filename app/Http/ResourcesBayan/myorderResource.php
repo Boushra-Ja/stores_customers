@@ -13,7 +13,7 @@ class myorderResource extends JsonResource
     {
         return [
             'id' => $this->order_id,
-            'delivery_time' => $this->delivery_time->format('Y-m-d'),
+            'delivery_time' => $this->delivery_time,
             'delivery_price' => $this->delivery_price,
             'created_at' => $this->created_at->format('Y-m-d'),
 //            'updated_at' => $this->updated_at->format('Y-m-d '),
