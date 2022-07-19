@@ -202,21 +202,21 @@ class OrderController extends BaseController
             $join->on('order_products.order_id', '=', 'orders.id')->where('order_products.status_id', '=', $s);
         })->where('orders.store_id', '=', $store_id)->get();
 
-        $i=2022;
+        $i=date("Y");
 
         $g = array();
-        $g[0] = $order->whereBetween('delivery_time', ['2022-01-02', '2022-02-1'])->count();
-        $g[1] = $order->whereBetween('delivery_time', ['2022-02-02', '2022-03-01'])->count();
-        $g[2] = $order->whereBetween('delivery_time', ['2022-03-02', '2022-04-01'])->count();
-        $g[3] = $order->whereBetween('delivery_time', ['2022-04-02', '2022-05-01'])->count();
-        $g[4] = $order->whereBetween('delivery_time', ['2022-05-02', '2022-06-01'])->count();
-        $g[5] = $order->whereBetween('delivery_time', ['2022-06-02', '2022-07-01'])->count();
-        $g[6] = $order->whereBetween('delivery_time', ['2022-07-02', '2022-08-01'])->count();
-        $g[7] = $order->whereBetween('delivery_time', ['2022-08-02', '2022-09-01'])->count();
-        $g[8] = $order->whereBetween('delivery_time', ['2022-09-02', '2022-10-01'])->count();
-        $g[9] = $order->whereBetween('delivery_time', ['2022-10-02', '2022-11-01'])->count();
-        $g[10] = $order->whereBetween('delivery_time', ['2022-11-02', '2022-12-01'])->count();
-        $g[11] = $order->whereBetween('delivery_time', ['2022-12-02', '2022-1-01'])->count();
+        $g[0] = $order->whereBetween('delivery_time', [$i.'-01-02', $i.'-02-1'])->count();
+        $g[1] = $order->whereBetween('delivery_time', [$i.'-02-02', $i.'-03-01'])->count();
+        $g[2] = $order->whereBetween('delivery_time', [$i.'-03-02', $i.'-04-01'])->count();
+        $g[3] = $order->whereBetween('delivery_time', [$i.'-04-02', $i.'-05-01'])->count();
+        $g[4] = $order->whereBetween('delivery_time', [$i.'-05-02', $i.'-06-01'])->count();
+        $g[5] = $order->whereBetween('delivery_time', [$i.'-06-02', $i.'-07-01'])->count();
+        $g[6] = $order->whereBetween('delivery_time', [$i.'-07-02', $i.'-08-01'])->count();
+        $g[7] = $order->whereBetween('delivery_time', [$i.'-08-02', $i.'-09-01'])->count();
+        $g[8] = $order->whereBetween('delivery_time', [$i.'-09-02', $i.'-10-01'])->count();
+        $g[9] = $order->whereBetween('delivery_time', [$i.'-10-02', $i.'-11-01'])->count();
+        $g[10] = $order->whereBetween('delivery_time', [$i.'-11-02', $i.'-12-01'])->count();
+        $g[11] = $order->whereBetween('delivery_time', [$i.'-12-02', $i.'-1-01'])->count();
 
 
         return $g;
