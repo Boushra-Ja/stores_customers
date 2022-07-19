@@ -32,7 +32,7 @@ class customerResource extends JsonResource
             'orders' => $orders,
             'name' => $person->name,
             'email'=>$person->email,
-            'date' => $person->created_at->format('Y-m-d'),
+            'date' => $person->created_at,
             'total' => $sum
 
         ];

@@ -182,6 +182,7 @@ class OrderController extends BaseController
         $g = array();
         foreach ($o as $v) {
             foreach ($v as $value) {
+
                 $g[$i] = myorderResource::make($value);
                 $i += 1;
                 break;
