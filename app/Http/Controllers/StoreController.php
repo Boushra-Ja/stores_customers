@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\ResourcesBayan\my_stores_resors;
+use App\Http\ResourcesBayan\store_show_resors;
 use App\Models\Persone;
 use Illuminate\Http\Request;
 use App\Models\Store;
@@ -130,7 +131,7 @@ class StoreController extends BaseController
     {
         $data = Store::where('id', $id)->get();
         if ($data) {
-            return $this->sendResponse(my_stores_resors::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
+            return $this->sendResponse(store_show_resors::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show store']);
         }

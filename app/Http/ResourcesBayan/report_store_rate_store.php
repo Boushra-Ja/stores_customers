@@ -19,7 +19,7 @@ class report_store_rate_store extends JsonResource
             'name' => $person,
             'notes' => $this->notes,
             'value' => $this->value,
-            'created_at' => $this->created_at->format('Y-m-d '),
+            'created_at' => $this->created_at->format('Y-m-d'),
 
         ];
     }
