@@ -20,7 +20,7 @@ class report_store_order extends JsonResource
 
         return [
             'name' => $person,
-            'delivery_time' => $this->delivery_time,
+            'delivery_time' => $this->delivery_time->format('Y-m-d'),
             'delivery_price' => $this->delivery_price,
             'created_at' => $this->created_at,
 

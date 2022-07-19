@@ -18,8 +18,8 @@ class discount_coud extends JsonResource
             'discounts_id'=>$this->id,
             'type' => $this->type,
             'value' => $this->value,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
+            'start_date' => $this->start_date->format('Y-m-d'),
+            'end_date' => $this->end_date->format('Y-m-d'),
             'discount_code' => $product->discount_code,
             'condition' => $product->condition,
             'condition_value' => $product->condition_value

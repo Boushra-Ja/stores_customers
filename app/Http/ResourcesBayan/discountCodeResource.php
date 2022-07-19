@@ -29,7 +29,7 @@ class discountCodeResource extends JsonResource
             'count' => $c,
             // 'my_customer' => $my_customer,
             'name'=>$person->name,
-            'date'=>$person->created_at->format('Y-m-d '),
+            'date'=>$person->created_at->format('Y-m-d'),
 
 
         ];
