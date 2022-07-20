@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DiscountCodeController;
 use App\Http\Controllers\DiscountCustomerController;
 use App\Http\Controllers\FavoriteProductController;
 use App\Http\Controllers\SecondrayClassificationController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\ProductOptionController;
 use App\Http\Controllers\ProductRatingController;
 use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\ReportController;
+use App\Models\Discount;
 use App\Models\DiscountCustomer;
 use App\Models\FavoriteProduct;
 use App\Models\OptioinValue;
@@ -85,6 +87,10 @@ Route::get('all_orderproduct/{id}/{status_id}', [OrderProductController::class, 
 Route::post('edit/order_product', [OrderProductController::class, 'edit_order_product']);
 Route::delete('delete/wating_order/{id}', [OrderProductController::class, 'delete_wating_order']);
 Route::get('discounts_codes/{id}' , [DiscountCustomerController ::class , 'myDiscount']) ;
+Route::post("apply_disount" , [DiscountCustomerController::class , 'apply_disount']) ;
+Route::delete("delete_discount/{id}" , [DiscountCustomerController::class , 'delete_discount']) ;
+
+
 ////edit profile
 Route::post('edit_profile/{id}', [CustomerController::class, 'EditMyProfile']);
 
@@ -105,6 +111,8 @@ Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}/{d6}', [ProductController::cla
 
 /////////////tasnem////////////////
 Route::get("allCustomer" , [CustomerController::class , 'allCustomers']) ;
+Route::get("all_stores" , [StoreController::class , 'all_stores']) ;
+
 
 
 //////////////////////////////////////////////////////////////

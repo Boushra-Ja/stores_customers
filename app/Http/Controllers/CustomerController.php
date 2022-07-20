@@ -227,5 +227,24 @@ class CustomerController extends BaseController
     public function allCustomers()
     {
 
+        $customers = DB::table('orders')
+        ->select('customer_id as customer_id , count(customer_id) as num_orders')
+        ->groupBy('customer_id');
+
+        $all_data = Order::select(['id', 'customer_id' , 'store_id'])
+        ->joinSub($customers, 'customers', function ($join)
+        {
+            $join->on("orders.customer_id", '=', 'customers.id');
+        })
+        ->get();
+
+        // ->join('customers',  'orders.customer_id', '=',  'customers.id')
+        //->join('persones',  'customers.persone_id', '=',  'persones.id')
+        //->get();
+
+
+
+        return $all_data ;
+
     }
 }

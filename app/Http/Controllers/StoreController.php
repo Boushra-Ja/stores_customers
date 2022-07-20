@@ -12,6 +12,7 @@ use App\Http\Requests\StoreStoreRequest;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Resources\BoshraRe\ProductClassResource;
 use App\Http\Resources\BoshraRe\StoreResource;
+use App\Http\Resources\BoshraRe\StoreTasneemResource;
 use App\Models\Collection;
 use App\Models\Product;
 
@@ -189,5 +190,17 @@ class StoreController extends BaseController
 
 
         return $this->sendResponse(StoreResource::collection($data), 'success');
+    }
+
+    ///boshra
+    public function all_stores()
+    {
+        $stores = DB::table('stores')
+        ->join('store_managers',  'stores.id', '=',  'store_managers.store_id')
+        ->join('persones',  'store_managers.person_id', '=',  'persones.id')
+        ->get();
+
+        return $this->sendResponse(StoreTasneemResource::collection($stores) , 'success') ;
+
     }
 }
