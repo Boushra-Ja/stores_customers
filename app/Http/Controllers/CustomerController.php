@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePersoneRequest;
 use App\Models\Customer;
 use App\Models\Persone;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class CustomerController extends BaseController
 {
@@ -219,5 +220,11 @@ class CustomerController extends BaseController
                 return $this->sendResponse($data, 'success');
         }
         return $this->sendErrors([], 'error');
+    }
+
+    ///boshra
+    public function allCustomers()
+    {
+
     }
 }

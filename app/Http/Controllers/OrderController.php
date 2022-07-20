@@ -50,7 +50,7 @@ class OrderController extends BaseController
     {
         $order = Order::where('store_id', '=', $request->store_id)->where('customer_id', '=', $request->customer_id)->first();
         $code = DiscountCode::where('discounts_id', '=', Discount::where('store_id', '=', $request->store_id)->where('value', '=', 0)->value('id'))->value('id');
-        print($code) ;
+
         if ($order === null) {
 
             $order = Order::firstOrCreate([

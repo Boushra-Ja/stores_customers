@@ -9,12 +9,14 @@ use App\Http\ResourcesBayan\ordure_product_resource;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Http\Requests\StoreOrderProductRequest;
+use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderProductRequest;
 use App\Http\Resources\BoshraRe\BillResource;
 use App\Http\Resources\BoshraRe\OrderProductResource;
 use App\Http\Resources\BoshraRe\ProductBillResource;
 use App\Models\OrderStatus;
 use App\Models\Persone;
+use App\Models\Product;
 use App\Models\StoreManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -112,7 +114,7 @@ class OrderProductController extends BaseController
                 }
 //                else
 //                    echo 'noooo';
-          }
+        }
 
 
 
@@ -129,7 +131,7 @@ class OrderProductController extends BaseController
             'order_id' => $request->order_id,
             'amount' => $request->amount,
             "gift_order" => $request->gift_order,
-            "discount_products_id" => 1
+            "discount_products_id" => Product::where('id' , $request->product_id)->value('discount_products_id')
         ]);
 
         $arr = [$orderProduct];
@@ -148,6 +150,18 @@ class OrderProductController extends BaseController
     public function destroy($product_id )
     {
         $res = OrderProduct::where('product_id', $product_id)->where('status_id' , OrderStatus::where('status' , 'في السلة')->value('id'))->delete();
+        if ($res)
+            return $this->sendResponse($res, "success");
+        else
+            return $this->sendErrors([], "failed");
+    }
+
+
+     //////حذف المنتج المعلقs
+    ///boshra
+    public function delete_wating_order($order_product_id )
+    {
+        $res = OrderProduct::where('id', $order_product_id)->delete();
         if ($res)
             return $this->sendResponse($res, "success");
         else
@@ -200,9 +214,21 @@ class OrderProductController extends BaseController
     }
 
 
+    //boshra
     public function all_orderproduct($order_id, $status_id)
     {
         $data = OrderProduct::where('order_id', $order_id)->where('status_id', $status_id)->get();
         return $this->sendResponse(OrderProductResource::collection($data), 'success');
+    }
+
+    ///boshra
+    public function edit_order_product(StoreOrderProductRequest $request)
+    {
+        $order_product = OrderProduct::where('order_id' , $request->order_id)->where('product_id' , $request->product_id)->update($request->all()) ;
+        if($order_product){
+            return $this->sendResponse($order_product , 'success') ;
+        }
+        return $this->sendErrors([] , 'error') ;
+
     }
 }

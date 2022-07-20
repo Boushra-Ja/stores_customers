@@ -18,7 +18,8 @@ class StoreOrderProductRequest extends FormRequest
         return [
             'product_id'=> 'required |exists:products,id',
             'order_id'=> 'required|exists:orders,id' ,
-
+            'amount'=> 'required' ,
+            'gift_order'=> 'required' ,
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DiscountCustomerController;
 use App\Http\Controllers\FavoriteProductController;
 use App\Http\Controllers\SecondrayClassificationController;
 use App\Http\Controllers\StoreController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\ProductOptionController;
 use App\Http\Controllers\ProductRatingController;
 use App\Http\Controllers\RatingStoreController;
 use App\Http\Controllers\ReportController;
+use App\Models\DiscountCustomer;
 use App\Models\FavoriteProduct;
 use App\Models\OptioinValue;
 use App\Models\Product;
@@ -80,7 +82,9 @@ Route::get('isFavourite/product/{product_id}/{customer_id}', [FavoriteProductCon
 Route::get('bill/{id}', [OrderProductController::class, 'bill']);
 Route::get('all_products_bill/{id}', [OrderProductController::class, 'all_products_bill']);
 Route::get('all_orderproduct/{id}/{status_id}', [OrderProductController::class, 'all_orderproduct']);
-
+Route::post('edit/order_product', [OrderProductController::class, 'edit_order_product']);
+Route::delete('delete/wating_order/{id}', [OrderProductController::class, 'delete_wating_order']);
+Route::get('discounts_codes/{id}' , [DiscountCustomerController ::class , 'myDiscount']) ;
 ////edit profile
 Route::post('edit_profile/{id}', [CustomerController::class, 'EditMyProfile']);
 
@@ -99,6 +103,11 @@ Route::get('search/store/{name}', [StoreController::class, 'search_by_name']);
 Route::get('All_material', [OptioinValueController::class, 'All_material']);
 Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}/{d6}', [ProductController::class, 'Gift_request']);
 
+/////////////tasnem////////////////
+Route::get("allCustomer" , [CustomerController::class , 'allCustomers']) ;
+
+
+//////////////////////////////////////////////////////////////
 /////////////////////batool_new/////////
 
 Route::prefix("Customer")->group(function () {
