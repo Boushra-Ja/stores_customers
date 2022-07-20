@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Persone;
 use App\Models\Privilladge;
+use App\Models\Store;
 use App\Models\StoreManager;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
@@ -77,6 +78,7 @@ class StoreManagerController extends BaseController
             //   mailcontrol::html_email($persone->name, $code, $persone->email, 'التحقق من البريد الالكتوني');
 
             return $user1->id;
+            //            return ["user1",$user1->id,"token"=>$token];
 
 
         }
@@ -200,6 +202,13 @@ class StoreManagerController extends BaseController
     {
         $persone = Persone::find($id)->update(['password', $new_password]);
 
+    }
+
+    public function my_Store_manager($id){
+        $s=StoreManager::where('id','=',$id)->first();
+        $person=Persone::where('id','=',$s->person_id)->first();
+        $stor=Store::where('id','=',$s->store_id)->first();
+        return response()->json(["person"=>$person,"image"=>$stor->image,"name_store"=>$stor->name],200);
     }
 
 }

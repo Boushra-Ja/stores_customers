@@ -15,7 +15,6 @@ class report_store_rate_store extends JsonResource
         $customer = Customer::where('id', '=', $this->customer_id)->value('persone_id');
         $person = Persone::where('id', '=', $customer)->value('name');
 
-
         return [
             'name' => $person,
             'notes' => $this->notes,

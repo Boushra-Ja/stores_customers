@@ -2,15 +2,13 @@
 
 namespace App\Http\ResourcesBayan;
 
-use App\Http\Resources\BoshraRe\RatingResource;
 use App\Models\Collection;
 use App\Models\ProductRating;
 use App\Models\SecondrayClassification;
 use App\Models\SecondrayClassificationProduct;
-use App\Models\Store;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class product_classification extends JsonResource
+class one_product_show extends JsonResource
 {
 
     public function toArray($request)
@@ -21,7 +19,7 @@ class product_classification extends JsonResource
         $s = SecondrayClassificationProduct::where('product_id', '=', $this->id)->get();
         $sec = array();
         foreach ($s as $value) {
-            $sec[$i] = SecondrayClassification::where('id', '=', $value->secondary_id)->value('title');
+            $sec[$i] = SecondrayClassification::where('id', '=', $value->secondary_id)->value('id');
             $i += 1;
 
         }
@@ -67,10 +65,12 @@ class product_classification extends JsonResource
             'return_or_replace' => $this->return_or_replace,
             'discount_products_id' => $this->discount_products_id,
             'classification' => $sec,
-            'collection' => Collection::where('id', '=', $this->collection_id)->value('title'),
+            'collection' => Collection::where('id', '=', $this->collection_id)->value('id'),
             'review' => $reselt
 
 
         ];
     }
+
+
 }

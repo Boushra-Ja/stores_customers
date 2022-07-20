@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\ResourcesBayan\my_stores_resors;
+use App\Http\ResourcesBayan\store_show_resors;
 use App\Models\Persone;
 use Illuminate\Http\Request;
 use App\Models\Store;
@@ -104,6 +105,7 @@ class StoreController extends BaseController
             DiscountController::store($request, $shop->id, 1);
 
             $manager_id = StoreManagerController::register($request, $shop->id);
+            //            return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id->user1,"token"=>$manager_id->token], 'Store Shop successfully');
             return $this->sendResponse(['shop_id' => $shop->id, 'manager_id' => $manager_id], 'Store Shop successfully');
         } else {
             return $this->sendErrors('failed in Store Shop', ['error' => 'not Store Shop']);
@@ -129,7 +131,7 @@ class StoreController extends BaseController
     {
         $data = Store::where('id', $id)->get();
         if ($data) {
-            return $this->sendResponse(my_stores_resors::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
+            return $this->sendResponse(store_show_resors::collection($data), 'تم ارجاع معلومات المتجر بنجاح');
         } else {
             return $this->sendErrors('خطأ في عرض معلومات المتجر', ['error' => 'error in show store']);
         }

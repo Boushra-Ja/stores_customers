@@ -186,6 +186,7 @@ class CustomerController extends BaseController
 
         $d = $order->groupBy('customer_id');
 
+
         $array = customerResource::collection($d);
         return $array;
 

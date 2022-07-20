@@ -193,6 +193,9 @@ Route::prefix("settings")->group(function () {
     Route::post('storeManager/true_password', [App\Http\Controllers\StoreManagerController::class, 'true_password']);
     Route::get('PrivilladgeHelperController/my_helper/{id}', [App\Http\Controllers\PrivilladgeHelperController::class, 'my_helper']);
 
+    Route::get('storeManager/my_Store_manager/{id}', [App\Http\Controllers\StoreManagerController::class, 'my_Store_manager']);
+
+
 
 });
 

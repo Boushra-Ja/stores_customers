@@ -14,7 +14,7 @@ class discount_coud extends JsonResource
 
         $product = DiscountCode::where('discounts_id', '=', $this->id)->first();
         return [
-            'id' => $product->id,
+           // 'id' => $product->id,
             'discounts_id'=>$this->id,
             'type' => $this->type,
             'value' => $this->value,

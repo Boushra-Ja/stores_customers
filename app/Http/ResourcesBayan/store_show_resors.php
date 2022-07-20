@@ -9,10 +9,8 @@ use App\Models\Product;
 use App\Models\RatingStore;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-
-class my_stores_resors extends JsonResource
+class store_show_resors extends JsonResource
 {
-
 
     public function toArray($request)
     {
@@ -26,9 +24,7 @@ class my_stores_resors extends JsonResource
             'status' => $this->status ,
             'delivery_area'=>$this->delivery_area,
 
-            'review' => RatingResource::collection(RatingStore::where('store_id' , $this->id)->get()) ,
-            'my_products' => ProductResource::collection(Product::where('id' , Collection::where('store_id' , $this->id)->value('id'))->get())
-
         ];
     }
+
 }

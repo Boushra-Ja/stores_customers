@@ -13,6 +13,7 @@ use App\Http\Resources\BoshraRe\OrderProductResource;
 use App\Http\Resources\BoshraRe\OrdersResource;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,6 @@ class OrderController extends BaseController
     {
         $order = Order::where('store_id', '=', $request->store_id)->where('customer_id', '=', $request->customer_id)->first();
         $code = DiscountCode::where('discounts_id', '=', Discount::where('store_id', '=', $request->store_id)->where('value', '=', 0)->value('id'))->value('id');
-
         if ($order === null) {
 
             $order = Order::firstOrCreate([
@@ -181,6 +181,7 @@ class OrderController extends BaseController
         $g = array();
         foreach ($o as $v) {
             foreach ($v as $value) {
+
                 $g[$i] = myorderResource::make($value);
                 $i += 1;
                 break;
@@ -201,24 +202,25 @@ class OrderController extends BaseController
             $join->on('order_products.order_id', '=', 'orders.id')->where('order_products.status_id', '=', $s);
         })->where('orders.store_id', '=', $store_id)->get();
 
+        $i=date("Y");
 
-        $o = $order->groupBy('delivery_time');
-//        $i = 0;
-//
-//        $g = array();
-//        foreach ($o as $v) {
-//            foreach ($v as $value) {
-//                $g[$i] = myorderResource::make($value);
-//                $i += 1;
-//                break;
-//
-//            }
-//        }
+        $g = array();
+        $g[0] = $order->whereBetween('delivery_time', [$i.'-01-02', $i.'-02-1'])->count();
+        $g[1] = $order->whereBetween('delivery_time', [$i.'-02-02', $i.'-03-01'])->count();
+        $g[2] = $order->whereBetween('delivery_time', [$i.'-03-02', $i.'-04-01'])->count();
+        $g[3] = $order->whereBetween('delivery_time', [$i.'-04-02', $i.'-05-01'])->count();
+        $g[4] = $order->whereBetween('delivery_time', [$i.'-05-02', $i.'-06-01'])->count();
+        $g[5] = $order->whereBetween('delivery_time', [$i.'-06-02', $i.'-07-01'])->count();
+        $g[6] = $order->whereBetween('delivery_time', [$i.'-07-02', $i.'-08-01'])->count();
+        $g[7] = $order->whereBetween('delivery_time', [$i.'-08-02', $i.'-09-01'])->count();
+        $g[8] = $order->whereBetween('delivery_time', [$i.'-09-02', $i.'-10-01'])->count();
+        $g[9] = $order->whereBetween('delivery_time', [$i.'-10-02', $i.'-11-01'])->count();
+        $g[10] = $order->whereBetween('delivery_time', [$i.'-11-02', $i.'-12-01'])->count();
+        $g[11] = $order->whereBetween('delivery_time', [$i.'-12-02', $i.'-1-01'])->count();
 
 
-        return $o;
+        return $g;
     }
-
 
 
     //bayan
