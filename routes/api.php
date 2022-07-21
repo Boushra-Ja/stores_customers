@@ -112,7 +112,7 @@ Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}/{d6}', [ProductController::cla
 /////////////tasnem////////////////
 Route::get("allCustomer" , [CustomerController::class , 'allCustomers']) ;
 Route::get("all_stores" , [StoreController::class , 'all_stores']) ;
-
+Route::get("all_reports" , [ReportController::class , 'index']) ;
 
 
 //////////////////////////////////////////////////////////////

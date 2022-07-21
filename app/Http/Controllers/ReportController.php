@@ -6,12 +6,15 @@ use App\Http\Controllers\API\BaseController;
 use App\Models\Report;
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
+use App\Http\Resources\BoshraRe\ReportResource;
 
 class ReportController extends BaseController
 {
+    ///boshra
     public function index()
     {
-        //
+        $reports = Report::all() ;
+        return $this->sendResponse(ReportResource::collection($reports ), 'success') ;
     }
 
 

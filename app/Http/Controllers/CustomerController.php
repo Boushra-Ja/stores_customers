@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePersoneRequest;
+use App\Http\Resources\BoshraRe\CustomerResource as BoshraReCustomerResource;
 use App\Models\Customer;
 use App\Models\Persone;
 use Illuminate\Support\Facades\DB;
@@ -227,24 +228,8 @@ class CustomerController extends BaseController
     public function allCustomers()
     {
 
-        $customers = DB::table('orders')
-        ->select('customer_id as customer_id , count(customer_id) as num_orders')
-        ->groupBy('customer_id');
-
-        $all_data = Order::select(['id', 'customer_id' , 'store_id'])
-        ->joinSub($customers, 'customers', function ($join)
-        {
-            $join->on("orders.customer_id", '=', 'customers.id');
-        })
-        ->get();
-
-        // ->join('customers',  'orders.customer_id', '=',  'customers.id')
-        //->join('persones',  'customers.persone_id', '=',  'persones.id')
-        //->get();
-
-
-
-        return $all_data ;
+        $customers = Customer::all();
+        return $this->sendResponse(BoshraReCustomerResource::collection($customers) , 'success') ;
 
     }
 }
