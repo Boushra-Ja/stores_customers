@@ -20,6 +20,7 @@ class ReportResource extends JsonResource
             'store_name' => Store::where('id' , $this->store_id )->value('name'),
             'customer_id' => $this->customer_id ,
             'customer_name' => Persone::where('id'  , Customer::where('id' , $this->customer_id )->value('persone_id'))->value('name'),
+            'created_at' => $this->created_at->format('Y-m-d '),
 
         ];
     }
