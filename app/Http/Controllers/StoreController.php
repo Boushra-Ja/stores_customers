@@ -195,12 +195,16 @@ class StoreController extends BaseController
     ///boshra
     public function all_stores()
     {
-        $stores = DB::table('stores')
-        ->join('store_managers',  'stores.id', '=',  'store_managers.store_id')
-        ->join('persones',  'store_managers.person_id', '=',  'persones.id')
-        ->get();
+        $stores = Store::all() ;
 
-        return $this->sendResponse(StoreTasneemResource::collection($stores) , 'success') ;
-
+        $res = array() ;
+        $i =0 ;
+        foreach ($stores as $value) {
+            $res[$i] = new StoreTasneemResource($value) ;
+            $i++;
+        }
+        return $this->sendResponse($res , 'success') ;
     }
+
+
 }

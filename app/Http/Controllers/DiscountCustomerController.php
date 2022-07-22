@@ -40,9 +40,10 @@ class DiscountCustomerController extends BaseController
         ->join('discount_codes', 'discount_codes.id', '=', 'discount_customers.discount_codes_id')
         ->join('discounts', 'discounts.id', '=', 'discount_codes.discounts_id')
         ->where('discounts.end_date' , '>' , [Carbon::now()->format('Y-m-d')])
+        ->select("discount_customers.id as discount_customers_id"  , "discount_customers.customers_id" ,'discount_codes.*' , 'discounts.*')
         ->get() ;
 
-        return $this->sendResponse(DiscountResource::collection($customer_discount) , 'success') ;
+        return $this->sendResponse(DiscountResource::collection($customer_discount), 'success') ;
     }
 
     //boshra
@@ -50,7 +51,8 @@ class DiscountCustomerController extends BaseController
     {
         $res = Order::where('customer_id' , $req->customer_id) ->where('store_id' , $req->store_id)->update([
 
-            'discount_codes_id' => $req->discount_codes_id
+            'discount_codes_id' => $req->discount_codes_id,
+            'delivery_price' => $req->delivery_price
         ]);
 
         if($res)
