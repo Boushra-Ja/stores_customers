@@ -380,7 +380,7 @@ class ProductController extends BaseController
     }
 
     //boshra
-    public function Gift_request($party, $fromage, $toage, $material, $fromprice, $toprice)
+    public function Gift_request($party, $fromage, $material, $fromprice, $toprice)
     {
         $data4 = array();
         $data5 = array();
@@ -398,38 +398,35 @@ class ProductController extends BaseController
                 $data4[$i] = OptionType::where('id', $value['option_type_id'])->get();
 
                 foreach ($data4[$i] as $val) {
-                    if ($party != " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0') {
+                    if ($party != " " && $fromage != '0'  && $fromprice != '0' && $toprice != '0') {
                         $data5[$j] = Product::where('id', $val['product_id'])
                             ->where('party', 'LIKE', '%' . $party . '%')
-                            ->where('age', '>=', $fromage)
-                            ->where('age', '<=', $toage)
+                            ->where('age', '==', $fromage)
                             ->where('selling_price', '>=', $fromprice)
                             ->where('selling_price', '<=', $toprice)
                             ->get();
-                    } else if ($party == " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0') {
+                    } else if ($party == " " && $fromage == '0'  && $fromprice == '0' && $toprice == '0') {
                         $data5[$j] = Product::where('id', $val['product_id'])->get();
-                    } else if ($party == " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0') {
+                    } else if ($party == " " && $fromage != '0'&& $fromprice != '0' && $toprice != '0') {
                         $data5[$j] = Product::where('id', $val['product_id'])
-                            ->where('age', '>=', $fromage)
-                            ->where('age', '<=', $toage)
+                            ->where('age', '==', $fromage)
                             ->where('selling_price', '>=', $fromprice)
                             ->where('selling_price', '<=', $toprice)
                             ->get();
-                    } else if ($party != " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0') {
+                    } else if ($party != " " && $fromage == '0' && $fromprice == '0' && $toprice == '0') {
                         $data5[$j] = Product::where('id', $val['product_id'])
                             ->where('party', 'LIKE', '%' . $party . '%')
                             ->get();
-                    } else if ($party == " " && $fromage == "0" && $toage == "0") {
+                    } else if ($party == " " && $fromage == "0" ) {
                         $data5[$j] = Product::where('id', $val['product_id'])
                             ->where('selling_price', '>=', $fromprice)
                             ->where('selling_price', '<=', $toprice)
                             ->get();
                     } else if ($party == " " && $fromprice == "0" && $toprice == "0") {
                         $data5[$j] = Product::where('id', $val['product_id'])
-                            ->where('age', '>=', $fromage)
-                            ->where('age', '<=', $toage)
+                            ->where('age', '==', $fromage)
                             ->get();
-                    } else if ($party != " " && $fromage == "0" && $toage == "0") {
+                    } else if ($party != " " && $fromage == "0" ) {
                         $data5[$j] = Product::where('id', $val['product_id'])
                             ->where('party', 'LIKE', '%' . $party . '%')
                             ->where('selling_price', '>=', $fromprice)
@@ -438,8 +435,7 @@ class ProductController extends BaseController
                     } else if ($party != " " && $fromprice == "0" && $toprice == "0") {
                         $data5[$j] = Product::where('id', $val['product_id'])
                             ->where('party', 'LIKE', '%' . $party . '%')
-                            ->where('age', '>=', $fromage)
-                            ->where('age', '<=', $toage)
+                            ->where('age', '==', $fromage)
                             ->get();
                     }
 
@@ -454,41 +450,37 @@ class ProductController extends BaseController
                 $i++;
             }
         } else {
-            if ($party != " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0') {
+            if ($party != " " && $fromage != '0' && $fromprice != '0' && $toprice != '0') {
                 $data5[$j] = Product::where('party', 'LIKE', '%' . $party . '%')
-                    ->where('age', '>=', $fromage)
-                    ->where('age', '<=', $toage)
+                    ->where('age', '==', $fromage)
                     ->where('selling_price', '>=', $fromprice)
                     ->where('selling_price', '<=', $toprice)
                     ->get();
-            } else if ($party == " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0') {
+            } else if ($party == " " && $fromage == '0'  && $fromprice == '0' && $toprice == '0') {
                 $data5[$j] = Product::all();
-            } else if ($party == " " && $fromage != '0' && $toage != '0' && $fromprice != '0' && $toprice != '0') {
-                $data5[$j] = Product::where('age', '>=', $fromage)
-                    ->where('age', '<=', $toage)
+            } else if ($party == " " && $fromage != '0'  && $fromprice != '0' && $toprice != '0') {
+                $data5[$j] = Product::where('age', '==', $fromage)
                     ->where('selling_price', '>=', $fromprice)
                     ->where('selling_price', '<=', $toprice)
                     ->get();
-            } else if ($party != " " && $fromage == '0' && $toage == '0' && $fromprice == '0' && $toprice == '0') {
+            } else if ($party != " " && $fromage == '0'  && $fromprice == '0' && $toprice == '0') {
                 $data5[$j] = Product::where('party', 'LIKE', '%' . $party . '%')
                     ->get();
-            } else if ($party == " " && $fromage == "0" && $toage == "0") {
+            } else if ($party == " " && $fromage == "0") {
                 $data5[$j] = Product::where('selling_price', '>=', $fromprice)
                     ->where('selling_price', '<=', $toprice)
                     ->get();
             } else if ($party == " " && $fromprice == "0" && $toprice == "0") {
-                $data5[$j] = Product::where('age', '>=', $fromage)
-                    ->where('age', '<=', $toage)
+                $data5[$j] = Product::where('age', '==', $fromage)
                     ->get();
-            } else if ($party != " " && $fromage == "0" && $toage == "0") {
+            } else if ($party != " " && $fromage == "0") {
                 $data5[$j] = Product::where('party', 'LIKE', '%' . $party . '%')
                     ->where('selling_price', '>=', $fromprice)
                     ->where('selling_price', '<=', $toprice)
                     ->get();
             } else if ($party != " " && $fromprice == "0" && $toprice == "0") {
                 $data5[$j] = Product::where('party', 'LIKE', '%' . $party . '%')
-                    ->where('age', '>=', $fromage)
-                    ->where('age', '<=', $toage)
+                    ->where('age', '==', $fromage)
                     ->get();
             }
             foreach ($data5[$j] as $v) {

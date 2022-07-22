@@ -26,12 +26,12 @@ class StoreTasneemResource extends JsonResource
         $orders = Order::where('store_id' , $this->id)->get() ;
         $orders_recieved = 0 ;
         foreach ($orders as  $value) {
-            $orders_recieved = $orders_recieved + OrderProduct::where('order_id' , $value['id'])->where('status_id' , OrderStatus::where('status' , 'تم التسليم')->value('id'))->count();
+            $orders_recieved = $orders_recieved + OrderProduct::where('order_id' , $value['id'])->where('status_id' , OrderStatus::where('status' , 'مسلم')->value('id'))->count();
         }
 
         $orders_accepted = 0 ;
         foreach ($orders as  $value) {
-            $orders_accepted = $orders_accepted + OrderProduct::where('order_id' , $value['id'])->where('status_id' , OrderStatus::where('status' , 'تم القبول')->value('id'))->count();
+            $orders_accepted = $orders_accepted + OrderProduct::where('order_id' , $value['id'])->where('status_id' , OrderStatus::where('status' , 'مقبول')->value('id'))->count();
         }
 
         return  [

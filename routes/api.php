@@ -107,7 +107,7 @@ Route::get('search/store/{name}', [StoreController::class, 'search_by_name']);
 
 //////All_material
 Route::get('All_material', [OptioinValueController::class, 'All_material']);
-Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}/{d6}', [ProductController::class, 'Gift_request']);
+Route::get('Gift_request/{d1}/{d2}/{d3}/{d4}/{d5}', [ProductController::class, 'Gift_request']);
 
 /////////////tasnem////////////////
 Route::get("allCustomer" , [CustomerController::class , 'allCustomers']) ;
